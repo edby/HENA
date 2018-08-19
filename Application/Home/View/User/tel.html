@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>绑定手机号</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css" />
+</head>
+<style type="text/css">
+	.mui-input-group:before,.mui-input-group:after {
+		background-color: #FFFFFF;
+	}
+</style>
+<body>
+
+<div class="mui-content bindingcellphone">
+	<h3>
+		绑定手机号
+	</h3>
+	<form class="mui-input-group">
+		<div class="mui-input-row">
+
+			<input type="text" id="tel" class="mui-input-clear" placeholder="请输入手机号">
+		</div>
+		<div class="mui-input-row">
+
+			<input type="text" id="telcode"  placeholder="请输入短信验证码">
+		</div>
+		<input type="button" id="btn" value="获取验证码" />
+	</form>
+	<button type="button" id="submit">确定</button>
+</div>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script type='text/javascript' src='/Public/layer/layer.js'></script>
+<script type="text/javascript">
+    mui.init()
+    var countdown = 60;
+    function settime() {
+        obj = $('#btn');
+        if(countdown == 0) {
+            obj.attr("disabled", false);
+            obj.val( "免费获取验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr("disabled", true);
+            obj.val( "重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+            settime()
+        }, 1000)
+    }
+    $('#btn').click(function(event){
+        event.preventDefault();
+        var tel = $('#tel').val();
+        if(tel == ''){
+            layer.msg('请输入手机号');
+            $('#tel').focus();
+            return false;
+        }
+        var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;  //电话号码的正则匹配式
+        if(reg.test(tel) == false){
+            layer.msg('请输入正确的手机号码');
+            $('#tel').val('');
+            $('#tel').focus();
+            return false;
+        }
+        $.ajax({
+            url:"{:U('Api/sms')}",
+            data: {tel:tel},
+            type:'post',
+            success:function(msg){
+                if(msg.status == 1){
+                    layer.msg(msg.msg);
+                    settime();
+                }else{
+                    layer.msg(msg.msg);
+                }
+            }
+        });
+    });
+    $('#submit').click(function(){
+        var tel = $('#tel').val();
+        var telcode = $('#telcode').val();
+        $.ajax({
+            url:"__SELF__",
+            data:{tel:tel,telcode:telcode},
+            type:'post',
+            success:function(msg){
+                if(msg.errCode == 0){
+                    layer.msg(msg.errMsg);
+					console.log(msg.url);
+                    location.href = msg.url;
+                }else{
+                    layer.msg(msg.errMsg);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

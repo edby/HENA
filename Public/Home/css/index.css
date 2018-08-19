@@ -1,0 +1,146 @@
+.app{
+    background: #ffffff;
+}
+.hots-bar {
+    position: relative;
+    height: 39px;
+    line-height: 39px;
+    font-size: 14px;
+    border-bottom: 1px solid #fff;
+    z-index: 999;
+    text-align: center;
+}
+.hots-bar .hot {
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+    height: 100%;
+}
+.hots-bar .hot-all,
+.hots-bar .hot-more {
+    position: absolute;
+    top: 0;
+    width: 90px;
+    left: -90px;
+    z-index: 3;
+}
+.hots-bar .hots-cnt {
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+
+}
+
+.hots-bar .hots-bd {
+    white-space: nowrap;
+    height: 100%;
+    overflow-y: hidden;
+    text-align: left;
+}
+.hots-bar .active:before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    right: 7px;
+    bottom: 0;
+    height: 3px;
+    background: #eb5a28;
+}
+.hots-bar .hot-more {
+    right: -47rem;
+    left: auto;
+    width: 47rem;
+}
+.hots-wp {
+    position: relative;
+    height: 39px;
+    /*border-bottom: 1px solid #f2f2f2 ;*/
+}
+.hots-wp .hot-all:after,
+.hots-wp .hot-more:after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background-image: radial-gradient(ellipse at left, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0) 55%);
+}
+.hots-wp .hot-more:after {
+    left: -2px;
+    right: auto;
+    background-image: radial-gradient(ellipse at right, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0) 55%);
+}
+.hots-cnt::-webkit-scrollbar {display:none}
+.hots-bd::-webkit-scrollbar {display:none}
+.mainContent{
+    padding-bottom: 2%;
+    padding-top: 2%;
+}
+.mainContent:nth-of-type(even){
+    margin-right: 2%;
+    margin-left: 1%;
+}
+.merchandise{
+    width: 100%;
+    text-align: center;
+    background: #ffffff;
+}
+.merchandise> img{
+    width: 100%;
+}
+.merchandiseName{
+    color: #000000;
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    line-height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    text-align: center;
+}
+.merchandiseMoneyRed{
+    color: #F04646;
+}
+.merchandiseReferral{
+    padding: 5px;
+}
+.shopping{
+    padding: 5px 8px;
+    background: #000000;
+    border-radius: 2px;
+    color: #ffffff;
+    float: right;
+}
+.col-xs-6{
+    width: 48%;
+}
+.floatLeft{
+    float: left;
+}
+.header{
+    text-align: center;
+    color: #333333;
+    box-shadow: 0 0 5px #f2f2f2;
+}
+.header header{
+    height: 39px;
+    line-height: 39px;
+}
+.headerBlank{
+    text-align: left;
+    margin-left: 10px;
+    font-size: 25px;
+}
+.header-wp{
+    color: #d2d2d2;
+}
+.navActive{
+    color: #e3352c;
+    height: 37px;
+    line-height: 37px;
+    border-bottom: 2px solid #e3352c;
+}

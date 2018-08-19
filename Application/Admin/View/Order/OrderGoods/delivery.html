@@ -1,0 +1,80 @@
+<!--_meta 作为公共模版分离出去-->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico" >
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <!--/meta 作为公共模版分离出去-->
+
+</head>
+<body>
+<div class="page-container">
+    <form action="{:U('delivery')}" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>快递商家：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <select name="delivery_name" style="width: 200px;height: 30px;">
+                    <if condition="$delivery.delivery_name != ''">
+                        <option value="{$delivery.delivery_name}">{$delivery.delivery_name}</option>
+                    </if>
+                    <option value="申通快递">申通快递</option>
+                    <option value="百世快递">百世快递</option>
+                    <option value="顺丰快递">顺丰快递</option>
+                    <option value="圆通快递">圆通快递</option>
+                </select>
+                <input type="hidden"  class="input-text" value="{$delivery.order_id}" id="" name="order_id" style="width:200px">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>快递单号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text"  class="input-text" value="{$delivery.delivery_sn}" required id="delivery_sn" name="delivery_sn" style="width:200px">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button  class="btn btn-primary radius" type="submit" ><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<!--<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>-->
+</body>
+</html>

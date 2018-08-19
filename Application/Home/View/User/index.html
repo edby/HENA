@@ -1,0 +1,354 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?686d3b7760d71606cd1bcbf355251a19";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+
+<style>
+    body {
+        background: #F5F5F5;
+    }
+
+    .my_head > .mui-col-xs-12 > .mui-row a {
+        display: block;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .my_head > .mui-col-xs-12:last-child {
+        margin-top: 8%;
+    }
+
+    .my_head > .mui-col-xs-12:last-child > .mui-row img {
+        position: absolute;
+        left: 22%;
+        top: -28%;
+        width: 20%;
+    }
+    .tabbar {
+            background-color:#fff;
+       }
+      a span  {
+            color:#666;
+       }
+       .tabspan{
+           color:#a045fd;
+       }
+</style>
+<body>
+<div class="mui-content">
+    <div class="mui-row my_head">
+        <div class="mui-col-xs-12">
+            <a href="{:U('account')}"><img src="http://img.hena360.cn/_pic35.png" class="mui-pull-right"/></a>
+        </div>
+        <div class="mui-col-xs-3">
+            <if condition="$info.avatar != ''">
+
+                <img src="{$info.avatar}" class="mui-slider">
+                <else/>
+                <img src="http://img.hena360.cn/head_img.png" class="mui-slider">
+            </if>
+        </div>
+        <div class="mui-col-xs-9">
+            <h4>
+                <empty name="info.nickname">
+                    {$info.realname}
+                    <else/>
+                    {$info.nickname}
+                </empty>
+            </h4>
+            <if condition="$info.level eq 1">
+                <button><img src="http://img.hena360.cn/default_vip.png" width="20%"/><span>{$info.levelname}</span>
+                </button>
+                <else/>
+                <button>
+
+                    <img src="http://img.hena360.cn/Vip{$info.level}.png" width="20%"/>
+                    <span>{$info.levelname}</span></button>
+            </if>
+
+            <!--<button><if condition="$info.level neq 7"><img src="http://img.hena360.cn/_pichena{$info.level}.png" width="20%"/></if> {$info.levelname}</button>-->
+        </div>
+        <div class="mui-col-xs-12">
+            <div class="mui-row" style="padding: 0;">
+                <div class="mui-col-xs-6" style="border-right: 1px solid #7A7A7A"><a href="{:U('/User/wallet')}"><img
+                        src="http://img.hena360.cn/my_head%20%282%29.png" alt="">纳豆</a></div>
+                <div class="mui-col-xs-6"><img src="http://img.hena360.cn/my_head%20%281%29.png" alt=""><a
+                        href="{:U('/User/integral')}">盟豆</a></div>
+            </div>
+        </div>
+    </div>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+            <a href="/iview/#/user/order/orderlist" class="mui-navigate-right">
+                我的订单
+            </a>
+        </li>
+
+    </ul>
+    <div class="mui-row my_order_state">
+        <div class="mui-col-xs-two">
+            <a href="/iview/#/user/order/orderpending">
+                <img src="http://img.hena360.cn/_pic56.png"/>
+                待付款
+            </a>
+        </div>
+        <div class="mui-col-xs-two">
+            <a href="/iview/#/user/order/orderdelivergoods">
+                <img src="http://img.hena360.cn/_pic50.png"/>
+                待发货
+            </a>
+        </div>
+        <div class="mui-col-xs-two">
+            <a href="/iview/#/user/order/ordergoodstobereceived">
+                <img src="http://img.hena360.cn/_pic44.png"/>
+                已发货
+            </a>
+        </div>
+        <!--<div class="mui-col-xs-two">-->
+        <!--<a href="{:U('Orderlist/index')}?action=all&status=4">-->
+        <!--<img src="http://img.hena360.cn/_pic51.png"/>-->
+        <!--待评价-->
+        <!--</a>-->
+        <!--</div>-->
+        <!-- <div class="mui-col-xs-two">
+            <a href="">
+                <img src="http://img.hena360.cn/_pic39.png"/>
+                退款/售后
+            </a>
+        </div> -->
+    </div>
+    <div class="mui-row my_memu">
+        <!--<div class="mui-col-xs-4">-->
+        <!--<a href="{:U('/User/wallet')}">-->
+        <!--<img src="http://img.hena360.cn/_pic31.png"/>-->
+        <!--我的纳豆-->
+        <!--</a>-->
+        <!--</div>-->
+        <div class="mui-col-xs-4">
+            <a href="{:U('/User/campcode')}">
+                <img src="http://img.hena360.cn/_pic43.png"/>
+                邀请好友
+            </a>
+        </div>
+        <!--<div class="mui-col-xs-4">-->
+        <!--<a href="{:U('Home/User/balanceDetail')}">-->
+        <!--<img src="http://img.hena360.cn/_pic62.png"/>-->
+
+        <!--纳豆明细-->
+        <!--</a>-->
+        <!--</div>-->
+        <div class="mui-col-xs-4">
+            <a href="{:U('/Address/index')}">
+                <img src="http://img.hena360.cn/_pic52.png"/>
+                地址管理
+            </a>
+        </div>
+        <div class="mui-col-xs-4">
+            <a href="{:U('/User/backList')}">
+                <img src="http://img.hena360.cn/_pic64.png"/>
+                我的福利
+            </a>
+        </div>
+
+        <div class="mui-col-xs-4">
+            <a href="{:U('User/help')}">
+                <img src="http://img.hena360.cn/user_01.png"/>
+                帮助中心
+            </a>
+        </div>
+        <div class="mui-col-xs-4">
+            <a href="{:U('User/Collection')}">
+                <img src="http://img.hena360.cn/user_02.png"/>
+                我的收藏
+            </a>
+        </div>
+        <div class="mui-col-xs-4">
+            <a href="">
+                <img src="http://img.hena360.cn/_pic1.png"/>
+                客服中心
+            </a>
+        </div>
+        <!--<div class="mui-col-xs-4">-->
+        <!---->
+        <!--<a href="{:U('/User/integral')}">-->
+        <!--<img src="http://img.hena360.cn/integral.png"/>-->
+        <!--签到积分-->
+        <!--</a>-->
+        <!--</div>-->
+    </div>
+    <img src="http://img.hena360.cn/footerLogo.jpg" alt="" class="mui-slider img">
+</div>
+<nav class="mui-bar mui-bar-tab  tabbar">
+    <a class="mui-tab-item mui-active" href="{:U('/index')}">
+        <img src="http://img.hena360.cn/s_11.png"/>
+        <span class="mui-tab-label ">首页</span>
+    </a>
+
+    <a class="mui-tab-item" href="{:U('/Creation/index')}">
+        <img src="http://img.hena360.cn/s_33.png"/>
+        <span class="mui-tab-label">创客中心</span>
+    </a>
+     <a class="mui-tab-item" href="<?=C('JUMP_DOMAIN').'/iview/#/FoundPage/recommend'?>">
+        <img src="http://img.hena360.cn/s_22.png"/>
+        <span class="mui-tab-label">发现</span>
+    </a>
+    <a class="mui-tab-item" href="{:U('user/index')}">
+        <img src="http://img.hena360.cn/s_5.png"/>
+        <span class="mui-tab-label tabspan">我的</span>
+    </a>
+</nav>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    /*$(".my_memu>.mui-col-xs-4:nth-child(5)").on('click',function(){
+        alert("暂未开放，敬请期待！")
+    })*/
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+</html>

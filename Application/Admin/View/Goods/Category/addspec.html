@@ -1,0 +1,131 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>产品规格</title>
+<link rel="stylesheet" href="__PUBLIC_ADMIN__/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body class="pos-r">
+
+<div class="page-container">
+	<form action="{:U('Admin/Goods/Category/addspec')}" method="post" enctype="multipart/form-data">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>类型名称：</label>
+			<div >
+				<input type="text" id = "cat_title" name = "cat_title" value="{$cat_title}" class="input-text" style="width: 30%">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="formControls col-xs-8 col-sm-9 pspec1" id = "specparent"  style="margin-left: 205px;margin-top: 10px;">
+				<volist name="spec_list" id="info">
+					<div class="fspecparent" style="float: left; clear: both;">
+						<div>
+							<p style="float: left;">
+								<input type="text" placeholder="填写产品规格项，比如颜色" readonly="readonly" value="{$info.spec_title}" class="input-text" style="width: 600px;">
+							</p>
+						</div>
+						<div class="zspec" style="clear: both">
+							<volist name="info.spec_addr" id="v">
+							<p style="float: left" class="zspecparent"><input type="text" placeholder="填写颜色" readonly="readonly" value="{$v.addr_title}" class="input-text" style="width: 140px;border-right: 1px solid grey"></p>
+						</volist>
+						</div>
+					</div>
+				</volist>
+
+			</div>
+		</div>
+
+		<div style="margin-left: 202px; margin-top:20px;">
+			<input type="hidden" id = "cat_id" name = "cat_id" value="{$cat_id}" style="background: #3c9be1;width: 80px;height: 30px;line-height: 30px">
+			<input type="hidden" id = "specnum" name = "specnum" value="" style="background: #3c9be1;width: 80px;height: 30px;line-height: 30px">
+		</div>
+
+		<div style="margin-left: 202px; margin-top:20px;">
+			<input type="button" id = "addspec" value="添加规格" style="background: #3c9be1;width: 80px;height: 30px;line-height: 30px">
+		</div>
+
+		<div style="margin-left: 202px; margin-top:20px;">
+			<input type="submit" id = "send" value="提交" style="background: #3c9be1;width: 80px;height: 30px;line-height: 30px">
+		</div>
+	</form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/laypage/1.2/laypage.js"></script>
+
+
+</body>
+</html>
+<script>
+    var i = 1;
+    $("#addspec").click(function () {
+
+        var p = "<div class = 'fspecparent' style='float: left; clear: both;'>" +
+            "<div>" +
+            "<p style='float: left;'><input type='text' name='specc"+i+"[]'  placeholder='填写产品规格项，比如颜色' value='' class='input-text' style='width: 600px;'></p>" +
+            "<p class = 'addzspecparent' data-num='"+i+"' style='width:100px;height: 30px;line-height:30px;background: #5a98de;color:white;float: left;cursor: pointer'>添加产品规格项</p>" +
+            "<p class='delfspecparent' style='width:40px;height: 30px;line-height:30px;text-align: center;background: red;color:white;float: left;cursor: pointer'>删除</p>" +
+            "</div>" +
+            "<div class = 'zspec' style='clear: both'>" +
+            "<p style='float: left' class = 'zspecparent'>" +
+            "<input type='text' name='spec"+i+"[]'  placeholder='填写颜色' value='' class='input-text' style='width: 140px;border-right: 1px solid grey'>" +
+            "<input type='button' class='delspec' value='删除' style='width: 60px;height: 30px;line-height: 30px;background: red;margin-left: -2px;cursor: pointer'>" +
+            "</p>" +
+            "</div>" +
+            "</div>";
+
+        $('#specparent').prepend(p);
+        i++;
+    });
+
+    $('form').on('click',' .addzspecparent',function () {
+        var num = $(this).data('num');
+        var p = "<p style='float: left' class = 'zspecparent'>" +
+            "<input type='text' name='spec"+num+"[]'  placeholder='填写颜色' value='' class='input-text' style='width: 140px;border-right: 1px solid grey'>" +
+            "<input type='button' class='delspec' value='删除' style='width: 60px;height: 30px;line-height: 30px;background: red;margin-left: -2px'>" +
+            "</p>";
+        $(this).parent().next().append(p);
+    });
+
+    $('form').on('click',' .delspec',function () {
+        $(this).parent().remove();
+    });
+
+    $('form').on('click',' .delfspecparent',function () {
+        $(this).parent().parent().remove();
+    });
+
+    $("#send").click(function () {
+		var specnum = $("#specparent").children().length;
+		$("#specnum").val(specnum);
+    })
+
+</script>

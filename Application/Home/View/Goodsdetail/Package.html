@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>0元购</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css" />
+</head>
+
+<body>
+
+<div class="mui-content">
+	<img src="http://img.hena360.cn/_pic01.png" class="mui-slider" />
+	<img src="http://img.hena360.cn/_pic132.png" style="width:100%;display:block;margin:10px auto;">
+	<div class="mui-row i_list">
+		<volist name = 'data' id = 'v'>
+			<div class="mui-col-xs-6">
+				<a href="{:U('Goods/details')}?id={$v.id}"> <img src="{$v.goods_logo}" class="mui-slider" />
+					<h4>{$v.goodsname}</h4>
+					<p>{$v.f_title}</p>
+					<span>{$v.goodsprice}元/{$v.goodsunit}</span>
+				</a>
+			</div>
+		</volist>
+	</div>
+	{$show}
+</div>
+<script src="__PUBLIC_HOME__/js/mui.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+<script type="text/javascript">
+	//地址栏url添加mid
+    $(function () {
+        $.ajax({
+            url:"{:U('Home/User/getUserId')}",
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                if(location.href.indexOf('?') ==-1){
+                    window.history.replaceState(null,'', window.location.href+'?mid='+data.mid);
+                }else{
+                    window.history.replaceState(null,'', window.location.href+'&mid='+data.mid);
+                }
+            }
+        });
+    })
+</script>
+</body>
+
+</html>

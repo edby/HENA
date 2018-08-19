@@ -1,0 +1,377 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>合纳共享</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <style>
+        .detailimgs img {
+            width: 100%;
+        }
+
+        .goods_name {
+            font-size: 15px;
+            line-height: 22px;
+            color: #333333;
+            margin-bottom: 3%
+        }
+
+        .f_title {
+            font-size: 13px;
+            color: #666666;
+            line-height: 20px;
+            margin-bottom: 3%
+        }
+
+        .goods_price {
+            font-size: 18px;
+            color: #D22121;
+            margin-bottom: 3%
+        }
+
+        .original_price {
+            color: #999999
+        }
+
+        .goods_price > small {
+            font-size: 13px
+        }
+
+        .goods_price > span {
+            font-size: 18px
+        }
+
+        .goods_sale {
+            font-size: 11px;
+            color: #999999;
+            line-height: 40px;
+            border-bottom: 1px solid #f2f2f2
+        }
+
+        .Collection {
+            position: absolute;
+            right: 2%;
+            top: -30%;
+        }
+
+        .Specifications_show {
+            line-height: 40px;
+            border-bottom: 1px solid #f2f2f2;
+            margin-bottom: 3%;
+        }
+
+        html, body {
+            cursor: pointer;
+        }
+
+        .mui-table-view-cell:after,
+        .mui-table-view:after,
+        .mui-table-view:before {
+            background-color: #FFFFFF;
+        }
+
+        .mui-table-view {
+            border-top: 7px solid #F6F6F6;
+            border-bottom: 7px solid #F6F6F6;
+            background-color: none;
+        }
+
+        .Specifications_span_addcolor {
+            border: 1px solid #ccc;
+            background: #ccc;
+            color: #fff;
+        }
+
+        .details_Recommend {
+            border-top: 10px solid #F6F6F6;
+        }
+
+        .details_pic, .details_pic img, .details_pic p img {
+            width: 100%;
+        }
+
+        .details_tab > a {
+            width: 30% !important;
+        }
+
+        .details_tab > span {
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            z-index: 2;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .details_tab > span {
+            background: #F2F2F2;
+        }
+
+        .details_tab > span:last-child {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .nav_title > a, .nav_title > h1 {
+            color: #000000 !important;
+        }
+
+        #spec span {
+            width: 20%;
+            display: inline-block;
+            text-align: center;
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            line-height: 24px;
+            margin-right: 2.5%;
+        }
+
+        .specAddcolor {
+            background: #000 !important;
+            color: #fff !important;
+            border: 1px solid #000000 !important;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav nav_title">
+    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="{:U('/index')}"></a>
+    <h1 class="mui-title">商品详情</h1>
+    <span style="line-height: 44px;float: right">首页</span>
+</header>
+<div class="mui-content">
+    <div class="Carousel">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!--<div class="swiper-slide"><img src="http://img.hena360.cn/banner5.jpg" alt="" class="mui-slider"></div>-->
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <!--轮播-->
+    <div class="mui-row">
+        <div class="mui-col-xs-12">
+            <h4 class="goods_name"></h4>
+            <p class="f_title"></p>
+        </div>
+        <div class="mui-col-xs-12 goods_price">
+            <small>¥</small>
+            <span class="_goods_price"></span>
+            <small style="color: #999999;margin-left: 5%">原价</small>
+            <del class="original_price"></del>
+            <img class="Collection" src="http://img.hena360.cn/Collection_1_1.png" alt="" width="10%">
+        </div>
+        <div class="mui-col-xs-12 goods_sale">
+            <div class="mui-row" style="padding: 0;">
+                <div class="mui-col-xs-4">
+                    库存 <span class="goods_num"></span>
+                </div>
+                <div class="mui-col-xs-4">
+                    快递费 <span class="express_fee"></span>
+                </div>
+                <div class="mui-col-xs-4">
+                    销量 <span class="sale_num"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mui-col-xs-12 mui-navigate-right Specifications_show">请选择产品规格 <span></span></div>
+    </div>
+    <!--点击显示的规格-->
+    <div class="Specifications">
+        <div class="mui-row"></div>
+        <div class="mui-row">
+            <div id="spec">
+                <div class="mui-col-xs-12">
+                    <h4>请选择规格</h4>
+                    <div></div>
+                </div>
+            </div>
+            <div class="mui-col-xs-12">
+                <h4 id="goods_num">91件</h4>
+            </div>
+            <div class="mui-col-xs-12 Specifications_number">
+                <span class="reduce">-</span><input type="text" name="" id="" value="1" class="num"/><span
+                    class="add" style="margin-left: 50px">+</span>
+            </div>
+        </div>
+    </div>
+    <div class="Mask"></div>
+    <img src="http://img.hena360.cn/title.png" alt="" width="100%">
+    <div class="detailimgs"></div>
+</div>
+<nav class="mui-bar mui-bar-tab details_tab">
+    <span class="" id="pay_shopping" style="cursor:pointer">
+              <span class="mui-tab-label">立即购买</span>
+    </span>
+</nav>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/swiper.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type='text/javascript' src='/Public/layer/layer.js'></script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC_HOME__/js/wxShare.js"></script>
+<!--分享-->
+</body>
+<script>
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    str = window.location.href;
+    datails_id = str.split('?id=')
+    //获取产品详情轮播图
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/goods/zore-goods/view?id=' + datails_id[1]+'&expand=time_range',
+        type: 'get',
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            var _html = '';
+            for (v in data.data.goods_detail_img) {
+                _html += '<div class="swiper-slide"><img src="' + data.data.goods_detail_img[v] + '" alt="" class="mui-slider"></div>'
+//                _html+='<div class="swiper-slide"><img src="'+data.data[v].img_src+'" alt="" class="mui-slider"></div>'
+            }
+            $('.Carousel>.swiper-container>,swiper-wrapper').html(_html)
+            //产品标题
+            $('.goods_name').html(data.data.goods_name)
+            //产品副标题
+            $('.f_title').html(data.data.f_title)
+            //产品价格
+            $('._goods_price').html(data.data.goods_price)
+            //产品原价
+            $('.original_price').html(data.data.original_price)
+            //产品销量
+            $('.sale_num').html(data.data.sale_num)
+            //产品销量
+            $('.goods_num').html(data.data.goods_num)
+            //产品详情
+            $('.detailimgs').html(data.data.detailimgs)
+            //快递费
+            $('.express_fee').html(data.data.express_fee)
+            //规格上的产品信息
+            $('.Specifications>.mui-row:first-child').html(' <div class="mui-col-xs-4"><img src="'+data.data.goods_logo+'" class="mui-slider"/></div><div class="mui-col-xs-8"><h4>'+data.data.goods_name+'</h4><span id="goods_price">￥ <span>'+data.data.goods_price+'</span></span><p>已选择:标准配置</p></div>')
+
+        }
+    })
+    //获取规格
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/goods/goods/get-goods-spec?id=' + datails_id[1],
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            var _html ='';
+            for(v in data.data){
+                _html += '<span data-spec_id="'+data.data[v].goods_spec_id+'" spec_id="'+data.data[v].spec_id+'">'+data.data[v].addr_title+'</span>';
+            }
+            $('#spec>div>div').html(_html)
+            $('#spec>div>div>span').click(function () {
+                $(this).addClass('specAddcolor').siblings().removeClass('specAddcolor')
+                   console.log($(this).data('spec_id'))
+            })
+            }
+    })
+    //创建订单
+    $('#pay_shopping').click(function () {
+        $.ajax({
+            url:'http://'+window.location.host+'/api/goods/goods/confirm?id='+datails_id[1]+'&num=1'+_val
+        })
+    })
+    var mySwiper = new Swiper('.Carousel .swiper-container', {
+        loop: false,
+        grabCursor: true,
+        autoplay: 3000,
+        autoplayDisableOnInteraction: false,
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer: true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true,//修改swiper的父元素时，自动初始化swiper
+    });
+    $(function () {
+
+        $(".Specifications").hide();
+        $(".Mask").hide();
+        $(".datails_address_show").hide();
+        $(".Mask").width($(window).width()).height($(window).height() - 50);
+
+        // 商品规格
+        $(".Specifications_show").click(function () {
+            $(".Mask").show(); // 模态框
+            $(".Specifications").show(); // 规格信息
+        });
+
+        $(".Mask").click(function () {
+            $(".Specifications").hide();
+            $(".Mask").hide();
+            $(".details_show").hide()
+            $(".datails_address_show").hide();
+        })
+        $(".details_show").hide()
+        $(".details_activity").click(function () {
+            $(".Mask").show()
+            $(".details_show").show()
+        })
+        /**/
+
+        // 增加购买数量 获取 价格
+         _val = $(".Specifications_number input[type='text']").val();
+        $(".add").on('click', function () {
+            _val++;
+            $(".Specifications_number input[type='text']").val(_val);
+            var goods = $(".Specifications").data();
+            var data = {"num": _val, "id": goods.id};
+            node = $('.specAddcolor');
+            $.each(node, function (i, v) {
+                data[i] = v.getAttribute('data-id');
+            })
+            console.log(_val)
+        });
+        // 减少购买数量 获取 价格
+        $(".reduce").click(function () {
+
+            console.log(_val);
+            if (_val <= 1) {
+                _val = 1;
+                return;
+                //$(".Specifications_number input[type='text']").val(_val);
+            }
+
+            _val--;
+            $(".Specifications_number input[type='text']").val(_val)
+            var goods = $(".Specifications").data();
+            var data = {"num": _val, "id": goods.id};
+            node = $('.specAddcolor');
+            $.each(node, function (i, v) {
+                data[i] = v.getAttribute('data-id');
+            })
+//            $.ajax({
+//                url: "{:U('Goods/getGoodsPrice')}",
+//                type: "POST",
+//                data: data,
+//                success: function (res) {
+//                    if (res.code == 2000) {
+//                        $('#goods_price>b').text(res.real_price); // 替换价格
+//                    } else {
+//                        mui.toast(res.msg, {duration: 'long', type: 'div'});
+//                        $(".Specifications_number input[type='text']").val(1);
+//                    }
+//                }
+//            })
+        })
+    })
+</script>
+</html>

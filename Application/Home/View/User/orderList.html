@@ -1,0 +1,399 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <style type="text/css">
+        .title {
+            color: #000;
+            display: block;
+        }
+
+        .addtitle a {
+            color: #000000;;
+        }
+
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .nav_title > a, .nav_title > h1 {
+            color: #000000 !important;
+        }
+
+        .CancellationOrder button {
+            float: right;
+        }
+
+        .CancellationOrder .del {
+            float: right;
+            border: 1px solid #CCCCCC !important;
+            border-radius: 0;
+            background: #ffffff !important;
+            color: #000000 !important;
+        }
+
+        .CancellationOrder button:last-child {
+            border: 1px solid #000000;
+            border-radius: 0;
+            background: #000000;
+            color: #ffffff;
+            margin-right: 2%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="mui-content ">
+    <div class="mui-row order_list_head">
+        <div class="mui-col-xs-two <if condition='$Think.get.status eq 0'> order_list_head_addcolor addtitle</if>">
+            <a class="title" href="/iview/#/user/order/orderlist">全部</a>
+        </div>
+        <div class="mui-col-xs-two <if condition='$Think.get.status eq 1'> order_list_head_addcolor addtitle</if>">
+            <a class="title" href="/iview/#/user/order/orderpending">待付款</a>
+        </div>
+        <div class="mui-col-xs-two <if condition='$Think.get.status eq 2'> order_list_head_addcolor addtitle</if>">
+            <a class="title" href="/iview/#/user/order/orderdelivergoods">待发货</a>
+        </div>
+        <div class="mui-col-xs-two <if condition='$Think.get.status eq 3'> order_list_head_addcolor addtitle</if>">
+            <a class="title" href="/iview/#/user/order/ordergoodstobereceived">待收货</a>
+        </div>
+        <div class="mui-col-xs-two <if condition='$Think.get.status eq 4'> order_list_head_addcolor addtitle</if>">
+            <a class="title" href="/iview/#/user/order/ordercompleted">已完成</a>
+        </div>
+    </div>
+    <div class="order_list_cont ">
+        <!--all-->
+        <if condition="$list ">
+
+            <volist name="list" id="vo">
+                <div class="mui-row CustomerService ">
+                    <div class="mui-col-xs-12">订单编号：{$vo.order_sn}
+
+
+                    </div>
+                    <a href="{:U('/user/orderDetail')}?orderid={$vo.id}">
+                        <div class="mui-row refreshContainer" style="padding:0">
+
+                            <div class="mui-col-xs-3"><img
+                                    src="<?=C('RESOURCES_DOMAIN').$vo['order_goods']['goods_img']?>"
+                                    class="mui-slider"/></div>
+                            <div class="mui-col-xs-7">
+                                <h4>{$vo.order_goods.goods_name}</h4>
+                                <p>{$vo.order_goods.spec}</p>
+                                <p>X {$vo.num}</p>
+                            </div>
+                            <if condition="$vo.status eq 1">
+                                <div class="mui-col-xs-2">待付款</div>
+                                <elseif condition="$vo.status eq 2"/>
+                                <div class="mui-col-xs-2">待发货</div>
+                                <elseif condition="$vo.status eq 3"/>
+                                <div class="mui-col-xs-2">待收货</div>
+                                <else/>
+                                <div class="mui-col-xs-2">已收货</div>
+                            </if>
+
+                        </div>
+                    </a>
+                    <if condition="$vo.status eq 1">
+                        <div class="mui-row" style="padding: 0;">
+                            <div class="mui-col-xs-12 CancellationOrder"
+                                 style="border-top: 1px solid #ccc; padding: 2% 0;">
+                                <a href="/html/view/order/pay.html?id={$vo.id}">
+                                    <button>立即付款</button>
+                                </a>
+                                <button class="del" id="close-order" data-vid="{$vo.id}">取消订单</button>
+                            </div>
+                        </div>
+                    </if>
+                    <!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+                </div>
+            </volist>
+            <else/>
+
+            <div style="text-align: center;margin-top: 10rem;">
+                <img alt="" src="http://img.hena360.cn/no_data_img.png" style="margin: 0 auto;width: 25%;"/>
+            </div>
+        </if>
+
+    </div>
+</div>
+</div>
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item" href="{:U('/index')}">
+        <img src="http://img.hena360.cn/20180506 (2).png"/>
+        <span class="mui-tab-label">首页</span>
+    </a>
+
+    <a class="mui-tab-item" href="{:U('/Creation/index')}">
+        <img src="http://img.hena360.cn/20180506 (8).png"/>
+        <span class="mui-tab-label">创客中心</span>
+    </a>
+
+    <a class="mui-tab-item mui-active" href="{:U('/user/index')}">
+        <img src="http://img.hena360.cn/20180506 (3).png"/>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
+
+
+<script src="__PUBLIC_HOME__/js/mui.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type='text/javascript' src='/Public/layer/layer.js'></script>
+
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    $(function () {
+        //$(".order_list_cont>div:gt(0)").hide()
+        var hd = $(".order_list_head>div");
+        hd.click(function () {
+            $(this).addClass('order_list_head_addcolor').siblings().removeClass('order_list_head_addcolor');
+            $('.order_list_head_addcolor > a').addClass('addtitle')
+            var _index = hd.index(this);
+            console.log(hd.index(this))
+            $(".order_list_cont>div").eq(_index).show().siblings().hide()
+        })
+    })
+</script>
+<script type="text/javascript">
+
+
+    //立即支付
+    function gopay(order_id) {
+        $.post(
+            "{:U('Order/wxNum')}",
+            {
+                order_id: order_id
+            },
+            function (res) {
+                if (res) {
+                    location.href = "http://" + window.location.host + "/Home/api/wxpay/order_no/" + res['msg'];
+                } else {
+                    console.log(res['msg']);
+                }
+            }
+        )
+    }
+
+    function txfh(id) {  //提醒发货
+        $.post(
+            "{:U('Order/txfh')}",
+            {
+                order_id: id
+            },
+            function (res) {
+                if (res == "1") {
+                    alert('已提醒卖家！');
+                    //history.go(0);
+                } else {
+                    alert('提醒失败！');
+                }
+            }
+        )
+    }
+
+    function qrsh(id) {  //确认发货
+        $.post(
+            "{:U('Order/qrsh')}",
+            {
+                order_id: id
+            },
+            function (res) {
+                if (res == "1") {
+                    alert('已确认收货！');
+                    history.go(0);
+                } else {
+                    alert('操作失败！');
+                }
+            }
+        )
+    }
+
+    $(function () {
+        $.ajax({
+            url: "{:U('/User/getUserId')}",
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (getUrlParam('mid')) {
+                    return;
+                }
+                if (location.href.indexOf('?') == -1) {
+                    window.history.replaceState(null, '', window.location.href + '?mid=' + data.mid);
+                } else {
+                    window.history.replaceState(null, '', window.location.href + '&mid=' + data.mid);
+                }
+            }
+        });
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    // 取消订单
+    $('.CustomerService ').each(function (i, v) {
+        $(this).find('#close-order').click(function () {
+            var vid = $(this).data('vid')
+            console.log(vid)
+            mui.confirm('你确定取消订单吗？', function (e) {
+                if (e.index == 1) {
+                    $.ajax({
+                        url: 'http://' + window.location.host + '/api/user/order-goods/close?id=' + vid,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.code == 2000) {
+                                window.location.reload();
+                            } else {
+                                mui.alert(data.message, '提示', '我知道了', function () {
+
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+        })
+    })
+
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>合纳共享</title>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="__PUBLIC_HOME__/css/reset.css">
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <style>
+        .integralheader {
+            height: 150px;
+            background: url("http://img.hena360.cn/Integralmall.png") no-repeat;
+            background-size: 100%;
+            color: #333333;
+        }
+
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .mui-bar > a, .mui-bar > h1 {
+            color: #000000 !important;
+        }
+
+        .points_change {
+            position: absolute;
+            top: 60%;
+            left: 0;
+            width: 100%;
+            padding: 0 25px;
+        }
+
+        .points_change > div > a {
+            color: #000000;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        #monitor > tr, #monitor {
+            width: 100%;
+        }
+
+        #monitor tr td {
+            width: 14.28%;
+            float: left;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #8f8f94;
+        }
+
+        #monitor tr td span {
+            margin-top: 10px;
+            height: 20px;
+            line-height: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .integralMain {
+            background: #ffffff;
+            padding-top: 40px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .calendar {
+            box-shadow: 0px 0px 10px #e8e8e8;
+            text-align: center;
+
+        }
+
+        .calendar i:nth-child(1) {
+            position: absolute;
+            left: 9%;
+            top: 30%;
+            color: #ccc;
+        }
+
+        .calendar i:nth-child(2) {
+            position: absolute;
+            right: 9%;
+            top: 30%;
+            color: #ccc;
+        }
+
+        .calendar h4 {
+            text-align: left;
+            font-size: 20px;
+            padding: 20px 0 20px 10px;
+            border-bottom: 1px solid #F2F2F2;
+        }
+
+        .integralButton {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .calendarButtonOne {
+            background: #edc50b;
+            padding: 10px 35px;
+            font-size: 16px;
+            color: #ffffff;
+            border-radius: 3px;
+            border: none;
+        }
+
+        .calendarButton {
+            background: #edc50b;
+            color: #ffffff;
+            border-radius: 10px;
+            margin: 0 5px;
+        }
+
+        #points {
+            font-size: 32px;
+        }
+
+        .calendarButtonTow {
+            background: #CCCCCC;
+            padding: 10px 35px;
+            font-size: 16px;
+            color: #ffffff;
+            border-radius: 3px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">盟豆乐园</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-row">
+        <div class="mui-col-xs-12">
+            <img src="http://img.hena360.cn/Integralmall.png" alt="" width="100%">
+            <div class="mui-row points_change">
+                <div class="mui-col-xs-6"><span id="points">0</span>盟豆</div>
+                <div class="mui-col-xs-6"><a href="/User/integralDetalis.html" class="mui-pull-right">查看明细</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="integralMain">
+        <div class="mui-row calendar">
+            <i>||</i>
+            <i>||</i>
+            <div class="mui-col-xs-12">
+                <h4>连续签到 <span id="days">0</span> 天</h4>
+            </div>
+            <div class="mui-col-xs-12">
+                <table id="monitor">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="integralButton">
+        <button class="calendarButtonOne">立即签到</button>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script>
+    // 签到明细
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/points/index/change',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            _html = '<tbody><tr>';
+            for (var i = 1; i <= 7; i++) {
+                if (data.data[i].status == 1) {
+                    _point = '<p class="calendarButton " style="background: #edc50b;color: #ffffff"> + ' + data.data[i].add_points + '</p>'
+                } else {
+                    _point = '未签到';
+                }
+                _html += "<td><span>" + data.data[i].date + "</span><span>" + _point + "</span></td>";
+            }
+            _html += '</tr></tbody>';
+            $('#monitor').html(_html)
+        }
+    })
+    /* window.onload = function () {
+         var cells = document.getElementById('monitor').getElementsByTagName('td');
+         var clen = cells.length;
+         var currentFirstDate;
+         var formatDate = function (date) {
+             var month = (date.getMonth() + 1) + '.';
+             var day = date.getDate();
+             return month + day + ' '
+         };
+         var addDate = function (date, n) {
+             date.setDate(date.getDate() + n);
+             return date;
+         };
+         var setDate = function (date) {
+             var week = date.getDay() - 1;
+             date = addDate(date, week * -1);
+             currentFirstDate = new Date(date);
+             for (var i = 0; i < clen; i++) {
+                 cells[i].innerHTML = '<span>' + formatDate(i == 0 ? date : addDate(date, 1)) +
+                  '</span>' + '<span id='+formatDate(i == 0 ? date : addDate(date, 1))+'>未签到</span>';
+
+
+             }
+         };
+         setDate(new Date());
+     }
+
+     $('#monitor tr td').each(function (i, v) {
+         console.log(v)
+     })*/
+
+
+</script>
+<script>
+
+    // 验证签到状态
+    $(function () {
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/points/index/view',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (data.code = 2000) {
+                    $("#points").html(data.data.points);
+                    $("#days").html(data.data.days);
+                    if (data.data.status == 1) { // 已签到
+                        $('#pointed').html('<p class="calendarButton " style="background: #edc50b;color: #ffffff"> + </p>');
+                        $('.integralButton button').addClass('calendarButtonTow');
+                        $('.calendarButtonTow').attr("disabled", "disabled");
+                        $('.calendarButtonTow').html('已签到')
+                    }
+                }
+            }
+        })
+    });
+    // 签到按钮
+    $('.calendarButtonOne').click(function () {
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/points/index/click',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == 2000) {
+                    location.reload();
+                } else if (data.code == 3000) {
+                    alert(data.message);
+                }
+            }
+        })
+    })
+
+
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

@@ -1,0 +1,204 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<script src="/Public/js/jquery-1.10.2.min.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/ueditor.config.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/ueditor.all.min.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/lang/zh-cn/zh-cn.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+</head>
+<body>
+<div class="page-container">
+	<form action="{:U('Admin/Goods/Goods/add')}" method="post" class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="goods_name" name="goods_name" style="width:70%" required>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>副标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="f_title" name="f_title" style="width:70%" required>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品分类：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+					<select id = 'title' name = 'title' style="width: 70%;height: 30px;">
+						<option name = 'title' class = 'title' value="0">\</option>
+						<foreach name = 'category' item = 'v'>
+							<option name = 'title' class = 'title'  value="{$v.cat_id}">
+								<eq name="v.level" value="1">--</eq>
+								<eq name="v.level" value="2">----</eq>
+								{$v.cat_title}
+							</option>
+						</foreach>
+					</select>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品属性：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="checkbox" name="goods_attribute[]"  value="1" checked>推荐
+				<input type="checkbox" name="goods_attribute[]"  value="2">新品
+				<input type="checkbox" name="goods_attribute[]"  value="3">热卖
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品价格：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="goods_price" id="goods_price" placeholder="" value="" class="input-text" style="width:70%" required>
+				元</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>原价：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="original_price" id="original_price" placeholder="" value="" class="input-text" style="width:70%" required>
+				元</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>运费：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="express_fee" id="express_fee" placeholder="" value="" class="input-text" style="width:70%" required>
+				元</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">增值运费：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="up_express_fee" id="up_express_fee" placeholder="" value="0" class="input-text" style="width:70%" >
+				元</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品单位：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="单位,如(个/件/包)" id="goods_unit" name="goods_unit" style="width:70%" required>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品图片：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="file" name="img[]" multiple ></br>
+				<label style="color: red;font-size: 8px;">建议为正方型图片，并保持图片大小一致</label>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品背景图片：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="file" name="bg_img" multiple ></br>
+				<label style="color: red;font-size: 8px;">建议为正方型图片，并保持图片大小一致</label>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">销量：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="sale_num" id="sale_num" placeholder="" value="" class="input-text" style="width:70%">
+				件</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品库存：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="goods_num" id="goods_num" placeholder="" value="" class="input-text" style="width:70%" required>
+				件</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>参与活动类型：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box " style="width:70%">
+					<select name="acttype" class="select acttype" >
+						<option value="4" name="acttype" class = "acttype" >爆品</option>
+						<option value="3" name="acttype" class = "acttype" >普通商品</option>
+						<option value="2"  name="acttype" class = "acttype">0元购</option>
+						<option value="1" name="acttype" class = "acttype" selected>520</option>
+						<option value="5" name="acttype" class = "acttype" selected>共享库</option>
+					</select>
+				</span>
+			</div>
+			<label  class="form-label col-xs-4 col-sm-2" style="color: red;font-size: 8px;margin-left: 160px;">默认为商品为520,可选择</label>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品详情：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="info" id="info" style="width:1024px;height:500px;"></textarea>
+			</div>
+		</div>
+
+
+		<div class="row cl">
+			<div class="formControls col-xs-8 col-sm-9" style="margin-left: 280px">
+				<input type="submit"   value="提交"  style="background: #3c9be1;width: 80px;height: 30px;line-height: 30px">
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__PUBLIC_ADMIN__/ueditor/";
+    $(document).ready(function () {
+        UE.getEditor('info', {
+            initialFrameHeight: 500,
+            initialFrameWidth: 875,
+        });
+    });
+</script>
+
+<script>
+    $("#cancel").click(function () {
+        document.getElementById("form-article-add").reset();
+    })
+</script>
+
+<script>
+    function decimal(num,v){
+        var vv = Math.pow(10,v);
+        return Math.round(num*vv)/vv;
+    }
+</script>
+
+</body>
+</html>

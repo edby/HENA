@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" href="__PUBLIC_HOME__/css/mui.css">
+    <link rel="stylesheet" href="__PUBLIC_HOME__/css/Maker.css">
+    <title>业务订单</title>
+    <style>
+        /*#to-more{
+            display: inline-block;
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+            font-size: 20px;
+            text-align: center;
+            background-color: #ccc;
+        }*/
+        .details_tab > a {
+            width: 30% !important;
+        }
+
+        .details_tab > span {
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            z-index: 2;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .details_tab > span {
+            background: #F2F2F2;
+        }
+
+        .details_tab > span:last-child {
+            background: #000000;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="mui-content Maker">
+    <div class="mui-row">
+        <div class="mui-col-xs-12">
+            销售收益：
+            <small>{$bonus}</small>
+        </div>
+    </div>
+    <empty name="list">
+        <img src="http://img.hena360.cn/no_data_img.png" style="display: block;margin: 40% auto;width: 25%;">
+    </empty>
+    <volist name="list" id="info">
+        <div class="mui-row MakerList">
+            <div class="mui-col-xs-3">
+                收益类别：
+            </div>
+            <div class="mui-col-xs-9">
+                <eq name="info.source_type" value="1">分享收益</eq>
+                <eq name="info.source_type" value="2">拓展收益</eq>
+            </div>
+            <div class="mui-col-xs-3">
+                订单编号：
+            </div>
+            <div class="mui-col-xs-9">
+                {$info.order_sn}
+            </div>
+            <div class="mui-col-xs-3">
+                下单时间：
+            </div>
+            <div class="mui-col-xs-9">
+                {$info.order_time|date="Y-m-d H:i:s",###}
+            </div>
+            <div class="mui-col-xs-12">
+                奖金：
+                <small>{$info.bonus}</small>
+            </div>
+        </div>
+    </volist>
+    <notempty name="list">
+        <nav class="mui-bar mui-bar-tab details_tab" id="to-more" data-now_page="0">
+            <span>
+                <span class="mui-tab-label">获取更多</span>
+            </span>
+        </nav>
+    </notempty>
+</div>
+
+</body>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: "{:U('/User/getUserId')}",
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (getUrlParam('mid')) {
+                    return;
+                }
+                if (location.href.indexOf('?') == -1) {
+                    window.history.replaceState(null, '', window.location.href + '?mid=' + data.mid);
+                } else {
+                    window.history.replaceState(null, '', window.location.href + '&mid=' + data.mid);
+                }
+            }
+        });
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+<script type="text/javascript">
+    $('#to-more').click(function () {
+        var nowPage = $(this).attr('data-now_page');
+        $.ajax({
+            url: "{:U('Home/User/ajaxBonusDetail')}",
+            type: 'post',
+            data: {now_page: nowPage},
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    $("#to-more").attr('data-now_page', data.new_page);
+                    var _html = '';
+                    for (var i = 0; i < data.list.length; i++) {
+                        var _info = data.list[i];
+                        _html += '<div class="mui-row MakerList"> ' +
+                            '<div class="mui-col-xs-3">收益类别： </div>' +
+                            '<div class="mui-col-xs-9">' + ((_info.source_type == 1) ? '分享收益' : '拓展收益') +
+                            '</div> ' +
+                            '<div class="mui-col-xs-3">订单编号： </div> ' +
+                            '<div class="mui-col-xs-9">' + _info.order_sn + ' </div> ' +
+                            '<div class="mui-col-xs-3">下单时间： </div> ' +
+                            '<div class="mui-col-xs-9">' + _info.order_time + '</div> ' +
+                            '<div class="mui-col-xs-12">奖金：<small>' + _info.bonus + '</small> ' +
+                            '</div> </div>'
+                    }
+                    $("#to-more").before(_html);
+                } else if (data.status == 0) {
+                    $("#to-more").remove();
+                }
+
+            }
+        });
+    })
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

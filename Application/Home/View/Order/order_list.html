@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css" />
+	<style>
+		.mui-bar-nav {
+			background: #f2f2f2;
+		}
+		.mui-bar > a, .mui-bar > h1 {
+			color: #000000;
+		}
+	</style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">我的订单</h1>
+</header>
+<div class="mui-content">
+	<div class="mui-row order_list_head">
+		<div class="mui-col-xs-two <if condition='$status eq 0'> order_list_head_addcolor</if>">
+			全部
+		</div>
+		<div class="mui-col-xs-two <if condition='$status eq 1'> order_list_head_addcolor</if>">
+			未付款
+		</div>
+		<div class="mui-col-xs-two <if condition='$status eq 2'> order_list_head_addcolor</if>">
+			待发货
+		</div>
+		<div class="mui-col-xs-two <if condition='$status eq 3'> order_list_head_addcolor</if>">
+			待收货
+		</div>
+		<div class="mui-col-xs-two <if condition='$status eq 4'> order_list_head_addcolor</if>">
+			已完成
+		</div>
+	</div>
+	<div class="order_list_cont" >
+		<!--all-->
+		<div <if condition="$status neq 0">style="display:none;"</if>>
+		<volist name="listdata.0" id="vo">
+			<if condition="$vo.num gt 1">
+				<div class="mui-row CustomerService">
+					<div class="mui-col-xs-12" >订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo.id})"/></div>
+					<a href="{:U('Orderlist/index')}?action=1&orderid={$vo.id}">
+						<div class="mui-row">
+
+
+							<div class="mui-col-xs-3">{$vo.order_goods|dump}<img src="" class="mui-slider" /></div>
+
+
+						</div>
+					</a>
+					<if condition ="$vo.status eq 1">
+						<div class="mui-col-xs-3">待付款</div>
+						<elseif condition="$vo.status eq 2" />
+						<div class="mui-col-xs-3">待发货</div>
+						<elseif condition="$vo.status eq 3" />
+						<div class="mui-col-xs-3"><a href="{:U('Orderlist/goodsRec')}?oid={$vo.id}">待收货</a></div>
+						<else/>
+						<div class="mui-col-xs-3">已收货</div>
+					</if>
+					<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+				</div>
+				<else/>
+				<div class="mui-row CustomerService">
+					<div class="mui-col-xs-12">订单编号：{$vo.order_sn} <img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo.id})"/></div>
+					<a href="{:U('Orderlist/index')}?action=1&orderid={$vo.id}">
+						<div class="mui-row" style="padding:0">
+
+							<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+							<div class="mui-col-xs-7">
+								<h4>{$vo.order_goods.goods_name}</h4>
+								<!--<p>黑色</p>-->
+								<p>X {$vo.num}</p>
+							</div>
+							<if condition ="$vo.status eq 1">
+								<div class="mui-col-xs-2">待付款</div>
+								<elseif condition="$vo.status eq 2" />
+								<div class="mui-col-xs-2">待发货</div>
+								<elseif condition="$vo.status eq 3" />
+								<div class="mui-col-xs-2">待收货</div>
+								<else/>
+								<div class="mui-col-xs-2">已收货</div>
+							</if>
+						</div>
+					</a>
+					<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+				</div>
+			</if>
+		</volist>
+
+	</div>
+
+	<!--待付款-->
+	<div <if condition="$status neq 1">style="display:none;"</if>>
+	<volist name="listdata.1" id="vo">
+		<if condition="$vo.num gt 1">
+			<div class="mui-row CustomerService">
+				<div class="mui-col-xs-12">订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo1.id})"/ ></div>
+				<a href="{:U('Orderlist/index')}?action=1&orderid={$vo.id}">
+					<div class="mui-row">
+						<volist name="vo.order_goods" id="v">
+							<if condition="$vo.num lt 4">
+								<div class="mui-col-xs-3"><img src="{$v.goods_img}" class="mui-slider" /></div>
+							</if>
+						</volist>
+					</div>
+				</a>
+				<div class="mui-col-xs-3">待付款</div>
+
+				<div class="mui-col-xs-12"><button type="button" onclick="gopay({$vo.id})" class="mui-pull-right">立即支付</button></div>
+			</div>
+			<else/>
+			<div class="mui-row CustomerService">
+				<div class="mui-col-xs-12">订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo1.id})"/></div>
+				<a href="{:U('Orderlist/index')}?action=1&orderid={$vo.id}">
+					<div class="mui-row" style="padding:0">
+						<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+						<div class="mui-col-xs-7">
+							<h4>{$vo.order_goods.goods_name}</h4>
+							<!--<p>黑色</p>-->
+							<p>X {$vo.num}</p>
+						</div>
+						<div class="mui-col-xs-2">待付款</div>
+					</div>
+				</a>
+				<div class="mui-col-xs-12"><button type="button" onclick="gopay({$vo.id})" class="mui-pull-right">立即支付</button></div>
+			</div>
+		</if>
+	</volist>
+</div>
+
+
+<!--待发货-->
+<div <if condition='$status neq 2'> style="display:none;"</if>>
+<volist name="listdata.2" id="vo">
+	<if condition="$vo.num gt 1">
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+			<a href="{:U('Orderlist/index')}?action=2&orderid={$vo.id}">
+				<div class="mui-row">
+					<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+					<div class="mui-col-xs-7">
+						<h4>{$vo.order_goods.goods_name}</h4>
+						<!--<p>黑色</p>-->
+						<p>X {$vo.num}</p>
+					</div>
+				</div>
+			</a>
+			<div class="mui-col-xs-3">待发货</div>
+
+			<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+		</div>
+		<else/>
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn} <img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+			<a href="{:U('Orderlist/index')}?action=2&orderid={$vo.id}">
+				<div class="mui-row">
+					<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+					<div class="mui-col-xs-7">
+						<h4>{$vo.order_goods.goods_name}</h4>
+						<!--<p>黑色</p>-->
+						<p>X {$vo.num}</p>
+					</div>
+					<div class="mui-col-xs-2">待发货</div>
+				</div>
+			</a>
+			<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right" onclick="txfh({$vo.id})">提醒发货</button></div>-->
+		</div>
+	</if>
+</volist>
+</div>
+
+
+
+<!--待收获-->
+<div <if condition="$status neq 3">style="display:none;"</if>>
+<volist name="listdata.3" id="vo">
+	<if condition="$vo.num gt 1">
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+			<a href="{:U('Orderlist/index')}?action=3&orderid={$vo.id}">
+				<div class="mui-row">
+					<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+					<div class="mui-col-xs-7">
+						<h4>{$vo.order_goods.goods_name}</h4>
+						<!--<p>黑色</p>-->
+						<p>X {$vo.num}</p>
+					</div>
+				</div>
+			</a>
+			<!--<div class="mui-col-xs-3">待收货</div>-->
+			<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+		</div>
+		<else/>
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn} <img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+				<a href="{:U('Orderlist/index')}?action=3&orderid={$vo.id}">
+				<div class="mui-row">
+
+					<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+					<div class="mui-col-xs-7">
+						<h4>{$vo.order_goods.goods_name}</h4>
+						<!--<p>黑色</p>-->
+						<p>X {$vo.num}</p>
+					</div>
+
+					<div class="mui-col-xs-2">待收货</div>
+				</div>
+				</a>
+			<div class="mui-col-xs-12"><button type="button" class="mui-pull-right" id="rec" data-id="{$vo.id}">确认收货</button></div>
+		</div>
+
+
+	</if>
+</volist>
+</div>
+
+<!--已完成-->
+<div <if condition="$status neq 4">style="display:none;"</if>>
+<volist name="listdata.4" id="vo">
+	<if condition="$vo.num gt 1">
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn}<img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+			<a href="{:U('Orderlist/index')}?action=4&orderid={$vo.id}">
+				<div class="mui-row">
+					<volist name="vo.order_goods" id="v">
+						<if condition="$vo.num lt 4">
+							<div class="mui-col-xs-3"><img src="{$v.goods_img}" class="mui-slider" /></div>
+						</if>
+					</volist>
+				</div>
+			</a>
+			<div class="mui-col-xs-3">已完成</div>
+			<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">查看物流</button></div>-->
+		</div>
+		<else/>
+		<div class="mui-row CustomerService">
+			<div class="mui-col-xs-12">订单编号：{$vo.order_sn} <img src="http://img.hena360.cn/_pic32.png" class="mui-pull-right" width="8%" onclick="del_order({$vo2.id})"/></div>
+			<a href="{:U('Orderlist/index')}?action=4&orderid={$vo.id}">
+				<div class="mui-row">
+					<div class="mui-col-xs-3"><img src="{$vo.order_goods.goods_img}" class="mui-slider" /></div>
+					<div class="mui-col-xs-7">
+						<h4>{$vo.order_goods.goods_name}</h4>
+						<!--<p>黑色</p>-->
+						<p>X {$vo.num}</p>
+					</div>
+					<div class="mui-col-xs-2">已完成</div>
+				</div>
+			</a>
+			<!--<div class="mui-col-xs-12"><button type="button" class="mui-pull-right">再次购买</button><button type="button" class="mui-pull-right">立即评论</button></div>-->
+		</div>
+	</if>
+</volist>
+</div>
+
+
+</div>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init();
+    $(function() {
+        //$(".order_list_cont>div:gt(0)").hide()
+        var hd = $(".order_list_head>div");
+        hd.click(function() {
+            $(this).addClass('order_list_head_addcolor').siblings().removeClass('order_list_head_addcolor');
+            var _index = hd.index(this);
+            console.log(hd.index(this))
+            $(".order_list_cont>div").eq(_index).show().siblings().hide()
+        })
+    })
+</script>
+<script type="text/javascript">
+    function  del_order(id){
+        $.post(
+            "{:U('Order/del_order')}",
+            {
+                order_id:id
+            },
+            function(res){
+                if(res=="1"){
+                    alert('删除成功！');
+                    history.go(0);
+                }else{
+                    alert('删除失败！');
+                }
+            }
+        )
+    }
+
+    //立即支付
+    function gopay(order_id) {
+        $.post(
+            "{:U('Order/wxNum')}",
+            {
+                order_id:order_id
+            },
+            function(res){
+                if(res){
+                    location.href = "http://"+ window.location.host +"/Home/api/wxpay/order_no/"+res['msg'];
+                }else{
+                    console.log(res['msg']);
+                }
+            }
+        )
+    }
+
+    function txfh(id){  //提醒发货
+        $.post(
+            "{:U('Order/txfh')}",
+            {
+                order_id:id
+            },
+            function(res){
+                if(res=="1"){
+                    alert('已提醒卖家！');
+                    //history.go(0);
+                }else{
+                    alert('提醒失败！');
+                }
+            }
+        )
+    }
+    $('#rec').click(function(){
+    	var id = $('#rec').attr('data-id');
+		$.ajax({
+			url:"{:U('Home/Orderlist/goodsRec')}",
+			data:{"oid":id},
+			type:"GET",
+			success:function(res) {
+				console.log(res.code);
+				if(res.code == 2000){
+					history.go(0);
+				}else{
+					alert(res.msg);
+				}
+			}
+		})
+	})
+
+</script>
+</body>
+
+</html>

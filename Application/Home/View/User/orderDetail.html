@@ -1,0 +1,511 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>合纳共享</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC_HOME__/css/layui.css" media="all">
+</head>
+<style>
+    .mui-bar-nav {
+        background: #f2f2f2;
+    }
+
+    .mui-bar > a, .mui-bar > h1 {
+        color: #000000;
+    }
+
+    .exp_box {
+        height: 736px;
+        z-index: 2;
+        position: fixed;
+        top: 44px;
+        left: 0;
+        width: 100%;
+        background: #4F4F4F;
+    }
+
+    .exp {
+        position: fixed;
+        top: 10%;
+        left: 5%;
+        width: 90%;
+        background: #ffffff;
+        z-index: 3;
+        height: 80%;
+        overflow: auto;
+    }
+
+    .exp > .mui-row > .mui-col-xs-12:first-child {
+        height: 40px;
+        line-height: 40px;
+        background: #000;
+        color: #fff;
+        text-align: center;
+    }
+
+    .exp > .mui-row > .mui-col-xs-12:nth-child(2), .exp > .mui-row > .mui-col-xs-12:nth-child(3) {
+        color: #D7D7D7;
+        padding: 0 15px;
+        margin-top: 10px;
+    }
+
+    .exp > .mui-row > .mui-col-xs-12:nth-child(2) span, .exp > .mui-row > .mui-col-xs-12:nth-child(3) span {
+        color: #000000;
+    }
+
+    .exp_cont {
+        padding: 15px;
+    }
+
+    .exp_cont h3 {
+        font-size: 14px;
+    }
+
+    .exp_cont p {
+        font-size: 12px;
+    }
+
+    .exp_cont > ul > {
+        color: #d1d1d1;
+    }
+
+    .exp_cont > ul:first-child h3, .exp_cont > ul:first-child p {
+        color: #5ac192 !important;
+    }
+
+    #exp {
+        position: absolute;
+        top: 93%;
+        right: 0;
+        width: 20%;
+        height: 34px;
+        z-index: 2;
+    }
+
+    .exc {
+        position: absolute;
+        right: 5%;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav nav_title">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">订单详情</h1>
+    <span style="line-height: 44px;float: right">首页</span>
+</header>
+<div class="mui-content">
+    <div class="mui-row order_details_head">
+        <div class="mui-col-xs-8">
+            <h3>
+                <if condition="$data.status eq 1">
+                    等待买家付款
+                    <elseif condition="$vo.status eq 2"/>
+                    等待卖家发货
+                    <elseif condition="$vo.status eq 3"/>
+                    等待买家收货
+                    <elseif condition="$vo.status eq 4"/>
+                    买家已收货
+                </if>
+            </h3>
+            <p>订单金额（含运费）：￥{$data.money}</p>
+        </div>
+        <div class="mui-col-xs-4">
+            <img src="http://img.hena360.cn/_pic49.png" width="60%" class="pull-right"/>
+        </div>
+    </div>
+    <div class="mui-row order_details_address">
+        <div class="mui-col-xs-12">
+            收货人：{$data.order_addr.name} <span class="mui-pull-right">{$data.order_addr.phone}</span>
+        </div>
+        <div class="mui-col-xs-12">
+            收货地址： {$data.order_addr.pcaaddress}|{$data.order_addr.detail}
+        </div>
+    </div>
+    <div class="mui-row order_details_list">
+        <div class="mui-col-xs-12">
+            <h4>订单详情</h4>
+        </div>
+
+        <div class="mui-row">
+            <div class="mui-col-xs-3" style="margin-top: 2%">
+                <img src="<?=C('RESOURCES_DOMAIN').$data['order_goods']['goods_img']?>" class="mui-slider"/>
+            </div>
+            <div class="mui-col-xs-6">
+                <h4 style="line-height: 28px;margin-top: 5%">{$data.order_goods.goods_name}</h4>
+                <p style="line-height: 28px;">{$data.order_goods.spec}</p>
+                <p style="line-height: 28px;">数量： X {$data.num}</p>
+            </div>
+            <div class="mui-col-xs-3">
+
+                <h4 style="margin-top: 55%">￥{$data.order_goods.price}</h4>
+            </div>
+        </div>
+
+        <div class="mui-col-xs-12">
+            <?php
+			if($data['balance'] > 0){
+            ?>
+            纳豆抵扣 <span style="#F24646;">￥{$data.balance}</span>
+            <br>
+            <?php
+			}
+			?>
+            实付款（含运费）<span class="mui-pull-right"> ￥{$data.money}</span>
+
+            <br/>
+        </div>
+    </div>
+    <div class="mui-row logistics_number">
+        <div class="mui-col-xs-12">
+            订单编号：<span>{$data.order_sn}</span>
+        </div>
+        <div class="mui-col-xs-12">
+            <if condition="$data.status eq 1">
+                下单时间：<span>{$data.created_at|date='Y/m/d H:i:s',###}</span><br>
+            </if>
+
+            <if condition="$data.status eq 2">
+                下单时间：<span>{$data.created_at|date='Y/m/d H:i:s',###}</span><br>
+                付款时间: <span>{$data.pay_at|date='Y/m/d H:i:s',###}</span><br>
+
+            </if>
+
+            <if condition="$data.status eq 3">
+                下单时间：<span>{$data.created_at|date='Y/m/d H:i:s',###}</span><br>
+                付款时间: <span>{$data.pay_at|date='Y/m/d H:i:s',###}</span><br>
+                发货时间: <span>{$data.delivery_at|date='Y/m/d H:i:s',###}</span><br>
+                快递商家: <span>{$data.order_goods.delivery_name}</span><br>
+                快递单号: <span>{$data.order_goods.delivery_sn}</span><br>
+                <button type="button" id="exp">查看物流</button>
+            </if>
+
+            <if condition="$data.status eq 4">
+                下单时间：<span>{$data.created_at|date='Y/m/d H:i:s',###}</span><br>
+                付款时间: <span>{$data.pay_at|date='Y/m/d H:i:s',###}</span><br>
+                发货时间: <span>{$data.delivery_at|date='Y/m/d H:i:s',###}</span><br>
+                收货时间: <span>{$data.receiving_at|date='Y/m/d H:i:s',###}</span><br>
+                快递商家: <span>{$data.order_goods.delivery_name}</span><br>
+                快递单号: <span>{$data.order_goods.delivery_sn}</span><br>
+
+            </if>
+        </div>
+        <div class="mui-col-xs-12">
+            订单状态：<span><if condition="$data.status eq 1">
+					待付款
+			<if condition="$data.status eq 1">
+        		<a id="close-order" class="mui-pull-right">取消订单</a>
+        	</if>
+				<elseif condition="$data.status eq 2"/>
+					待发货
+					<elseif condition="$data.status eq 3"/>
+					待收货
+					<elseif condition="$data.status eq 4"/>
+					已收货
+					<elseif condition="$data.status eq 9"/>
+					已取消
+				</if></span>
+        </div>
+    </div>
+
+
+    <!--订单状态 -->
+    <if condition="($data.status eq 1)">
+        <button class="mui-pull-right"
+                style="position: fixed;width: 100%;background: #000;bottom: 0;left: 0;height: 44px;border-radius: 0;"><a
+                style="color:#fff;    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    line-height: 30px;" href="/html/view/order/pay.html?id={$data.id}">去付款</a></button>
+        <elseif condition="$data.status eq 2"/>
+
+        <elseif condition="$data.status eq 3"/>
+        <button class="mui-pull-right" onclick="optOrder({$data.id}, {$data.status})" style="z-index: 2;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: #000;
+    color: #fff;
+    border-radius: 0;
+    position: fixed;
+    border: none;
+    left: 0;">确认收货
+        </button>
+        <elseif condition="$data.status eq 4"/>
+
+
+        <else/>
+    </if>
+    <!--<button class="mui-pull-right">取消订单</button>-->
+    <div class="exp_box"></div>
+    <div class="exp">
+        <div class="mui-row" style="padding: 0;">
+            <div class="mui-col-xs-12">物流详情 <span class="mui-pull-right exc"><img src="http://img.hena360.cn/x.png"
+                                                                                  alt="" width="60%"> </span></div>
+            <div class="mui-col-xs-12">物流公司：<span></span></div>
+            <div class="mui-col-xs-12">订单编号：<span></span></div>
+            <div class="mui-col-xs-12 exp_cont">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script src="__PUBLIC_HOME__/js/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+<script type="text/javascript">
+    //去支付
+    function optOrder(order_id, status) {
+
+        if (status == 3) {
+            $url = '/api/user/order-goods/receipt?id=' + order_id
+            //console.log($url);
+            $.post(
+                $url,
+                {
+                    id: order_id
+                },
+                function (res) {
+                    console.log(res)
+                    if (res.code == 2000) {
+                        location.href = "http://" + window.location.host + "/user/orderDetail?orderid=" + (order_id + '');
+                    } else if (res.code == 3000) {
+                        mui.alert(res.msg, '提示', '我知道了', function () {
+
+                        });
+                    }
+                }
+            )
+        }
+
+
+    }
+
+    $(function () {
+        $.ajax({
+            url: "{:U('/User/getUserId')}",
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (getUrlParam('mid')) {
+                    return;
+                }
+                if (location.href.indexOf('?') == -1) {
+                    window.history.replaceState(null, '', window.location.href + '?mid=' + data.mid);
+                } else {
+                    window.history.replaceState(null, '', window.location.href + '&mid=' + data.mid);
+                }
+            }
+        });
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    //物流
+    $(".exp").hide();
+    $(".exp_box").width($(window).height()).height($(window).height() - 84).hide()
+    $("#exp").click(function () {
+        $(".exp_box").show()
+        $(".exp").show();
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/user/order-goods/exp?id={$data.id}',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                var _html = ''
+                for (v in data.data) {
+                    _html += ' <ul class="layui-timeline"><li class="layui-timeline-item"><i class="layui-icon layui-timeline-axis"></i><div class="layui-timeline-content layui-text"><h3 class="layui-timeline-title">' + data.data[v].remark + '</h3><p>' + data.data[v].datetime + '</p></div></li></ul>';
+                }
+                $('.exp_cont').html(_html)
+            }
+        })
+    })
+    $(".exp_box").click(function () {
+        $(".exp_box").hide()
+        $(".exp").hide();
+    })
+    $(".exc").click(function () {
+        $(".exp_box").hide()
+        $(".exp").hide();
+    })
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/user/order-goods/view?id={$data.id}',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            $('.exp>.mui-row>.mui-col-xs-12:nth-child(2)>span').text(data.data.delivery_name)
+            $('.exp>.mui-row>.mui-col-xs-12:nth-child(3)>span').text(data.data.delivery_sn)
+        }
+    })
+    $(".nav_title>span").click(function () {
+        window.location.href = "{:U('/index')}";
+    })
+
+    // 取消订单
+    var info = document.getElementById("close-order");
+    document.getElementById("close-order").addEventListener('tap', function () {
+        mui.confirm('你确定取消订单吗？', function (e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url: 'http://' + window.location.host + '/api/user/order-goods/close?id={$data.id}',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 2000) {
+                            window.location.reload();
+                        } else {
+                            mui.alert(data.message, '提示', '我知道了', function () {
+
+                            });
+                        }
+                    }
+                });
+            } else {
+                info.innerText = '取消订单'
+            }
+        })
+    });
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+
+</html>

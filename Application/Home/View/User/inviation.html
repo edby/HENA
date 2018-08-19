@@ -1,0 +1,362 @@
+<!doctype html>
+<html style="height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <title>推广二维码</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="/Public/Home/css/mui.css" rel="stylesheet"/>
+    <!--	<link rel="stylesheet" type="text/css" href="css/swiper.min.css" />-->
+    <style type="text/css">
+
+        /*推广二维码*/
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .mui-bar > a, .mui-bar > h1 {
+            color: #000000;
+        }
+
+        .genrealize {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 0px;
+            background-size: 100% 100%;
+            /*background-position: bottom;*/
+        }
+
+        .genrealize #down_button {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+
+        }
+
+        #down_button .genrealize_btn {
+            width: 100%;
+            height: 100%;
+            padding: 14px 0px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .genrealize .genrealize_mid {
+            width: 70%;
+            height: 70%;
+            margin: 20px auto;
+            /*background: url(http://img.hena360.cn/_pic500.png) no-repeat;*/
+            background-size: 100% 100%;
+            text-align: center;
+            padding-top: 4px;
+            position: relative;
+
+        }
+
+        canvas {
+            display: none;
+            /*position: absolute;*/
+            /*z-index: 25;*/
+            /*top: 10.6%;*/
+            /*left: 17.6%;*/
+            background-size: 100% 100%;
+        }
+
+        .genrealize .genrealize_mid .genrealize_bot {
+            position: absolute;
+            bottom: 20%;
+            left: 35%;
+
+            margin: 0px auto;
+            /*  margin-top:100px;*/
+            width: 32%;
+            height: 20%;
+            border: 1px solid #ccc;
+            display: none;
+        }
+
+        .genrealize .genrealize_mid .genrealize_bot .gen-name {
+            width: 25%;
+            height: 25%;
+            position: absolute;
+            top: 52%;
+            left: 52%;
+            margin-left: -15%;
+            margin-top: -15%;
+
+            border: 1px solid #ccc;
+        }
+
+        .gen_bottom {
+            width: 100%;
+            height: 20%;
+            padding-left: 22px;
+            display: inline;
+            white-space: nowrap;
+            overflow-x: scroll;
+            float: left;
+            overflow-y: hidden
+        }
+
+        .gen_bottom li {
+            display: inline-block;
+            width: 26%;
+            height: 73%;
+            margin-right: 6px;
+        }
+
+        .gen_bottom li img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*------*/
+    </style>
+</head>
+<body style="height:100%;">
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">推广二维码</h1>
+</header>
+<div class="mui-content genrealize">
+    <div class="genrealize_mid">
+
+        <div class="genrealize_bot">
+            <div class="gen-name"></div>
+            <!--<img id="QrCode" src="" alt=""  style="width:100%;height:100%"/>-->
+            <img src="http://img.hena360.cn/inviation_bg1.png" alt="" width="100%"></div>
+        <div class="gen-name"></div>
+        <!--<img id="QrCode" src="" alt=""  style="width:100%;height:100%"/>-->
+        <img src="http://img.hena360.cn/inviation_bg1.png" alt="" width="100%" id="skin"
+             style="position: absolute;top: 0;left: 0;height: 100%;width: 100%">
+        <!--<img src="" alt="" id="skin" style="    position: absolute;-->
+        <!--width: 100%;-->
+        <!--height: 100%;-->
+        <!--top: 0;-->
+        <!--left: 0;">-->
+    </div>
+    <div class="new-image" style="display: none;"></div>
+    <ul class="gen_bottom" id="parent">
+
+    </ul>
+    <script src="/Public/Home/js/mui.min.js"></script>
+    <script src="/Public/Home/js/jquery-3.1.1.min.js"></script>
+    <script src="/Public/Home/js/html2canvas.js"></script>
+    <script src="/Public/Home/js/configure.js"></script>
+    <script type="text/javascript">
+        mui.init()
+    </script>
+    <!--分享-->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="/Public/Home/js/wxShare.js"></script>
+    <!--分享-->
+    <script>
+        $(function () {
+            $('body').on('click', "#parent>li", function () {
+                status = $("#parent").data('status');
+                if (status == 1) {
+                    mui.alert('二维码生成中！');
+                    return;
+                }
+                $("#parent").data('status', 1);
+                ft = $(this).children("img").attr("src");
+                id = $(this).children("img").data("id");
+                //		   	  	console.log(ft);
+                $(".genrealize_bot").hide();
+                $('.genrealize_mid').css('background', ' url(' + ft + ') no-repeat ');
+                $('.genrealize_mid').css('background-size', ' 100% 100%');
+                $.ajax({
+                    type: 'get',
+                    url: "/api/user/qrcode/build-poster?id=" + id,
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#parent").data('status', 0);
+                        console.log(data)
+                        if (data.code == 2000) {
+                            $('#skin').attr('src', data.data.url)
+                        } else {
+                            mui.alert(data.msg, '提示', '我知道了', function () {
+
+                            });
+                        }
+                    },
+                    error: function (data) {
+                    }
+                });
+            });
+        })
+
+        // 获取二维码
+        $.ajax({
+            type: 'get',
+            url: "/api/user/qrcode/qrcode",
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data.code == 2000) {
+                    host = 'http://' + window.location.host;
+                    $('#QrCode').attr('src', host + data.url)
+                } else {
+                    mui.alert(data.message, '提示', '我知道了', function () {
+
+                    });
+                }
+            },
+            error: function (data) {
+            }
+        });
+
+        //推广二维码海报
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/user/collection/code',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var htmlparent = "";
+                for (var i = 0; i < data.data.length; i++) {
+                    htmlparent += '<li>'
+                        + '<img src="' + data.data[i].img_src + '" data-id="' + data.data[i].id + '" alt="" />'
+                        + '</li>'
+                }
+                $("#parent").html(htmlparent);
+            }
+
+        })
+
+
+    </script>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+</html>

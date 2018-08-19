@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">订单详情</h1>
+</header>
+<div class="mui-content">
+	<div class="mui-row order_details_head">
+		<div class="mui-col-xs-8">
+			<h3>买家待收货</h3>
+			<p>订单金额（含运费）：￥：{$data.money}</p>
+		</div>
+		<div class="mui-col-xs-4">
+			<img src="http://img.hena360.cn/_pic47.png" width="60%" class="pull-right"/>
+		</div>
+	</div>
+	<div class="mui-row order_details_address">
+		<div class="mui-col-xs-12">
+			收货人：{$data.order_addr.name}  <span class="mui-pull-right">{$data.order_addr.phone}</span>
+		</div>
+		<div class="mui-col-xs-12">
+			收货地址：  {$data.order_addr.pcaaddress}|{$data.order_addr.detail}
+		</div>
+	</div>
+	<div class="mui-row order_details_list">
+		<div class="mui-col-xs-12">
+			<h4>订单详情</h4>
+		</div>
+
+		<volist name="data.order_goods" id="v">
+			<div class="mui-row">
+				<div class="mui-col-xs-3">
+					<img src="{$v.goods_img}" class="mui-slider"/>
+				</div>
+				<div class="mui-col-xs-6">
+					<h4>{$v.goods_name}</h4>
+					<p></p>
+				</div>
+				<div class="mui-col-xs-3">
+					<p></p>
+					<h4>￥：{$v.price}</h4>
+				</div>
+			</div>
+		</volist>
+
+		<div class="mui-col-xs-12">
+			实付款（含运费）<span class="mui-pull-right"> ￥：{$data.money}</span>
+			<br/>
+			<button type="button" class="">退款</button>
+		</div>
+	</div>
+	<div class="mui-row logistics_number">
+		<div class="mui-col-xs-12">
+			订单编号：<span>{$data.order_sn}</span>
+		</div>
+		<div class="mui-col-xs-12">
+			下单时间：<span>{$data.created_at|date='Y/m/d H:i:s',###}</span>
+		</div>
+		<a class="mui-pull-right" style="background: #F24646;color: #FFFFFF;border: 1px solid #F24646;" href="{:U('Orderlist/goodsRec')}?oid={$data.id}">确认收货</a>
+		<!--<button class="mui-pull-right">查看物流</button>-->
+	</div>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+
+</body>
+
+</html>

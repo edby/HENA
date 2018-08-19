@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <title>合纳共享</title>
+    <style>
+        .mui-row {
+            font-size: 14px;
+            border-bottom: 10px solid #f2f2f2;
+        }
+
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .mui-bar > a, .mui-bar > h1 {
+            color: #000000;
+        }
+
+        .details_tab > a {
+            width: 30% !important;
+        }
+
+        .details_tab > span {
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            z-index: 2;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .details_tab > span {
+            background: #F2F2F2;
+        }
+
+        .details_tab > span:last-child {
+            background: #000000;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">纳豆明细</h1>
+</header>
+<div class="mui-content">
+
+
+</div>
+<nav class="mui-bar mui-bar-tab details_tab" id="getMore">
+    <span>
+        <span class="mui-tab-label">获取更多</span>
+    </span>
+</nav>
+</body>
+<script src="__PUBLIC_HOME__/js/mui.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    mui.init();
+    $(document).ready(function () {
+        page = 0;
+        $.ajax({
+            url: "{:U('User/getbalanceDetailList')}?page=" + page,
+            type: "GET",
+            success: function (res) {
+                console.log(res)
+
+                if (res.length > 0) {
+                    var html = '';
+                    $.each(res, function (k, v) {
+                        html += '<div class="mui-row"><div class="mui-col-xs-12" style="padding: 2%;">';
+                        /* if(v.type == 0){ x
+                             html += '获得纳豆：';
+                         } else if(v.type == 1){
+                             html += 's释放纳豆：';
+                         }*/
+                        if (v.type == 0) {
+                            if (v.b_type == 2) {
+                                html = html + '福利库获得纳豆:+';
+                            }
+                            if (v.b_type == 3) {
+                                html = html + res[k].title + '释放失败退回:+';
+                            }
+                            if (v.b_type == 5) {
+                                html = html + '订单取消纳豆回退:+';
+                            }
+                            if (v.b_type == 8) {
+                                html = html + '奖励金兑换纳豆:+';
+                            }
+                            if (v.b_type == 4) {
+                                html = html + res[k].title + ':+';
+                            }
+                            if (v.b_type == 6) {
+                                html = html + '退款/退货返还纳豆' + ':+';
+                            }
+                        }
+                        if (v.type == 1) {
+                            if (v.b_type == 3) {
+                                html = html + res[k] + '释放纳豆:-';
+                            }
+                            if (v.b_type == 4) {
+                                html = html + res[k].title + ':-';
+                            }
+                            if (v.b_type == 5) {
+                                html = html + '购物抵扣纳豆:-';
+                            }
+                            if (v.b_type == 8) {
+                                html = html + res[k] + '奖金兑换纳豆:-';
+                            }
+                        }
+                        html += v.money + '<span data-id="' + v.id + '">' + '&nbsp;&nbsp;&nbsp;&nbsp;';
+                        html = html + '</span><p style="font-size: 12px">';
+                        var newDate = new Date(parseInt(v.created_at) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+                        html = html + newDate + '</p></div></div>';
+                    })
+                    html += '';
+                    $('.mui-content').append(html);
+                    page++;
+                } else {
+                    var html = '<img src="__PUBLIC_HOME__/images/no_data_img.png" style="display: block;margin: 40% auto;width: 25%;">';
+                    $('.mui-content').append(html);
+                }
+            }
+        })
+
+
+    });
+    $('#getMore').click(function () {
+        $.ajax({
+            url: "{:U('User/getbalanceDetailList')}?page=" + page,
+            type: "GET",
+            success: function (res) {
+                console.log(res)
+                if (res.length > 0) {
+                    var html = '';
+                    $.each(res, function (k, v) {
+                        html += '<div class="mui-row"><div class="mui-col-xs-12" style="padding: 2%;">';
+                        if (v.b_type == 1) {
+                            html += '获得纳豆：';
+                        } else if (v.b_type == 2) {
+                            html += '获得纳豆：';
+                        } else if (v.b_type == 3) {
+                            html += '释放纳豆：';
+                        }
+
+                        if (v.type == 0) {
+                            if (v.b_type == 2) {
+                                html = html + '福利库获得纳豆:+';
+                            }
+                            if (v.b_type == 3) {
+                                html = html + res[k].title + '释放失败退回:+';
+                            }
+                            if (v.b_type == 5) {
+                                html = html + '订单取消纳豆回退:+';
+                            }
+                            if (v.b_type == 8) {
+                                html = html + '奖励金兑换纳豆:+';
+                            }
+                            if (v.b_type == 4) {
+                                html = html + res[k].title + ':+';
+                            }
+                        }
+                        if (v.type == 1) {
+                            if (v.b_type == 3) {
+                                html = html + res[k] + '释放纳豆:-';
+                            }
+                            if (v.b_type == 4) {
+                                html = html + res[k].title + ':-';
+                            }
+                            if (v.b_type == 5) {
+                                html = html + '购物抵扣纳豆:-';
+                            }
+                            if (v.b_type == 8) {
+                                html = html + res[k] + '奖金兑换纳豆:-';
+                            }
+                        }
+                        html += v.money + '<span data-id="' + v.id + '">' + '&nbsp;&nbsp;&nbsp;&nbsp;';
+                        html = html + '</span><p style="font-size: 12px">';
+                        var newDate = new Date(parseInt(v.created_at) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+                        html = html + newDate + '</p></div></div>';
+
+                    })
+                    html += '';
+                    $('.mui-content').append(html);
+                    page++;
+                } else {
+                    mui.toast('没有数据了', {duration: 'long', type: 'div'});
+                }
+            }
+        })
+    })
+
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

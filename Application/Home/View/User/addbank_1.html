@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>绑定支付宝</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link href="__PUBLIC_HOME__/css/style.css" rel="stylesheet"/>
+    <style>
+        .mui-content {
+            /*background: #EFEFF4;*/
+        }
+
+        .box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 2;
+
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="mui-content addBankCard">
+    <form class="mui-input-group">
+        <div class="mui-input-row">
+            <label>姓名</label>
+            <input type="text" class="mui-input-clear" id="ali_realname" placeholder="请输入姓名">
+        </div>
+        <div class="mui-input-row">
+            <label>支付宝账号</label>
+            <input type="text" class="mui-input-clear" id="ali_account" placeholder="请输入支付宝账号">
+        </div>
+
+    </form>
+    <p>注意：请绑定本人支付宝！</p>
+    <input type="button" class="" id="addbank" placeholder="确认添加" value="确认" type="button">
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/configure.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init();
+    //支付宝信息回填
+    $.ajax({
+        url: "http://" + window.location.host + '/api/user/aliinfo/alipay-info',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            if (data.code == 2000) {
+                $('#ali_realname').val(data.data.ali_realname)
+                $('#ali_account').val(data.data.ali_account)
+            }
+        },
+        error: function () {
+            mui.alert('请求失败，请稍后重试！')
+        }
+    })
+    //绑定支付宝
+    $("#addbank").click(function () {
+        var ali_realname = $("#ali_realname").val();//姓名
+
+        var ali_account = $("#ali_account").val();//账号
+        if (ali_realname == '') {
+            mui.alert("请输入持卡人姓名");
+            return
+        } else if (!/^[\u4E00-\u9FA5]{1,6}$/.test(ali_realname)) {
+            mui.alert("请输入2-6位中文姓名");
+            return
+        }
+        if (ali_account == '') {
+            mui.alert("请输入支付宝账号！");
+            return
+        }
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/user/aliinfo/create-info',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                ali_realname: ali_realname,
+                ali_account: ali_account
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.code == 2000) {
+                    window.location.href = "{:U('/User/withdraw_1')}"
+                }
+            },
+            error: function () {
+                mui.alert('请求失败，请稍后重试！')
+            }
+        })
+    })
+
+</script>
+</body>
+
+</html>

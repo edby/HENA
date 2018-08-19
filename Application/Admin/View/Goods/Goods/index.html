@@ -1,0 +1,350 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<title>建材列表</title>
+	<link rel="stylesheet" href="__PUBLIC_ADMIN__/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body class="pos-r">
+
+<div>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 产品列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+				<!--<a class="btn btn-primary radius" onclick="product_add('添加产品','product-add.html')" href="javascript:;">-->
+				<!--<i class="Hui-iconfont">&#xe600;</i> 添加产品</a>-->
+				<!--<a class="btn btn-primary radius" onclick="product_add('热推产品','getqchot.html')" href="javascript:;">-->
+				<!--<i class="Hui-iconfont">&#xe600;</i> 热推产品</a>-->
+				<!--<a class="btn btn-primary radius" onclick="product_add('产品详情图片上传','product-xjpic.html')" href="javascript:;">-->
+				<!--<i class="Hui-iconfont">&#xe600;</i> 上传产品图片</a>-->
+			</span>
+			<span class="l">
+				<a href="{:U('Admin/Goods/Goods/add')}"  class="btn radius" style="background: #3c9be1">添加商品</a>
+			</span>
+		</div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-bg table-hover table-sort table-striped">
+				<thead>
+				<tr class="text-c">
+					<th width="40"><input name="checkbox" type="checkbox" value=""></th>
+					<th width="70">商品名称</th>
+					<th width="80">商品价格</th>
+					<th width="80">商品类型</th>
+					<th width="100">库存</th>
+					<th width="200">销量</th>
+					<th width="150">活动类型</th>
+					<th width="150">商品详情</th>
+					<th width="100">状态</th>
+					<th width="200">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<volist name="list" id="vo">
+					<tr class="text-c va-m">
+						<td><input name="checkbox" type="checkbox" value="{$vo.id}"></td>
+						<td>{$vo.goods_name}</td>
+						<td>{$vo.goods_price}(元)</td>
+						<td>{$vo.category.cat_title}</td>
+						<td width="100">{$vo.goods_num}({$vo.goods_unit})</td>
+						<td width="100">{$vo.sale_num}({$vo.goods_unit})</td>
+						<if condition="$vo.acttype eq 1">
+							<td>520</td>
+							<elseif condition="$vo.acttype eq 2"/>
+							<td>0元购</td>
+							<elseif condition="$vo.acttype eq 3"/>
+							<td>普通商品</td>
+							<elseif condition="$vo.acttype eq 4"/>
+								<td>爆品库</td>
+							<elseif condition="$vo.acttype eq 5"/>
+								<td>共享库</td>
+							</else>未参与活动
+							</if>
+						<td width="200" class = "getgoodsinfo" onclick="getgoodsinfo({$vo.id},{$vo.acttype})" style="cursor: pointer">查看商品详情</td>
+						<if condition="$vo.status eq 0">
+							<td width="100" style="cursor:pointer"><a style="text-decoration:none;color: red;"  href="{:U('Admin/Goods/Goods/upgoods')}?id={$vo.id}&status=1" >下架</a></td>
+							<elseif condition="$vo.status eq 1"/>
+							<td width="100" style="cursor:pointer"><a style="text-decoration:none"  href="{:U('Admin/Goods/Goods/upgoods')}?id={$vo.id}&status=0" >上架</a></td>
+							</else>
+						</if>
+						<td class="td-manage">
+							<a style="text-decoration:none" class="ml-5"  href="{:U('Admin/Goods/Goods/edit')}?id={$vo.id}" title="编辑">
+								<i class="Hui-iconfont">&#xe6df;</i></a>
+							<a onclick="if(confirm('确认删除吗？')==true){ return true; }else{ return false;} "  href="{:U('Admin/Goods/Goods/del')}?id={$vo.id}" title="删除">
+								<i class="Hui-iconfont">&#xe6e2;</i>
+							</a>
+							<a style="text-decoration:none" class="ml-5"  href="{:U('Admin/Goods/GoodsSpec/add')}?id={$vo.id}" title="添加规格">
+								<i class="Hui-iconfont">&#xe61f;</i>
+							</a>
+
+							<a style="text-decoration:none" class="ml-5"  href="{:U('Admin/Goods/Goods/activity')}?id={$vo.id}&acttype={$vo.acttype}" title="设置活动">
+								<i class="Hui-iconfont">&#xe61d;</i>
+							</a>
+
+							<a style="text-decoration:none" class="ml-5" id="Huifold" class="Huifold" title="商品规格" data-id="0">
+								<i class="Hui-iconfont">&#xe6d5;</i>
+							</a>
+						</td>
+							
+					</tr>
+					<tr class="HuifoldInfo" style="display:none">
+						<td colspan="8">
+							<!-- 商品规格 -->
+							
+							<b>规格:</b>
+							
+							<?php
+								$data = D('GoodsSpec')->getGoodsSpec($vo['id']);
+								foreach($data as $key => $value) {
+									$str = "";
+							
+									$str .=$value['spec']."：";
+							
+									$strs = '';
+									foreach($value['attr'] as $k => $val) {
+										
+										$strs .= !empty($strs) ? '，'.$val : $val;
+										
+									}
+								?>
+									{$str}{$strs}<b>；</b>
+								<?php
+
+								}
+							?>
+						</td>
+					</tr>
+
+				</volist>
+				</tbody>
+			</table>
+			
+		</div>
+
+	</div>
+	<div class="pagination">
+		{$show}
+	</div>
+	<!--<div>-->
+		<!--<div class = "detailinfo" style="width:40%;position:relative;left: 30%;top:-120px;z-index: 10000; background:grey;display:none">-->
+			<!--<p>商品名称：<span class = "goods_name" ></span></p>-->
+			<!--<p>商品标题：<span class = "f_title"></span></p>-->
+			<!--<p>商品价格：<span class = "goods_price"></span></p>-->
+			<!--<p>商品原价：<span class = "original_price"></span></p>-->
+			<!--<p>商品运费：<span class = "express_fee"></span></p>-->
+			<!--<p>商品图片：<span><img src="" alt="" class = 'goods_logo' style="width: 100px;height: 100px;"></span></p>-->
+			<!--<p>商品库存：<span class = "goods_num"></span></p>-->
+			<!--<p>商品销量：<span class = "sale_num"></span></p>-->
+			<!--<p>商品状态：<span class = "status"></span></p>-->
+			<!--<p>商品单位：<span class = "goods_unit"></span></p>-->
+			<!--<p>添加时间：<span class = "create_time"></span></p>-->
+			<!--<p>描述信息：<span class = "description"></span></p>-->
+			<!--<p style="width:20px;height:20px;position: absolute;right: 0;top: 0;transform: rotate(45deg);font-size: 30px;cursor: pointer" onclick="hideinfo()">+</p>-->
+		<!--</div>-->
+	<!--</div>-->
+	<div id="modal-add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-dialog">
+			<div class="modal-content radius">
+				<div class="modal-header">
+					<h3 class="modal-title">商品详情信息</h3>
+					<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品名称：</span>
+						<span class = "goods_name" ></span>
+					</p>
+					<p>
+						<span class="col-xs-4" >商品标题：</span>
+						<span class = "f_title"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品价格：</span>
+						<span class = "goods_price"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品原价：</span>
+						<span class = "original_price"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品运费：</span>
+						<span class = "express_fee"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品图片：</span>
+						<span><img src="" alt=""></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品库存：</span>
+						<span class = "goods_num"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4" >商品销量：</span>
+						<span class = "sale_num"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品状态：</span>
+						<span class = "status"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">商品单位：</span>
+						<span class = "goods_unit"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">添加时间：</span>
+						<span class = "create_time"></span>
+					</p>
+				</div>
+				<div class=" bs-example bs-example-form" >
+					<p>
+						<span class="col-xs-4">描述信息：</span>
+						<span class = "description"></span>
+					</p>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-primary btn-confirm">确定</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+	
+jQuery.Huifold1 = function(obj, speed, obj_type, Event){
+
+	console.log($(obj));
+	
+	$(obj).bind(Event,function(){
+
+
+		if($(this).data('id') == 1)
+		{
+			$(this).html('<i class="Hui-iconfont">&#xe6d5;</i>');
+			$(this).data('id', 0)
+			$(this).parent().parent().next('.HuifoldInfo').slideUp(speed);
+		} else {
+			$(this).html('<i class="Hui-iconfont">&#xe6d6;</i>');
+			$(this).data('id', 1)
+			$(this).parent().parent().next('.HuifoldInfo').slideDown(speed)
+
+		}
+	})}
+
+	$(function(){
+		$.Huifold1("#Huifold ", "fast",2,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
+	});
+</script>
+
+<script>
+
+function getgoodsinfo(id,acttype) {
+    $.ajax({
+        type: 'POST',
+        url: "{:U('Admin/Goods/Goods/getgoodsinfo')}",
+        data : {id:id,acttype:acttype},
+        dataType: 'json',
+        success: function(data){
+            if(data.status ==1){
+                console.log(data);
+                var status = '';
+                var desc = '';
+                var unit = data.data['goods_unit'];
+                $('#modal-add').modal("show");
+				$(".goods_name").html(data.data.goods_name);
+                $(".f_title").html(data.data['f_title']);
+                $(".goods_price").html('￥'+data.data['goods_price']);
+                $(".original_price").html('￥'+data.data['original_price']);
+                $(".express_fee").html('￥'+data.data['express_fee']);
+                $(".goods_logo").attr("src", data.data['goods_logo']);
+                $(".goods_num").html(data.data['goods_num']+unit);
+                $(".sale_num").html(data.data['sale_num']+unit);
+                if(data.data['status'] == 0){
+                    status = '该商品已下架！'
+				}else if(data['status'] == 1){
+                    status = '该商品已上架！'
+				}else{
+                    status = '该商品已已删除！'
+				}
+                $(".status").html(status);
+
+                $(".goods_unit").html(data.data['goods_unit']);
+                $(".create_time").html(data.data['create_time']);
+                if(data.data['return_cash'] == null || data.data['return_cash'] == ''){
+                    desc = data.data['activity']['description'];
+				}else{
+                    desc = data.data['return_cash']['description'];
+				}
+                $(".description").html(desc);
+
+            }
+        },
+        error:function(data) {
+
+        }
+    });
+
+}
+
+function hideinfo() {
+    $('.detailinfo').css('display','none');
+}
+
+
+</script>
+
+</body>
+</html>

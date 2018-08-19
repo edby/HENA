@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>商品分类</title>
+    <script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+    <style>
+        .cate_list {
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        .cate_list span {
+            text-align: center;
+            padding: 0px 15px;
+            line-height: 44px;
+            height: 44px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .inner-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cate_list_color {
+            color: #c0a369;
+            border-bottom: 1px solid #c0a369;
+        }
+
+    </style>
+<body>
+<div class="mui-content">
+    <div class="cate_list">
+    </div>
+    <div class="cate_cont">
+        <div class="mui-row i_list" style="margin-top: 1%">
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    $(function () {
+        //获取分类列表
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/goods/category/last-category',
+            type: 'get',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var _html = '';
+                if (data.code == 2000) {
+                    for (v in data.data) {
+                        _html += '<span data-id="' + v + '">' + data.data[v] + '</span>'
+                    }
+                    $('.cate_list').html(_html)
+                    $('.cate_list>span:first-child').addClass('cate_list_color')
+                }
+            }
+        })
+        //获取产品
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/goods/category/goods-by-category',
+            type: 'get',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                var _html = '';
+                for (v in data.data.items) {
+                    console.log(data.data.items)
+                    var goods_id = data.data.items[v].id
+                    _html += '<div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id=' + goods_id + '"> <img src="http://' + window.location.host + '' + data.data.items[v].goods_logo + '" class="mui-slider"/><h4>' + data.data.items[v].goods_name + '</h4><span style="color: #F04646">￥ ' + data.data.items[v].goods_price + '</span><span class="mui-pull-right" style="background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span><span></span></a> </div>'
+                }
+                $('.cate_cont>div').html(_html)
+
+            }
+
+        })
+        //点击切换
+        $(".cate_list>span").click(function () {
+            console.log($(this).data('id'));
+            $('.cate_list>span').removeClass('cate_list_color');
+            $(this).addClass('cate_list_color').siblings().removeClass('cate_list_color')
+            var _id = $(this).data('id');
+            $.ajax({
+                url: 'http://' + window.location.host + '/api/goods/category/goods-by-category?id=' + _id,
+                type: 'get',
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    var _html = '';
+                    for (v in data.data.items) {
+                        console.log(data.data.items)
+                        var goods_id = data.data.items[v].id
+                        _html += '<div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id=' + goods_id + '"> <img src="http://' + window.location.host + '' + data.data.items[v].goods_logo + '" class="mui-slider"/><h4>' + data.data.items[v].goods_name + '</h4><span style="color: #F04646">￥ ' + data.data.items[v].goods_price + '</span><span class="mui-pull-right" style="background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span><span></span></a> </div>'
+                    }
+
+                    $('.cate_cont>div').html(_html)
+                    $(".i_list>.mui-col-xs-6:even").css({
+                        'margin-right': '3%'
+                    });
+                }
+            })
+        })
+        $(".i_list>.mui-col-xs-6:even").css({
+            'margin-right': '3%'
+        });
+    })
+
+</script>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems','onMenuShareQQ','onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

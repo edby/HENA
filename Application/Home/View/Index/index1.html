@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>HENA</title>
+    <script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/swiper.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+
+    <style>
+        .notice_cont {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 998;
+            overflow: scroll;
+            overflow-y: hidden
+        }
+
+        .notice {
+            position: fixed;
+            top: 8%;
+            left: 5%;
+            z-index: 999;
+            width: 90%;
+            height: 80%;
+
+        }
+
+        .notice .mui-col-xs-12:first-child {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background: none;
+        }
+
+        .notice .mui-col-xs-12:last-child {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            /*padding: 0 15px;*/
+        }
+
+        .notice .mui-col-xs-12:last-child p {
+            margin-bottom: 13px;
+        }
+
+        .notice .mui-col-xs-12:last-child {
+            /*background: #ffffff;*/
+            overflow: scroll;
+            height: 100%;
+        }
+
+        .notice p {
+            color: #706ee0;
+        }
+
+        .notice p:first-child {
+            margin-top: 13px;
+        }
+
+        .notice > img {
+            position: absolute;
+            top: 1%;
+            right: 7%;
+            z-index: 9;
+            width: 5%;
+        }
+
+        .notice div .notice-img {
+            border-top-left-radius: 13px;
+            border-top-right-radius: 13px;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        #notice-url {
+            display: block;
+            height: 100%;
+        }
+        .notice>.mui-col-xs-12>a {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="mui-content">
+    <div class="Carousel">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!--<div class="swiper-slide"><img src="http://img.hena360.cn/banner5.jpg" alt="" class="mui-slider"></div>-->
+            </div>
+            <!--<div class="swiper-pagination"></div>-->
+        </div>
+    </div>
+    <!--轮播-->
+
+    <div class="mui-row i_title">
+        <div class="mui-col-xs-12">
+
+            <h4><a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/20180506 (7).png"
+                                                                            alt="">520创客大礼包
+            </a></h4>
+        </div>
+    </div>
+    <!--标题-->
+    <!--<div class="Carouse2">-->
+    <!--<div class="swiper-container">-->
+    <!--<div class="swiper-wrapper">-->
+
+    <!--<volist name='list1' id="v">-->
+    <!--<div class="swiper-slide"><a href="{:U('Goods/f_order_details')}?id={$v.id}"><img src="{$v.goods_logo}" alt="{$v.goodsname}"-->
+    <!--class="mui-slider">-->
+    <!--<p>{$v.goodsname}sssssssss</p></a></div>-->
+    <!--</volist>-->
+    <!---->
+    <!--&lt;!&ndash; <div class="swiper-slide"><a href=""><img src="http://img.hena360.cn/520 (2).jpg" alt=""-->
+    <!--class="mui-slider">-->
+    <!--<p>002</p></a></div> &ndash;&gt;-->
+    <!--</div>-->
+    <!--<div class="swiper-button-next"></div>-->
+    <!--<div class="swiper-button-prev"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="Carouse2">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}">
+                        <img src="http://img.hena360.cn/_5201.jpg"
+                             alt="" class="mui-slider">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/_5202.jpg"
+                                                                                alt="" class="mui-slider">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/_5203.jpg"
+                                                                                alt="" class="mui-slider">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/_5204.jpg"
+                                                                                alt="" class="mui-slider">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/_5205.jpg"
+                                                                                alt="" class="mui-slider">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="{:U('Goods/f_order_details')}?id={$list1.id}"><img src="http://img.hena360.cn/_5206.jpg"
+                                                                                alt="" class="mui-slider">
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+    <!--61儿童节-->
+    <!--<img src="http://img.hena360.cn/61zt.png" alt="" class="mui-slider img" style="background: #FFD052">-->
+    <!--<div class="mui-row i_list _i_list" style="background: #FFD052;padding-top: 4%">-->
+    <!--</div>-->
+    <div class="mui-row i_title">
+        <div class="mui-col-xs-12">
+            <h4><a><img src="http://img.hena360.cn/20180506 (7).png" alt="">合纳创客福利库</a>
+                <small class="mui-pull-right welfare" style="line-height: 200%">查看更多</small>
+            </h4>
+        </div>
+    </div>
+    <!--标题-->
+    <div class="mui-row i_list">
+        <volist name='list2' id="v">
+            <div class="mui-col-xs-12">
+                <a href="{:U('Goods/details')}?id={$v.id}">
+                    <div class="mui-row">
+                        <div class="mui-col-xs-4">
+                            <img src="{$v.goods_logo}" class="mui-slider"/>
+                        </div>
+                        <div class="mui-col-xs-8" style="padding-left: 5%">
+                            <h4>{$v.goods_name}</h4>
+                            <p><span>{$v.return_cash.start_time|date="m.d",###}-{$v.return_cash.end_time|date="m.d ",###}</span><span>限时抢购</span>
+                            </p>
+                            <span><small>￥</small> {$v.goods_price}</span> <span class="mui-pull-right">抢购</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </volist>
+    </div>
+    <div class="mui-row i_title">
+        <div class="mui-col-xs-12">
+            <h4><a><img src="http://img.hena360.cn/20180506 (7).png" alt="">合纳超炫共享库</a>
+                <small class="mui-pull-right Share" style="line-height: 200%">查看更多</small>
+            </h4>
+        </div>
+    </div>
+    <?php
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    if(strpos($userAgent, 'MicroMessenger') == false && strpos($userAgent, 'Windows Phone') == false){ // 非微信用户
+
+       $url = "http://tao.hena360.com";
+    } else {
+       $url = U('index/tb');
+    }
+    ?>
+    <a href="http://jd.hena360.com" style="    display: block;
+    background: #f2f2f2"><img src="http://img.hena360.cn/JD1.jpg" alt="" class="mui-slider"
+                              style="padding: 0 10px 5px 10px;"></a>
+    <!--共享库开始-->
+
+    <div class="mui-row i_list share_goods">
+
+    </div>
+    <!--共享库结束-->
+    <!--标题-->
+    <div class="mui-row i_title">
+        <div class="mui-col-xs-12">
+            <h4><a><img src="http://img.hena360.cn/20180506 (7).png" alt="">合纳超级爆品库</a>
+                <small class="mui-pull-right Detonating" style="line-height: 200%">查看更多</small>
+            </h4>
+        </div>
+    </div>
+    <!--标题-->
+    <div class="mui-row i_list ">
+        <volist name='list3' id="v">
+            <div class="mui-col-xs-6">
+                <a href="{:U('Goods/details')}?id={$v.id}"> <img src="{$v.goods_logo}" class="mui-slider"/>
+                    <h4>{$v.goods_name}</h4>
+                    <span style="color: #F04646">￥ {$v.goods_price}</span>
+                    <span class="mui-pull-right"
+                          style=" background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span>
+                    <span>
+                        <img src="http://img.hena360.cn/520 (1).png" alt="">
+                    </span>
+                </a>
+            </div>
+        </volist>
+    </div>
+    <if condition="$ag neq 1">
+        <style>
+            /*body {*/
+                /*overflow: scroll;*/
+                /*overflow-y: hidden;*/
+            /*}*/
+        </style>
+        <div class="notice_cont_box">
+        </div>
+        <!-- 公告栏-->
+        <div class="mui-row notice" id="notice">
+            <!--<img src="http://img.hena360.cn/x.png" alt="">-->
+
+            <!--<div class="mui-col-xs-12" id="notice_html" style="border-top-left-radius:5px;border-top-right-radius: 5px;">-->
+            <!--</div>-->
+            <!--<p>亲爱的家人们：</p>-->
+            <!--<div class="mui-col-xs-12">-->
+            <!--<p>大家好！</p>-->
+            <!--<p>热烈祝贺“合纳爆品库”即日开放！</p>-->
+            <!--<p>第一批产品：女之鑫、果然嗖、好想黑、全德红、若易美，5款爆品同步上线，全面开售，助你腾飞！</p>-->
+            <!--<p>合纳爆品库真正做到了，不投资、不囤货、全场包邮、一件代发、一部手机，一个账号，一键分享即可轻松创业！</p>-->
+            <!--<p>人人可参与，人人可收益！</p>-->
+            <!--<p>2018，让我们一起将微商”s！</p>-->
+            <!--<p>不忘初心，继续前行！</p>-->
+            <!--<p>祝大家事业蒸蒸日上！</p>-->
+            <!--<p class="mui-text-right" style="margin-bottom: 0">合纳共享联盟</p>-->
+            <!--<p class="mui-text-right">2018.5.26</p>-->
+            <!--</div>-->
+
+        </div>
+    </if>
+    <img src="http://img.hena360.cn/footerLogo.jpg" alt="" class="mui-slider">
+</div>
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item mui-active" href="{:U('/index')}">
+        <img src="http://img.hena360.cn/20180506 (1).png"/>
+        <span class="mui-tab-label">首页</span>
+    </a>
+   
+    <a class="mui-tab-item" href="{:U('/Creation/index')}">
+        <img src="http://img.hena360.cn/20180506 (8).png"/>
+        <span class="mui-tab-label">创客中心</span>
+    </a>
+    <a class="mui-tab-item" href="{:U('user/index')}">
+        <img src="http://img.hena360.cn/20180506 (4).png"/>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
+</body>
+<script src="__PUBLIC_HOME__/js/swiper.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    $.ajax({
+        url:'http://'+window.location.host+'/api/home/index/banner',
+        type:'get',
+        async:true,
+        dataType:'json',
+        success:function (data) {
+            console.log(data)
+            var _html = '';
+            for(v in data.data){
+                _html+='<div class="swiper-slide"><a href="'+data.data[v].jump_url+'"><img src="'+data.data[v].img_src+'" alt="" class="mui-slider"></a></div>'
+//                _html+='<div class="swiper-slide"><img src="'+data.data[v].img_src+'" alt="" class="mui-slider"></div>'
+            }
+            $('.Carousel>.swiper-container>,swiper-wrapper').html(_html)
+    }})
+
+
+    var mySwiper = new Swiper('.Carousel .swiper-container', {
+        loop: false,
+        grabCursor: true,
+        autoplay: 3000,
+        autoplayDisableOnInteraction: false,
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer:true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents:true,//修改swiper的父元素时，自动初始化swiper
+    });
+    var mySwiper = new Swiper('.Carouse2 .swiper-container', {
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 2,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+    /*轮播*/
+    var mySwiper = new Swiper('.new_carousel .swiper-container', {
+        pagination: '.pagination',
+        slidesPerView: 2.3,
+        grabCursor: true,
+        paginationClickable: true,
+        autoplayDisableOnInteraction: false,
+    });
+    /*轮播*/
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+    $(function () {
+        $.ajax({
+            // url:"http://m.hena360.com/Home/index/getGeneralList",
+            url: "{:U('Home/Index/getGeneralList')}",
+            type: 'post',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                var _html = '';
+                for (var i = 0; i < data.goods_list.length; i++) {
+                    var _id = data.goods_list[i].id
+                    _html += ' <div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id=' + _id + '"> <img src="' + data.goods_list[i].goods_detail_img + '" class="mui-slider"/><h4>' + data.goods_list[i].goods_name + '</h4><span style="color: #F04646">￥ ' + data.goods_list[i].goods_price + '</span><span class="mui-pull-right" style=" background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span><span></span></a></div>'
+                }
+                $("._i_list").html(_html)
+            }
+        })
+    })
+    $(function () {
+        $(".i_list>.mui-col-xs-6:even").css({
+            'margin-right': '3%'
+        });
+        $('.welfare').click(function () {
+            window.location.href = '/Home/Index/welfare.html'
+        })
+        $('.Detonating').click(function () {
+            window.location.href = '/Home/Index/Detonating.html'
+        })
+    })
+    //公告
+    $(function () {
+        $.ajax({
+            url:'http://'+window.location.host+'/api/app/notice/one-bulletin',
+            type:'get',
+            dataType:'json',
+            async:true,
+            success:function (data) {
+                if(data.data==null){
+                    $("#notice").hide();
+                    $(".notice_cont_box").hide();
+                }else {
+                    notice_id = data.data.id
+                    var _html = '';
+//                    _html+='<img src="http://img.hena360.cn/x.png" alt=""><div class="mui-col-xs-12" id="notice_html" style="border-top-left-radius:5px;border-top-right-radius: 5px;"><img src="'+data.data.file+'" alt="" width="100%" "></div>'
+                    _html+='<img src="http://img.hena360.cn/x.png" alt=""><div class="mui-col-xs-12" id="notice_html" style="border-top-left-radius:5px;border-top-right-radius: 5px;"> <a href="'+data.data.jump_url+'"><img src="'+data.data.file+'" alt="" width="100%" "></a></div>'
+//                    _html+=' <a href="'+data.data.jump_url+'"><img src="'+data.data.file+'" alt="" width="100%" "></a>'
+                }
+                $('.notice_cont_box').html('<div class="notice_cont"></div>')
+                $('.notice').html(_html)
+                //点击图片关闭公告
+                $('.notice>img').click(function () {
+                    $(".notice_cont").hide();
+                    $("#notice").hide();
+                    $.ajax({
+                        url: "http://"+window.location.host+'/api/app/notice/looked?id='+notice_id,
+                        type: 'get',
+                        dataType: 'json',
+                    })
+//                    location.reload();
+                })
+                //点击遮罩关闭公告
+                $(".notice_cont").click(function () {
+                    $(".notice_cont").hide();
+                    $("#notice").hide();
+                    $.ajax({
+                        url: "http://"+window.location.host+'/api/app/notice/looked?id='+notice_id,
+                        type: 'get',
+                        dataType: 'json',
+
+                    })
+//                    location.reload();
+                })
+            }
+        })
+    })
+    //共享库
+    $.ajax({
+        url:'http://'+window.location.host+'/api/goods/share-goods/index',
+        type:'get',
+        dataType:'json',
+        success:function (data) {
+            var _html ='';
+            for(i in data.data.items){
+                console.log(data.data.items[i].id)
+                _html+='<div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id='+data.data.items[i].id+'"> <img src="'+data.data.items[i].goods_logo+'" class="mui-slider"/><h4>'+data.data.items[i].goods_name+'+</h4><span style="color: #F04646">￥ '+data.data.items[i].goods_price+'</span><span class="mui-pull-right" style=" background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span><span></span></a></div>'
+            }
+            $('.share_goods').html(_html)
+            $(".share_goods>.mui-col-xs-6:even").css({
+                'margin-right': '3%'
+            });
+        }
+    })
+    //共享库单页面
+    $(".Share").click(function () {
+        window.location.href = '/Home/Index/Share.html'
+    })
+   
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC_HOME__/js/wxShare.js"></script>
+<!--分享-->
+</html>

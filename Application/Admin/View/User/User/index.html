@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8>
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>订单管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 订单管理 <span class="c-gray en">&gt;</span> 订单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div>
+		<form action="{:U('index')}" method="get">
+			检索:
+			<input name="realname" placeholder="请输入姓名" value="{$Think.get.realname}" style="width:200px" class="input-text input-to-search">
+			<input name="tel" placeholder="请输入手机号" value="{$Think.get.tel}" style="width:200px" class="input-text input-to-search">
+			<span style="display: inline-block;margin-left: 15px;">会员等级:
+				<select name="level" class="level" style="width: 120px;height: 25px;font-size: medium;">
+					<option value="0">请选择</option>
+					<volist name="level_list" id="info">
+						<option value="{$info.id}" <eq name="Think.get.level" value="$info.id">selected</eq> >{$info.levelname}</option>
+					</volist>
+				</select>
+			</span>
+			<button type="submit" class="btn btn-success">查询</button>
+			<button class="btn label-defaunt" type="reset">清空查询</button>
+		</form>
+
+	</div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">                       
+				<th><input type="checkbox" name="" value=""></th>
+				<th>ID</th>
+				<th>用户名</th>
+				<th>姓名/电话</th>
+				<th>会员等级</th>
+				<th>注册时间</th>
+				<th>推荐人（用户名/姓名/电话）</th>
+				<th>下级明细</th>
+				<th>当前余额</th>
+				<th>推广奖金</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+<tbody>
+    <volist name="data" id="vo" >
+	<tr class="text-c">
+		<td><input type="checkbox" value="{$vo.id}" name="id[]"></td>
+		<td>{$vo.id}</td>
+		<td>{$vo.nickname}</td>
+		<td>{$vo.realname}/{$vo.tel}</td>
+		<td>{$vo.levelname}</td>
+		<td>{$vo.regtime|date="Y-m-d H:i:s",###}</td>
+		<td>{$vo['inv_nick']}/{$vo['inv_name']}/{$vo['inv_tel']}</td>
+		<td><a href="{:U('getuserinfo','id='.$vo['id'])}">查看明细</a></td>
+		<td>{$vo.balance|default="余额为空"}</td>
+		<td>{$vo.bonus|default="推广奖金为空"}</td>
+		<td class="td-manage">
+			<a title="详情" href="{:U('detail','id='.$vo['id'])}"><i class="Hui-iconfont">&#xe6df;</i></a>
+			<a title="扣除奖金" href="{:U('delBonus','id='.$vo['id'])}"><i class="Hui-iconfont">&#xe6a1;</i></a>
+			<!--<a title="订单" href="{:U('order','id='.$vo['id'])}"><i class="Hui-iconfont">&#xe6b2;</i></a>-->
+			<!--<a title="删除" href="{:U('del','id='.$vo['id'])}" onclick="return confirm('是否确认删除？');"><i class="Hui-iconfont">&#xe6e2;</i></a>-->
+		</td>
+	</tr>
+	</volist>
+</tbody>
+	</table>
+
+	</div>
+</div>
+<div class="pagination">
+	{$page}
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/laypage/1.2/laypage.js"></script>
+<!--<script type="text/javascript">
+$(function(){
+	$('.table-sort').dataTable({
+		"aLengthMenu": [25, 50,100],
+		"aaSorting": [[ 1, "asc" ]],//默认第几个排序
+		"bStateSave": false,//状态保存
+		"aoColumnDefs": [
+		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		  {"orderable":false,"aTargets":[0,2,3,4,5,6,7]}// 制定列不参与排序
+		]
+	});
+});
+</script>-->
+</body>
+</html>

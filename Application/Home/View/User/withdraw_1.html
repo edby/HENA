@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>释放纳豆</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link href="__PUBLIC_HOME__/css/style.css" rel="stylesheet"/>
+</head>
+<style>
+    body, .mui-content {
+        background: #EFEFF4;
+    }
+
+    .money input[type='text'] {
+        width: 80%;
+        border: none;
+        font-size: 30px;
+    }
+
+    .mui-bar-nav {
+        background: #f2f2f2;
+    }
+
+    .nav_title > a, .nav_title > h1 {
+        color: #000000 !important;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav nav_title">
+    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="{:U('/index')}"></a>
+    <h1 class="mui-title">释放纳豆</h1>
+</header>
+<div class="mui-content Putforward">
+    <div class="mui-row">
+        <div class="mui-col-xs-12 " id="addBankCard">释放到<span>请绑定支付宝账号</span></div>
+        <div class="mui-col-xs-12">释放纳豆 <span>可释放<small class="bonus">0.00</small></span></div>
+        <div class="mui-col-xs-12 money"><input type="text" placeholder="0.00" value=""></div>
+        <div class="mui-col-xs-12">本次释放￥<span class="moneys"></span>;手续费<span class="ServiceCharge">0.00</span></div>
+    </div>
+    <div class="mui-row">
+        <div class="mui-col-xs-12">
+            <p>纳豆释放条款</p>
+            <p>1. 请确保填写的姓名和支付宝信息正确无误，否则造成的一切后果由用户本人承担</p>
+            <p>2. 释放手续费10%，满50纳豆起提并且为10的整数倍</p>
+            <p>3. 到账时间为T+3 工作日，具体到账时间根据业务处理流程时间</p>
+            <p>4. 个人账户信息仅供平台转账使用，不会泄漏至任何第三方</p>
+        </div>
+    </div>
+    <button type="button" id="withdraw">确认释放</button>
+    <p><a href="{:U('/User/withdraw_bonus_1')}"
+          style=" display: block;  text-align: center; width: 100%;color: #ccc;margin-top: 10%">释放明细</a></p>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/configure.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init();
+    var bank_num = '';
+    $(function () {
+        //验证有没有绑定支付宝
+        $(".money input[type='text']").change(function () {
+            var N_money = $(".money input[type='text']").val();
+            $(".ServiceCharge").html(N_money * 1 + '元')
+            $(".moneys").html(N_money * 10 + '元')
+        })
+        $.ajax({
+            url: "http://" + window.location.host + '/api/user/aliinfo/alipay-info',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data.code == 2000) {
+                    $('.bonus').html(data.data.balance)
+                    $("#addBankCard>span").html(data.data.ali_account);
+
+                }
+            },
+            error: function () {
+                mui.alert('请求失败，请稍后重试！')
+            }
+        })
+        /*提现*/
+        $("#addBankCard").click(function () {
+            window.location.href = '{:U("User/addbank_1")}'
+        })
+
+        $("#withdraw").click(function () {
+            var _money = $(".money input[type='text']").val();
+
+            console.log(_money);
+            if (_money == '') {
+                mui.alert('请填写释放的纳豆数量！')
+                return;
+            }
+            if ($("#addBankCard").html() == '') {
+                mui.alert('请填写支付宝信息！')
+                return;
+            }
+            //验证
+            if (_money < 50 || _money % 10) {
+                mui.alert("满50纳豆起提并且为10的整数倍！");
+            } else {
+                $.ajax({
+                    url: "http://" + window.location.host + '/api/user/withdrawal/balance',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {withdraw_money: _money},
+                    success: function (data) {
+                        console.log(data);
+                        if (data.code == 3000 || data.code == 3003) {
+                            mui.alert(data.message)
+                        } else if (data.code == 2000) {
+                            mui.alert('提交成功！');
+                            setTimeout(function () {
+                                window.location.replace("http://" + window.location.host + "/User/withdraw_bonus_1.html")
+                            }, 2000)
+
+                        }
+                    },
+                    error: function () {
+                        mui.alert("请求失败，请稍后重试！")
+                    }
+                })
+            }
+
+
+        })
+    })
+</script>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

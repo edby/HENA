@@ -1,0 +1,85 @@
+Index: Application/Common/Conf/db.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Application/Common/Conf/db.php	(date 1526122053237)
++++ Application/Common/Conf/db.php	(date 1526122053237)
+@@ -0,0 +1,14 @@
++<?php
++//数据库配置信息
++return [
++	
++	'DB_TYPE'   => 'mysql', // 数据库类型
++	'DB_HOST'   => 'localhost', // 服务器地址
++	'DB_NAME'   => 'henadev', // 数据库名
++	'DB_USER'   => 'root', // 用户名
++	'DB_PWD'    => 'root', // 密码
++	'DB_PORT'   => 3306, // 端口
++	'DB_PREFIX' => 'hn_', // 数据库表前缀 
++	'DB_CHARSET'=> 'utf8', // 字符集
++	'DB_DEBUG'  =>  TRUE, // 数据库调试模式 开启后可以记录SQL日志 3.2.3新增
++];
+\ No newline at end of file
+Index: Application/Home/View/Index/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Application/Home/View/Index/index.html	(date 1526122042000)
++++ Application/Home/View/Index/index.html	(date 1526122112323)
+@@ -44,6 +44,7 @@
+             border-bottom-right-radius: 5px;
+             padding: 0 15px;
+         }
++
+         .notice .mui-col-xs-12:last-child p {
+             margin-bottom: 30px;
+         }
+diff --git Application/Home/Controller/IndexController.class.php Application/Home/Controller/IndexController.class.php
+index 7f481020b35286c257cdaa58a216358b51be17e9..508f5e7b0c615e8941e39b1e79f414c818c09f18
+GIT binary patch
+literal 8511
+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
+

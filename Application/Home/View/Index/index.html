@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>HENA</title>
+    <script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/swiper.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+
+    <style>
+        .notice_cont {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 998;
+            overflow: scroll;
+            overflow-y: hidden
+        }
+
+        .notice {
+            position: fixed;
+            top: 8%;
+            left: 5%;
+            z-index: 999;
+            width: 90%;
+            height: 80%;
+
+        }
+
+        .notice .mui-col-xs-12:first-child {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background: none;
+        }
+
+        .notice .mui-col-xs-12:last-child {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            /*padding: 0 15px;*/
+        }
+
+        .notice .mui-col-xs-12:last-child p {
+            margin-bottom: 13px;
+        }
+
+        .notice .mui-col-xs-12:last-child {
+            /*background: #ffffff;*/
+            overflow: scroll;
+            height: 100%;
+        }
+
+        .notice p {
+            color: #706ee0;
+        }
+
+        .notice p:first-child {
+            margin-top: 13px;
+        }
+
+        .notice > img {
+            position: absolute;
+            top: 1%;
+            right: 7%;
+            z-index: 9;
+            width: 5%;
+        }
+
+        .notice div .notice-img {
+            border-top-left-radius: 13px;
+            border-top-right-radius: 13px;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        #notice-url {
+            display: block;
+            height: 100%;
+        }
+
+        .notice > .mui-col-xs-12 > a {
+            display: block;
+        }
+
+        .i_navList {
+            text-align: center;
+            padding: 3% 0;
+        }
+
+        .i_navList a {
+            vertical-align: middle;
+        }
+
+        .i_navList a img {
+            width: 42%;
+        }
+
+        .i_navList a h4 {
+            font-size: 12px;
+            font-weight: 300;
+            color: #333333;
+        }
+
+        .Carouse2 .swiper-slide p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tabbar {
+            background-color:#fff;
+       }
+      a span  {
+            color:#666;
+       }
+       .tabspan{
+           color:#a045fd;
+       }
+    </style>
+</head>
+<body>
+<div class="mui-content">
+    <div class="Carousel">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+            </div>
+        </div>
+    </div>
+    <!--轮播-->
+    <div class="mui-row i_navList">
+        <div class="mui-col-xs-3">
+            <a href="{:U('/User/integral')}">
+                <img src="http://img.hena360.cn/i_1.png" alt="">
+                <h4>每日签到</h4>
+            </a>
+        </div>
+        <div class="mui-col-xs-3">
+            <a href="{:U('/Index/welfare')}">
+                <img src="http://img.hena360.cn/i_2.png" alt="">
+                <h4>福利库</h4>
+            </a>
+        </div>
+        <div class="mui-col-xs-3">
+            <a href="{:U('/Index/Detonating')}">
+                <img src="http://img.hena360.cn/i_3.png" alt="">
+                <h4>爆品库</h4>
+            </a>
+        </div>
+        <div class="mui-col-xs-3">
+            <a href="{:U('/Index/Share')}">
+                <img src="http://img.hena360.cn/i_4.png" alt="">
+                <h4>共享库</h4>
+            </a>
+        </div>
+    </div>
+    <!--520-->
+    <div class="mui-row" style="margin: 4% 0">
+        <div class="mui-col-xs-12">
+            <a href="{:U('/Index/giftbag')}"><img src="http://img.hena360.cn/i_520.png" alt="" width="100%"></a>
+        </div>
+    </div>
+    <!--520产品-->
+    <div class="Carouse2">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+    <!--福利库-->
+    <div class="mui-row" style="margin: 4% 0">
+        <div class="mui-col-xs-12">
+            <a href="{:U('/Index/welfare')}"><img src="http://img.hena360.cn/i_flk.png" alt="" width="100%"></a>
+        </div>
+    </div>
+    <!--福利库产品-->
+    <div class="mui-row i_list">
+        <volist name='list2' id="v">
+            <div class="mui-col-xs-12">
+                <a href="{:U('Goods/details')}?id={$v.id}">
+                    <div class="mui-row">
+                        <div class="mui-col-xs-4">
+                            <img src="<?=C('RESOURCES_DOMAIN').$v['goods_logo']?>" class="mui-slider"/>
+                        </div>
+                        <div class="mui-col-xs-8" style="padding-left: 5%">
+                            <h4>{$v.goods_name}</h4>
+                            <p><span>{$v.pre_sale_start|date="m.d",###}-{$v.pre_sale_end|date="m.d",###}</span><span>限时抢购</span>
+                            </p>
+                            <span><small>￥</small> {$v.goods_price}</span> <span class="mui-pull-right">领取</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </volist>
+    </div>
+    <!--爆品库-->
+    <div>
+
+    </div>
+    <div class="mui-row" style="margin: 4% 0 0.5% 0">
+        <div class="mui-col-xs-12">
+            <a href="{:U('/Index/Detonating')}"><img src="http://img.hena360.cn/i_bpk.png" alt="" width="100%"></a>
+        </div>
+    </div>
+    <!--爆品库产品-->
+    <div id="baopingku">
+    </div>
+
+
+    <?php
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    if(strpos($userAgent, 'MicroMessenger') == false && strpos($userAgent, 'Windows Phone') == false){ // 非微信用户
+
+       $url = "http://tao.hena360.com";
+    } else {
+       $url = U('index/tb');
+    }
+    ?>
+    <a href="http://jd.hena360.com" style="    display: block;
+    background: #f2f2f2;padding-top: 15px"><img src="http://img.hena360.cn/JD1.png" alt="" class="mui-slider"
+                                                style="padding: 0 10px 5px 10px;"></a>
+    <!--共享库-->
+    <div class="mui-row" style="margin: 4% 0 0.5% 0">
+        <div class="mui-col-xs-12">
+            <a href="{:U('/Index/Share')}"><img src="http://img.hena360.cn/i_gxk.png" alt="" width="100%"></a>
+        </div>
+    </div>
+    <!--共享库开始-->
+    <div class="mui-row i_list share_goods" style="margin-top: 1%">
+
+    </div>
+
+
+    <if condition="$ag neq 1">
+        <style>
+            /*body {*/
+            /*overflow: scroll;*/
+            /*overflow-y: hidden;*/
+            /*}*/
+        </style>
+        <div class="notice_cont_box">
+        </div>
+        <!-- 公告栏-->
+        <div class="mui-row notice" id="notice">
+        </div>
+    </if>
+    <img src="http://img.hena360.cn/footerLogo.jpg" alt="" class="mui-slider">
+</div>
+<nav class="mui-bar mui-bar-tab  tabbar">
+    <a class="mui-tab-item mui-active" href="{:U('/index')}">
+        <img src="http://img.hena360.cn/s_1.png"/>
+        <span class="mui-tab-label  tabspan ">首页</span>
+    </a>
+
+    <a class="mui-tab-item" href="{:U('/Creation/index')}">
+        <img src="http://img.hena360.cn/s_33.png"/>
+        <span class="mui-tab-label">创客中心</span>
+    </a>
+     <a class="mui-tab-item" href="<?=C('JUMP_DOMAIN').'/iview/#/FoundPage/recommend'?>">
+        <img src="http://img.hena360.cn/s_22.png"/>
+        <span class="mui-tab-label">发现</span>
+    </a>
+    <a class="mui-tab-item" href="{:U('user/index')}">
+        <img src="http://img.hena360.cn/s_55.png"/>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
+</body>
+<script src="__PUBLIC_HOME__/js/swiper.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/home/index/banner',
+        type: 'get',
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+          // console.log(data)
+            var _html = '';
+            for (v in data.data) {
+                _html += '<div class="swiper-slide"><a href="' + data.data[v].jump_url + '"><img src="' + data.data[v].img_src + '" alt="" class="mui-slider"></a></div>'
+//                _html+='<div class="swiper-slide"><img src="'+data.data[v].img_src+'" alt="" class="mui-slider"></div>'
+            }
+            $('.Carousel>.swiper-container>,swiper-wrapper').html(_html)
+        }
+    })
+
+
+    var mySwiper = new Swiper('.Carousel .swiper-container', {
+        loop: false,
+        grabCursor: true,
+        autoplay: 3000,
+        autoplayDisableOnInteraction: false,
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observer: true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true,//修改swiper的父元素时，自动初始化swiper
+    });
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/home/index/index?acttype=1',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+           // console.log(data)
+            var _html = '';
+            for (i in data.data.items) {
+                _html += ' <div class="swiper-slide"><a href="{:U(\'Goods/details\')}?id=' + data.data.items[i].id + '"><img src="' + data.data.items[i].goods_logo + '" alt="" class="mui-slider"> <p>' + data.data.items[i].f_title + '</p></a></div>'
+            }
+            $('.Carouse2>.swiper-container>.swiper-wrapper').html(_html)
+        }
+    })
+    var mySwiper = new Swiper('.Carouse2 .swiper-container', {
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 3.5,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        observer: true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true,//修改swiper的父元素时，自动初始化swiper
+    });
+    /*轮播*/
+    var mySwiper = new Swiper('.new_carousel .swiper-container', {
+        pagination: '.pagination',
+        slidesPerView: 2.3,
+        grabCursor: true,
+        paginationClickable: true,
+        autoplayDisableOnInteraction: false,
+    });
+
+    /*轮播*/
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    $(function () {
+        $.ajax({
+            // url:"http://m.hena360.com/Home/index/getGeneralList",
+            url: "{:U('Home/Index/getGeneralList')}",
+            type: 'post',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                //console.log(data)
+                var _html = '';
+                for (var i = 0; i < data.goods_list.length; i++) {
+                    var _id = data.goods_list[i].id
+                    _html += ' <div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id=' + _id + '"> <img src="' + data.goods_list[i].goods_detail_img + '" class="mui-slider"/><h4>' + data.goods_list[i].goods_name + '</h4><span style="color: #F04646">￥ ' + data.goods_list[i].goods_price + '</span><span class="mui-pull-right" style=" background: #000000; color: #ffffff;padding: 0 10px;font-size: 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 2px;font-weight: 100;font-size: 12px;">购买</span><span></span></a></div>'
+                }
+                $("._i_list").html(_html)
+            }
+        })
+    })
+    $(function () {
+        $(".i_list>.mui-col-xs-6:even").css({
+            'margin-right': '3%'
+        });
+        $('.welfare').click(function () {
+            window.location.href = '/Home/Index/welfare.html'
+        })
+        $('.Detonating').click(function () {
+            window.location.href = '/Home/Index/Detonating.html'
+        })
+    })
+    //公告
+    $(function () {
+        $.ajax({
+            url: 'http://' + window.location.host + '/api/app/notice/one-bulletin',
+            type: 'get',
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+                if (data.data == null) {
+                    $("#notice").hide();
+                    $(".notice_cont_box").hide();
+                } else {
+                    notice_id = data.data.id
+                    var _html = '';
+//                    _html+='<img src="http://img.hena360.cn/x.png" alt=""><div class="mui-col-xs-12" id="notice_html" style="border-top-left-radius:5px;border-top-right-radius: 5px;"><img src="'+data.data.file+'" alt="" width="100%" "></div>'
+                    _html += '<img src="http://img.hena360.cn/x.png" alt=""><div class="mui-col-xs-12" id="notice_html" style="border-top-left-radius:5px;border-top-right-radius: 5px;"> <a href="' + data.data.jump_url + '"><img src="' + data.data.file + '" alt="" width="100%" "></a></div>'
+//                    _html+=' <a href="'+data.data.jump_url+'"><img src="'+data.data.file+'" alt="" width="100%" "></a>'
+                }
+                $('.notice_cont_box').html('<div class="notice_cont"></div>')
+                $('.notice').html(_html)
+                //点击图片关闭公告
+                $('.notice>img').click(function () {
+                    $(".notice_cont").hide();
+                    $("#notice").hide();
+                    $.ajax({
+                        url: "http://" + window.location.host + '/api/app/notice/looked?id=' + notice_id,
+                        type: 'get',
+                        dataType: 'json',
+                    })
+//                    location.reload();
+                })
+                //点击遮罩关闭公告
+                $(".notice_cont").click(function () {
+                    $(".notice_cont").hide();
+                    $("#notice").hide();
+                    $.ajax({
+                        url: "http://" + window.location.host + '/api/app/notice/looked?id=' + notice_id,
+                        type: 'get',
+                        dataType: 'json',
+
+                    })
+//                    location.reload();
+                })
+            }
+        })
+    })
+    //共享库
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/home/index/index?acttype=5?per-page=10',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+             //console.log (data);
+               var _html = '';
+            for (i in data.data.items) {
+                _html += '<div class="mui-col-xs-6"><a href="{:U(\'Goods/details\')}?id=' + data.data.items[i].id + '"> <img src="' + data.data.items[i].goods_logo + '" class="mui-slider"/><h4>' + data.data.items[i].goods_name + '</h4><span style="color: #F04646">￥ ' + data.data.items[i].goods_price + '</span><span></span></a></div>'
+            }
+            $('.share_goods').html(_html)
+            $(".share_goods>.mui-col-xs-6:even").css({
+                'margin-right': '3%'
+            });
+        }
+    })
+    //共享库单页面
+    $(".Share").click(function () {
+        window.location.href = '/Home/Index/Share.html'
+    })
+    //爆品库产品
+    $.ajax({
+        url: 'http://' + window.location.host + '/api/home/index/index?acttype=4?per-page=10',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            //console.log(data)
+            var _html = '';
+            for (i in data.data.items) {
+                _html += '<div class="mui-row" style="margin: 0.5% 0"><div class="mui-col-xs-12"> <a href="{:U(\'Goods/details\')}?id=' + data.data.items[i].id + '"><img src="' + data.data.items[i].bg_img + '" alt="" width="100%"></a> </div> </div>'
+            }
+            $('#baopingku').html(_html)
+        }
+    })
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems','onMenuShareQQ','onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

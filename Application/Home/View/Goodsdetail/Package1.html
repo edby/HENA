@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>520超值大礼包</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css" />
+</head>
+
+<body>
+
+<div class="mui-content">
+	<img src="http://img.hena360.cn/_pic01.jpg" class="mui-slider" />
+	<div class="_package">
+		<volist name = 'data' id = 'v'>
+			<div class="mui-row">
+				<div class="mui-col-xs-4">
+					<a href="{:U('Goods/details')}?id={$v.id}"><img src="{$v.goods_logo} " class="mui-slider" /></a>
+				</div>
+				<div class="mui-col-xs-8">
+					<h4>{$v.goodsname}</h4>
+					<p>{$v.f_title}</p>
+					<p><span><small>￥</small>{$v.goodsprice} </span><del>￥{$v.original_price}</del><a href="{:U('Goods/details')}?id={$v.id}">查看详情</a></p>
+				</div>
+			</div>
+		</volist>
+	</div>
+	{$show}
+</div>
+<script src="__PUBLIC_HOME__/js/mui.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+    $(function() {
+        $(".i_list>.mui-col-xs-6:even").css({
+            'margin-right': '2%'
+        })
+    })
+</script>
+</body>
+
+</html>

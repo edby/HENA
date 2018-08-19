@@ -1,0 +1,820 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<script src="/Public/js/jquery-1.10.2.min.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/ueditor.config.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/ueditor.all.min.js"></script>
+	<script src="__PUBLIC_ADMIN__/ueditor/php/lang/zh-cn/zh-cn.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+	<style>
+		.clearfix:after{content:"\20";display:block;height:0;clear:both;visibility:hidden}.clearfix{zoom:1}
+		.tabBar {border-bottom: 2px solid #222}
+		.tabBar span {background-color: #e8e8e8;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px}
+		.tabBar span.current{background-color: #222;color: #fff}
+		.tabCon {display: none}
+	</style>
+</head>
+<body>
+<div class="page-container">
+
+		<span class="r"><a href="{:U('Admin/Goods/Goods/index')}" class="btn btn-default radius"><i class="Hui-iconfont">&#xe66b;</i>返回列表</a></span>
+
+	<div id="tab_demo" class="HuiTab">
+		<div class="tabBar clearfix"><span>编辑商品</span><span>编辑活动</span><span>添加规格</span></div>
+		<div class="tabCon">
+			<!--start edit goods-->
+			<form action="{:U('Admin/Goods/Goods/edit')}" method="post" class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$data.goods_name}" placeholder="" id="goods_name" name="goods_name" style="width:70%" required>
+						<input type="hidden" class="input-text" value="{$data.id}" placeholder="" id="id" name="id" style="width:70%" required>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>副标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$data.f_title}" placeholder="" id="f_title" name="f_title" style="width:70%" required>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品分类：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+
+						<select id = 'title' name = 'title' style="width: 70%;height: 30px;">
+							<option name = 'title' class = 'title' value="{$data.cate_id}">{$data.category.cat_title}</option>
+							<foreach name = 'category' item = 'v'>
+								<option name = 'title' class = 'title'  value="{$v.cat_id}">
+									<eq name="v.level" value="1">--</eq>
+									<eq name="v.level" value="2">----</eq>
+									{$v.cat_title}
+								</option>
+							</foreach>
+						</select>
+
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品属性：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="checkbox" name="goods_attribute[]"  value="1" <if condition="in_array(1,$attr_data_value) !==false">checked<else /></if>>推荐
+						<input type="checkbox" name="goods_attribute[]"  value="2" <if condition="in_array(2,$attr_data_value) !==false">checked<else /></if>>新品
+						<input type="checkbox" name="goods_attribute[]"  value="3" <if condition="in_array(3,$attr_data_value) !==false">checked<else /></if>>热卖
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品价格：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="goods_price" id="goods_price" placeholder="" value="{$data.goods_price}" class="input-text" style="width:70%" required>
+						元</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>原价：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="original_price" id="original_price" placeholder="" value="{$data.original_price}" class="input-text" style="width:70%" required>
+						元</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>运费：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="express_fee" id="express_fee" placeholder="" value="{$data.express_fee}" class="input-text" style="width:70%" required>
+						元</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">增值运费：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="up_express_fee" id="up_express_fee" placeholder="" value="{$data.up_express_fee}" class="input-text" style="width:70%" >
+						元</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品单位：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$data.goods_unit}" placeholder="单位,如(个/件/包)" id="goods_unit" name="goods_unit" style="width:70%" required>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品图片：</label>
+					<div class="formControls col-xs-8 col-sm-9" id = "img_parents">
+						<volist name="img" id="v">
+					<span style="display: inline-block;border: 1px solid grey;margin-right: 3px;position: relative">
+						<span class="del" style="display: inline-block;width:20px;height:20px;text-align:center;line-height:20px;background:white;position: absolute;top: 0;right: 0;z-index: 100;cursor: pointer;" ><i class="Hui-iconfont">&#xe6a6;</i></span>
+						<img class = "goods_img" src="{$v}" alt="" style="width: 100px;height: 100px;">
+					</span>
+						</volist>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上传图片：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="file" name="img[]" multiple ></br>
+						<label style="color: red;font-size: 8px;">建议为正方型图片，并保持图片大小一致</label>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品背景图片：</label>
+					<div class="formControls col-xs-8 col-sm-9" id = "bg_img">
+						
+					<span style="display: inline-block;border: 1px solid grey;margin-right: 3px;position: relative">
+						<span class="del" style="display: inline-block;width:20px;height:20px;text-align:center;line-height:20px;background:white;position: absolute;top: 0;right: 0;z-index: 100;cursor: pointer;" ><i class="Hui-iconfont">&#xe6a6;</i></span>
+						<img class = "goods_img" src="{$data.bg_img}" alt="" style="width: 100px;height: 100px;">
+					</span>
+						
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上传背景图片：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="file" name="bg_img" multiple ></br>
+						<label style="color: red;font-size: 8px;">建议为正方型图片，并保持图片大小一致</label>
+					</div>
+				</div>
+
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">销量：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="sale_num" id="sale_num" placeholder="" value="{$data.sale_num}" class="input-text" style="width:70%">
+						件</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品库存：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="goods_num" id="goods_num" placeholder="" value="{$data.goods_num}" class="input-text" style="width:70%" required>
+						件</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>参与活动类型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box " style="width:70%">
+					<select name="acttype" class="select acttype" >
+						<option value="4" name="acttype" class = "acttype" <if condition="$data['acttype'] eq 4 ">selected<else /></if> >爆品</option>
+						<option value="3" name="acttype" class = "acttype" <if condition="$data['acttype'] eq 3 ">selected<else /></if>>普通商品</option>
+						<option value="2"  name="acttype" class = "acttype" <if condition="$data['acttype'] eq 2 ">selected<else /></if>>0元购</option>
+						<option value="1" name="acttype" class = "acttype" <if condition="$data['acttype'] eq 1 ">selected<else /></if>>520</option>
+						<option value="5" name="acttype" class = "acttype" <if condition="$data['acttype'] eq 5 ">selected<else /></if>>共享库</option>
+					</select>
+				</span>
+					</div>
+					<label  class="form-label col-xs-4 col-sm-2" style="color: red;font-size: 8px;margin-left: 160px;">默认为商品为520,可选择</label>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品详情：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="info" id="info" style="width:1024px;height:500px;">{$data.detailimgs}</textarea>
+					</div>
+				</div>
+
+
+				<div class="row cl">
+					<div class="formControls col-xs-8 col-sm-9" style="margin-left: 280px">
+						<input type="button" onclick="this.form.submit()" value="提交"  class="btn btn-success radius">
+					</div>
+				</div>
+			</form>
+			<!--end edit goods-->
+		</div>
+
+		<div class="tabCon">
+			<if condition="$data['acttype'] eq 1 ">
+
+			<!--start 520 -->
+			<form  class="form form-horizontal" id="form-activity-add">
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						{$data.goods_name}
+						<input type="hidden" class="input-text" value="{$data.id}" placeholder="" name="goods_id" style="width:90%" required>
+						<input type="hidden" class="input-text" value="{$data.acttype}" placeholder="" name="acttype" style="width:90%" required>
+
+						<if condition="!empty($data['activity'])">
+							<input type="hidden" class="input-text" value="{$data.activity.id}" placeholder="" name="id" style="width:90%" required>
+						</if>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动类型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				  <select class="select" size="1" name="type">
+					<option value="1" {$data['activity'] ? ($data['activity']['type'] == 1 ? 'selected' : '') : ''}>520</option>
+					  <option value="2" {$data['activity'] ? ($data['activity']['type'] == 2 ? 'selected' : '') : ''}>99</option>
+				  </select>
+				</span>
+					</div>
+				</div>
+
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="description" class="textarea radius" placeholder="活动描述：限制等级1级，限制购买数量1个，核销。。。。。。。">{$data['activity'] ? $data['activity']['description'] : $data['activity']['description']}</textarea>
+					</div>
+				</div>
+				<div class="row cl">
+					<div class="formControls col-xs-8 col-sm-9" style="margin-left: 230px">
+						<input type="button" id="submit_activity"   value="提交" class="btn btn-success radius">
+					</div>
+				</div>
+			</form>
+
+			<!--end 520	-->
+			<elseif  condition="$data['acttype'] eq 2"/>
+
+			<!--start 0元购	-->
+				<h3>{$activity_name}</h3>
+				<form class="form form-horizontal" id="form-zero-add">
+
+					<div class="row cl">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+						<div class="formControls col-xs-8 col-sm-9">
+							{$data.goods_name}
+							<input type="hidden" class="input-text" value="{$data.id}" placeholder="" name="goods_id" style="width:90%" required>
+							<input type="hidden" class="input-text" value="{$data.acttype}" placeholder="" name="acttype" style="width:90%" required>
+						</div>
+					</div>
+
+					<div class="row cl">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>返单间隔天数：</label>
+						<div class="formControls col-xs-8 col-sm-9">
+							<input type="number" class="input-text radius" value="{$data['return_cash']? $data['return_cash']['day'] : ''}" placeholder="" name="day" style="width:90%" required>
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>限购等级：</label>
+						<div class="formControls col-xs-8 col-sm-6" id="level">
+
+							<input type="hidden" class="input-text" value="{$data['return_cash']['id']}" placeholder="" name="id" style="width:90%" required>
+							<volist name="level" id="lv">
+								<div class="check-box">
+									<input type="checkbox" <if condition="(!empty($data['return_cash']) && in_array($lv['id'],$data['return_cash']['res_level']))">checked </if> value="{$lv.id}" placeholder="" name="res_level[]" required>{$lv.lev_code}{$lv.id}--{$lv.levelname}
+								</div>
+
+							</volist>
+
+
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>限购个数：</label>
+						<div class="formControls col-xs-8 col-sm-9">
+							<input type="number" class="input-text radius" value="{$data['return_cash']? $data['return_cash']['res_num'] : ''}" placeholder="" name="res_num" style="width:90%" required>
+						</div>
+					</div>
+					<div class="row cl zerobuy">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>活动时间：</label>
+						<div class="formControls col-xs-8 col-sm-9">
+							开始时间:<input type="text" name="start_time" id="countTimestart" onfocus="selecttime(1)" value="{$data['return_cash']? date('Y-m-d H:i:s',$data['return_cash']['start_time']) : ''}" size="17" class="date" readonly style="height: 25px;"> - 结束时间:<input type="text" name="end_time" id="countTimeend" onfocus="selecttime(2)" value="{$data['return_cash']? date('Y-m-d H:i:s',$data['return_cash']['end_time']) : ''}" size="17"  class="date" readonly style="height: 25px;">
+						</div>
+					</div>
+					<div class="row cl">
+						<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
+						<div class="formControls col-xs-8 col-sm-9">
+							<textarea name="description" class="textarea radius" placeholder="活动描述：限制等级1-10级，限制购买数量10个，活动时间2018-05-01——2018-05-30">{$data['return_cash']? $data['return_cash']['description'] : ''}</textarea>
+						</div>
+					</div>
+					<div class="row cl">
+						<div class="formControls col-xs-8 col-sm-9" style="margin-left: 230px">
+							<input type="button" id="submit-zero"   value="提交" class="btn btn-success radius">
+						</div>
+					</div>
+				</form>
+				<!--end 0元购-->
+				<elseif  condition="$data['acttype'] eq 4"/>
+				<!--start 爆品库-->
+				<div class="page-container">
+					<div style="margin-left: 100px;"><span class="head head1" style="background: #3c9be1">设置爆品库V0-V10佣金比例</span>
+						<span class="head head2">设置爆品库V11-V12佣金比例</span>
+					</div>
+					<div class = "setprice">
+						<form  action="{:U('Admin/Goods/Goods/addExp')}" method="post" class="form form-horizontal" >
+
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									{$data.goods_name}
+									<input type="hidden" class="input-text" value="{$data.id}" placeholder="" name="goods_id" style="width:90%" required>
+									<input type="hidden" class="input-text" value="0" placeholder=""  name="exp_type" style="width:90%" required>
+									<input type="hidden" class="input-text" value="<?=$normalUser['id']?>" placeholder=""  name="exp_id" style="width:90%" required>
+								</div>
+							</div>
+
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V10价格：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="goods_price"  value="<?=$normalUser['goods_price']?>" class="input-text" style="width:70%">
+									元</div>
+							</div>
+
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V10佣金上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="ratio[]"  placeholder="" value="<?=$normalUser['exp_json'][0]['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V12佣金上上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="ratio[]"  placeholder="" value="<?=$normalUser['exp_json'][0]['sup']['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V11-V12佣金上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="ratio[]"  placeholder="" value="<?=$normalUser['exp_json'][1]['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V12佣金上上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="ratio[]"  placeholder="" value="<?=$normalUser['exp_json'][1]['sup']['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+
+
+							<div class="row cl">
+								<div class="formControls col-xs-8 col-sm-9" style="margin-left: 285px">
+									<input type="submit"  value="提交" class="btn btn-success radius">
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class = "set_level_conf" style="display: none">
+						<form  action="{:U('Admin/Goods/Goods/addExp')}" method="post" class="form form-horizontal">
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									{$data.goods_name}
+									<input type="hidden" class="input-text" value="{$data.id}" placeholder=""  name="goods_id" style="width:90%" required>
+									<input type="hidden" class="input-text" value="1" placeholder=""  name="exp_type" style="width:90%" required>
+									<input type="hidden" class="input-text" value="<?=$member['id']?>" placeholder=""  name="exp_id" style="width:90%" required>
+								</div>
+							</div>
+
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V11-V12价格：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="member_price"  placeholder=""  value="<?=$member['goods_price']?>" class="input-text" style="width:70%">元
+								</div>
+							</div>
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V12佣金上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="member_ratio[]"  placeholder="" value="<?=$member['exp_json'][0]['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+							<div class="row cl">
+								<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>V1-V12佣金上上级比例设置：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+									<input type="text" name="member_ratio[]"  placeholder="" value="<?=$member['exp_json'][0]['sup']['ratio']?>" class="input-text" style="width:62%;margin-top: 15px;" required> %
+								</div>
+							</div>
+
+
+							<div class="row cl">
+								<div class="formControls col-xs-8 col-sm-9" style="margin-left: 285px">
+									<input type="submit"  value="提交" class="btn btn-success radius">
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+				</div>
+				<!--end 爆品库-->
+
+
+			<else/>
+
+				暂无
+			</if>
+
+		</div>
+		<div class="tabCon">
+			<!-- 商品信息 -->
+
+			<form action="{:U('/Admin/Goods/GoodsSpec/add')}" method="post" class="form form-horizontal" id="form-spec-add" enctype="multipart/form-data">
+
+
+				<input type="hidden" name="goods_id" class="goods_id" value="{$data.id}">
+
+				<volist name="goodsSpec" id="vo">
+
+					<div class="row cl">
+						<input type="hidden" name="goods_spec_id" class="goods_spec_id" value="{$vo.goods_spec_id}">
+						<label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>商品规格</label>
+						<div class="formControls col-xs-3 col-sm-1"> <span class="select-box">
+					<select name="articlecolumn" class="select select-spec">
+						<option value="0">选择商品规格</option>
+						<volist name="spec" id="v">{$vo.spec_id}--{$v.spec_id}
+
+							<?php
+								if($v['spec_id'] == $vo['spec_id']) {
+							?>
+							<option value="{$v.spec_id}" selected="selected">{$v.spec_title}</option>
+							<?php
+							} else {
+							?>
+							<option value="{$v.spec_id}">{$v.spec_title}</option>
+							<?php
+							}
+
+							?>
+
+						</volist>
+					</select>
+					</span>
+						</div>
+
+						<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>规格属性</label>
+						<div class="formControls col-xs-3 col-sm-1"> <span class="select-box">
+					<select name="articlecolumn" class="select select-spec-attr">
+						<option value="{$vo.addr_id}">{$vo.addr_title}</option>
+					</select>
+					</span>
+						</div>
+
+						<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品增值</label>
+						<div class="formControls col-xs-3 col-sm-1">
+							<input type="number" step="0.01" class="input-text incre_price" value="{$vo.incre_price}" placeholder="商品增值"  name="incre_price">
+						</div>
+
+						<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品库存</label>
+						<div class="formControls col-xs-3 col-sm-1">
+							<input type="number" min="0" max="999999999" class="input-text goods_num" value="{$vo.goods_num}" placeholder="商品库存"  name="goods_num">
+						</div>
+
+						<div class="formControls col-xs-3 col-sm-2">
+
+							<if condition="$vo.status eq 0">
+								<button onClick="" class="btn btn-warning radius btn-submit-status" type="button"><i class="Hui-iconfont">&#xe631;</i> 停用</button>
+								<elseif condition="$vo.status eq 1"/>
+								<button onClick="" class="btn btn-default radius btn-submit-status" type="button"><i class="Hui-iconfont">&#xe601;</i> 启用</button>
+							</if>
+							<button class="btn btn-secondary radius btn-submit" type="button"
+							><i class="Hui-iconfont">&#xe6df;</i>编辑</button>
+						</div>
+					</div>
+				</volist>
+
+				<div class="row cl">
+					<label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>商品规格</label>
+					<div class="formControls col-xs-3 col-sm-1"> <span class="select-box">
+				<select name="articlecolumn" class="select select-spec">
+					<option value="0">选择商品规格</option>
+					<volist name="spec" id="vo">
+						<option value="{$vo.spec_id}">{$vo.spec_title}</option>
+					</volist>
+				</select>
+				</span>
+					</div>
+
+					<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>规格属性</label>
+					<div class="formControls col-xs-3 col-sm-1"> <span class="select-box">
+				<select name="articlecolumn" class="select select-spec-attr">
+					<option value='0'>选择规格属性</option>
+				</select>
+				</span>
+					</div>
+
+					<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品增值</label>
+					<div class="formControls col-xs-3 col-sm-1">
+						<input type="number" step="0.01" class="input-text incre_price" value="" placeholder="商品增值" id="incre_price" name="incre_price">
+					</div>
+
+					<label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品库存</label>
+					<div class="formControls col-xs-3 col-sm-1">
+						<input type="number" min="0" max="999999999" class="input-text goods_num" value="" placeholder="商品库存" id="keywords" name="goods_num">
+					</div>
+
+					<div class="formControls col-xs-3 col-sm-2">
+						<button onClick="" class="btn btn-secondary radius btn-submit" type="button"
+						><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<script>
+    $('form').on('click',' .del',function () {
+//       var img_num = $('#img_parents').children().length;
+//       if(img_num == 1){
+//           alert('有且只有一张图时，不能删除!');
+//           return false;
+//	   }
+       var img_src = $(this).next()[0].src;
+        $.ajax({
+            type: 'GET',
+            url: "{:U('Admin/Goods/Goods/del_img')}?id={$data.id}",
+            data : {img_src:img_src},
+            dataType: 'json',
+            success: function(data){
+                if(data['status'] ==1){
+                    alert('删除成功!');
+                    location.reload();
+                }
+            },
+            error:function(data) {
+
+            }
+        });
+    });
+</script>
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__PUBLIC_ADMIN__/ueditor/";
+    $(document).ready(function () {
+        UE.getEditor('info', {
+            initialFrameHeight: 500,
+            initialFrameWidth: 875,
+        });
+    });
+</script>
+
+<script>
+    $("#cancel").click(function () {
+        document.getElementById("form-article-add").reset();
+    })
+</script>
+
+<script>
+    function decimal(num,v){
+        var vv = Math.pow(10,v);
+        return Math.round(num*vv)/vv;
+    }
+</script>
+<!--选项卡JS-->
+<script>
+	$(function(){
+		$.Huitab("#tab_demo .tabBar span","#tab_demo .tabCon","current","click","{$select}");
+	});
+	jQuery.Huitab =function(tabBar,tabCon,class_name,tabEvent,i){
+		var $tab_menu=$(tabBar);
+		// 初始化操作
+		$tab_menu.removeClass(class_name);
+		$(tabBar).eq(i).addClass(class_name);
+		$(tabCon).hide();
+		$(tabCon).eq(i).show();
+
+		$tab_menu.bind(tabEvent,function(){
+			$tab_menu.removeClass(class_name);
+			$(this).addClass(class_name);
+			var index=$tab_menu.index(this);
+			$(tabCon).hide();
+			$(tabCon).eq(index).show()
+		});
+
+	}
+</script>
+<!--商品编辑-->
+<!--520活动提交JS-->
+<script>
+	$('#submit_activity').click(function(){
+		var data = $('#form-activity-add').serialize();
+		$.ajax({
+			url:"{:U('Admin/Goods/Goods/addActivity')}",
+			type:"POST",
+			data:data,
+			success:function(res){
+				if(res.code == 3000) {
+					$.Huimodalalert(res.msg,2000);
+				}else{
+					$.Huimodalalert(res.msg,1000);
+					setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+						location.reload();//页面刷新
+					},1000);
+				}
+			}
+		})
+	});
+</script>
+
+<!--0元购JS-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script>
+	$(function(){
+		$('#level>input:last').css('display','');
+	});
+	function selecttime(flag){
+		if(flag==1){
+			var endTime = $("#countTimeend").val();
+			if(endTime != ""){
+				WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:endTime})}else{
+				WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})}
+		}else{
+			var startTime = $("#countTimestart").val();
+			if(startTime != ""){
+				WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:startTime})}else{
+				WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})}
+		}
+	}
+	// 添加等级
+	$('#addLevel').click(function(){
+		var html = '<input type="number" style="margin-top: 10px;display: block; width: 100px;" class="input-text radius" value="" placeholder="" name="res_level[]" required>';
+		$('#level').append(html);
+	});
+	// 删除等级
+	$('#rmLevel').click(function(){
+		$('#level>input:last').remove()
+		$('#level>input:last').css('display','');
+	});
+	$('#submit-zero').click(function(){
+		var data = $('#form-zero-add').serialize();
+		$.ajax({
+			url:"{:U('Admin/Goods/Goods/addActivity')}",
+			type:"POST",
+			data:data,
+			success:function(res){
+				if(res.code == 3000) {
+					$.Huimodalalert(res.msg,2000);
+				}else{
+					$.Huimodalalert(res.msg,1000);
+					setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+						location.reload();//页面刷新
+					},1000);
+				}
+			}
+		})
+	});
+
+</script>
+<!--规格JS-->
+
+<script type="text/javascript">
+
+	_html = '<div class="row cl"><label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>商品规格</label><div class="formControls col-xs-3 col-sm-1"> <span class="select-box"><select name="articlecolumn" class="select select-spec"><option value="0">选择商品规格</option><volist name="spec" id="vo"><option value="{$vo.spec_id}">{$vo.spec_title}</option></volist></select></span></div><label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>规格属性</label><div class="formControls col-xs-3 col-sm-1"> <span class="select-box"><select name="articlecolumn" class="select select-spec-attr"><option value="0">选择规格属性</option></select></span></div><label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品增值</label><div class="formControls col-xs-3 col-sm-1"><input type="number" step="0.01" class="input-text incre_price" value="" placeholder="商品增值" id="incre_price" name="incre_price"></div><label class="form-label col-xs-3 col-sm-1"><span class="c-red">*</span>商品库存</label><div class="formControls col-xs-3 col-sm-1"><input type="number" min="0" max="999999999" class="input-text goods_num" value="" placeholder="商品库存" id="keywords" name="goods_num"></div><div class="formControls col-xs-3 col-sm-2"><button class="btn btn-secondary radius btn-submit" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button></div></div>';
+	// 选择商品规格
+	$('#form-spec-add').on('change', ".select-spec", function(){
+
+		spec_id = $(this).val();
+		spec_name = $(this).find("option:selected").text();
+
+		// 获取规格的属性
+		_option = "<option value='0'>选择规格属性</option>";
+		_spec = $(this).parent().parent().parent();
+		//console.log(_spec);
+		$.get("{:U('admin/Goods/GoodsSpec/getSpecAttr')}?id="+spec_id,function(data, status){
+
+			for (var i = data.length - 1; i >= 0; i--) {
+				_option += "<option value='"+data[i].addr_id+"'>"+data[i].addr_title+"</option>";
+			}
+
+			_spec.find('.select-spec-attr').empty();
+			_spec.find('.select-spec-attr').append(_option)
+		});
+	});
+
+	// 添加商品规格
+	$('#form-spec-add').on('click', '.btn-submit', function(){
+
+		// 商品规格id
+		goods_spec_id = $(this).parent().parent().find('.goods_spec_id').val();
+		// 商品id
+		goods_id = $('.goods_id').val();
+
+		// 获取规格
+		_doc_spec = $(this).parent().parent().find('.select-spec');
+		spec_id = _doc_spec.val();
+		spec_name = _doc_spec.find("option:selected").text();
+
+		// 获取规格属性
+		_doc_spec = $(this).parent().parent().find('.select-spec-attr');
+		attr_id = _doc_spec.val();
+		attr_name = _doc_spec.find("option:selected").text();
+
+		// 获取商品增值
+		incre_price =  $(this).parent().parent().find('.incre_price').val();
+
+		// 获取商品库存
+		goods_num =  $(this).parent().parent().find('.goods_num').val();
+
+
+		//console.log(spec_id, spec_name, attr_id, attr_name,goods_num, incre_price, goods_spec_id);
+		_doc_opt = $(this)
+		/* _input = '<input type="hidden" name="goods_spec_id" class="goods_spec_id" value="'+2222+'">';
+		 _doc_opt.parent().parent().after(_html)
+		 _doc_opt.parent().parent().append(_input);
+		 _doc_opt.parent().html('<button class="btn btn-warning radius btn-submit" type="button"><i class="Hui-iconfont">&#xe601;</i> 停用</button><button class="btn btn-secondary radius btn-submit" type="button"><i class="Hui-iconfont">&#xe632;</i> 编辑</button>');
+		 return ;*/
+		// 提交数据
+		$.post("{:U('admin/Goods/GoodsSpec/save')}",{
+			goods_spec_id:goods_spec_id,
+			goods_id:goods_id,
+			spec_id:spec_id,
+			spec_name:spec_name,
+			attr_id:attr_id,
+			attr_name:attr_name,
+			incre_price:incre_price,
+			goods_num:goods_num,
+		},function(result){
+
+			if(result.code == 1){ //添加成功
+				if(!goods_spec_id) {
+					_input = '<input type="hidden" name="goods_spec_id" class="goods_spec_id" value="'+result.goods_spec_id+'">';
+					_doc_opt.parent().parent().after(_html)
+					_doc_opt.parent().parent().append(_input);
+					_doc_opt.parent().html('<button class="btn btn-warning radius btn-submit" type="button"><i class="Hui-iconfont">&#xe601;</i> 停用</button><button class="btn btn-secondary radius btn-submit" type="button"><i class="Hui-iconfont">&#xe632;</i> 编辑</button>');
+				}
+
+				layer.msg(result.msg);
+			} else {
+				layer.msg(result.msg);
+			}
+		});
+	});
+
+	// 启用停用
+	$('.btn-submit-status').click(function(){
+		goods_spec_id = $(this).parent().parent().find('.goods_spec_id').val();
+		_doc_opt = $(this);
+
+
+		$.post("{:U('admin/Goods/GoodsSpec/setSataus')}", {
+			goods_spec_id:goods_spec_id
+		}, function(result){
+			if(result.code == 1){ // 设置成功!
+				layer.msg(result.msg);
+				if(result.status == 0){ // 启用
+					_doc_opt.removeClass('btn-default').addClass('btn-warning');
+					_doc_opt.parent().parent().find('.btn-submit-status').html('<i class="Hui-iconfont">&#xe631;</i> 启用')
+				} else if(result.status == 1){ // 停用
+					_doc_opt.removeClass('btn-warning').addClass('btn-default');
+					_doc_opt.parent().parent().find('.btn-submit-status').html('<i class="Hui-iconfont">&#xe601;</i> 停用')
+				}
+			} else {
+				layer.msg('设置失败!');
+			}
+		});
+	});
+</script>
+<script>
+
+    $(".head1").click(function () {
+        $(".setprice").css('display','block');
+        $(".head1").css('background','#3c9be1');
+        $(".head2").css('background','grey');
+        $(".set_level_conf").css('display','none');
+    });
+
+    $(".head2").click(function () {
+        $(".set_level_conf").css('display','block');
+        $(".head2").css('background','#3c9be1');
+        $(".head1").css('background','grey');
+        $(".setprice").css('display','none');
+    })
+
+
+</script>
+
+</body>
+</html>

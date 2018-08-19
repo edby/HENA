@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>合纳共享</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+</head>
+<style type="text/css">
+    .mui-content > .mui-table-view:first-child {
+        margin-top: 0;
+    }
+
+    .mui-table-view:after {
+        background-color: #FFFFFF;
+        border-bottom: 10px solid #f5f5f5;
+    }
+
+    body {
+        background: #F6F6F6;
+    }
+
+    .mui-bar-nav {
+        background: #f2f2f2;
+    }
+
+    .nav_title > a, .nav_title > h1 {
+        color: #000000 !important;
+    }
+
+    .mui-switch {
+        width: 40px;
+        height: 16px;
+    }
+
+    .mui-switch .mui-switch-handle {
+        top: -3.5px;
+        left: 1px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .mui-switch.mui-active .mui-switch-handle {
+        transition-duration: 0.2s;
+        transform: translate(23px, 0px)
+    }
+
+    .mui-switch:before {
+        font-size: 12px;
+        position: absolute;
+        right: 1px;
+        content: 'off';
+        text-transform: uppercase;
+        color: #999;
+        top: -116%;
+    }
+
+    .mui-switch.mui-active:before {
+        right: auto;
+        left: 0px;
+        content: 'on';
+        color: #fff;
+        top: -116%;
+    }
+
+    .order_list {
+        border-bottom: 5px solid #F2F2F2;
+        padding: 10px 15px;
+    }
+
+    .mui-switch.mui-active {
+        border-color: #c0a369;
+        background-color: #c0a369;
+    }
+    .details_activitys > li > span {
+        color: #c0a369;
+    }
+
+    .details_activitys > li > span:first-child {
+        border: 1px solid #c0a369;
+        font-size: 12px;
+        border-radius: 3px;
+        padding: 0 2%;
+        margin: 0 2%;
+    }
+</style>
+<header class="mui-bar mui-bar-nav nav_title">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">确认订单</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view" style="padding: 15px 0">
+        <li class="mui-table-view-cell" id="addAddress" data-addressId="{$address.id}">
+            <if condition="$address">
+                <div class="mui-row mui-navigate-right">
+                    <div class="mui-col-xs-12">
+                        {$address.realname} <span>{$address.tel}</span>
+                    </div>
+                    <div class="mui-col-xs-12">
+                        {$address.pcaaddress} {$address.detail}
+                    </div>
+                </div>
+                <else/>
+                <div class="mui-row mui-navigate-right">
+                    <img src="/Public/Home/images/_pic52.png" alt="" width="6%"
+                         style="margin-bottom: -1%;margin-right: 2%;"><span>请选择地址</span>
+                </div>
+            </if>
+        </li>
+    </ul>
+    <div class="mui-row order_list">
+        <div class="mui-col-xs-3">
+            <img src="<?=C('RESOURCES_DOMAIN').$goods['goods_logo']?>" class="mui-slider"/>
+        </div>
+        <div class="mui-col-xs-9">
+            <h4>{$goods.goods_name}</h4>
+            <p>规格：
+                <if condition="empty($spec)"> 普通规格
+
+                    <else/>
+                    {$spec}
+                </if>
+            </p>
+            <p><span>运费：{$totalExp}</span></p>
+            <p><span>单价：￥{$unitPrice} <small class="mui-pull-right">X {$num}</small></span></p>
+        </div>
+    </div>
+    <!--盟豆-->
+    <if condition="$points gt 0">
+        <ul class="mui-table-view details_activitys">
+            <li class="mui-table-view-cell" style="margin-top:-5px;margin-bottom:5px">
+                活动 <span>盟豆</span>赠送 <span>{$points}</span>盟豆
+            </li>
+            <div style="width:100%;height:2px"></div>
+        </ul>
+    </if>
+    <?php
+            if($hBalance > 0){
+    ?>
+    <div style="position: relative;margin-bottom: 5%;line-height: 40px;padding: 0 15px;margin-right: 5%">
+        <span>纳豆抵扣：使用<?=setCurr($hBalance/10)?>纳豆抵扣{$hBalance}元 </span>
+        <div class="mui-switch" style=" position: absolute;top: 26%; right: 0;" id="mySwitch">
+            <div class="mui-switch-handle"></div>
+        </div>
+    </div>
+    <?php
+            }
+            ?>
+    <!-- <div class="mui-input-row roder_news">
+        <label>选填</label>
+        <input type="text" placeholder="给商家留言(45个字以内)">
+    </div> -->
+</div>
+<nav class="mui-bar mui-bar-tab order_tab">
+    <span class="mui-tab-label " id="total-money" data-total="{$totalMoney}">实付：{$totalMoney}</span>
+    <span class="mui-tab-label" id="btn-order" data-goods_id="{$goods.id}" data-address_id="{$address.id}"
+          data-goods_num="{$num}" data-spec="{$specData}" data-deduc="{$deduc}" data-orderId="{$order['id']}">去付款</span>
+</nav>
+<body>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type='text/javascript' src='/Public/layer/layer.js'></script>
+<script type="text/javascript">
+    mui.init()
+    // 选择地址
+    $("#addAddress").click(function () {
+
+        goods_id = getUrlParam('goods_id');
+        num = getUrlParam('num');
+       
+        spec = "<?php echo urlencode($_GET['spec']) ?>";
+
+        goBackUrl = 'http://' + window.location.host + "{:U('order/confirmOrder')}?goods_id=" + goods_id + "&num=" + num + "&spec=" + spec;
+
+        url = 'http://' + window.location.host + "{:U('/Address/index')}?gobackurl=" + encodeURIComponent(goBackUrl)
+
+        window.location.href = url
+    })
+    //判断纳豆开关
+    $(function () {
+        var id = $('#btn-order').data('goods_id');
+        var num = $('#btn-order').data('goods_num');
+        document.getElementById("mySwitch").addEventListener("toggle", function (event) {
+            if (event.detail.isActive) {
+                console.log("你启动了开关");
+                $.ajax({
+                    url: 'http://' + window.location.host + '/api/goods/goods/deduc-balance?id=' + id + '&num=' + num,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data.code == 2000){
+                            total = $('#total-money').data('total')
+                            total = total - data.data
+                            totalToFixnd = total.toFixed(2)
+                            html = '实付：'+totalToFixnd+'<section style="display: inline-block;margin-left: 2%;color: #FF5053;">(纳豆抵扣：'+data.data+')</section>'
+                            $('#total-money').html(html);
+                            $('#btn-order').data('deduc', 1)
+                        } else {
+                        }
+                        console.log(data)
+                    }
+                })
+            } else {
+                total = $('#total-money').data('total')
+                html = '实付：'+total
+                $('#total-money').html(html);
+                $('#btn-order').data('deduc', 0)
+
+                console.log("你关闭了开关");
+            }
+        })
+    })
+
+    // 提交订单
+    $("#btn-order").click(function () {
+        console.log($(this));
+        var goods_id = $(this).data('goods_id');
+        var address_id = $(this).data('address_id');
+        var goods_num = $(this).data('goods_num');
+        var spec = $(this).data('spec');
+        var deduc = $(this).data('deduc');
+        $.post(
+            "{:U('order/createOrder')}",
+            {
+                goods_id: goods_id,
+                goods_num: goods_num,
+                address_id: address_id,
+                spec: spec,
+                deduc: deduc,
+            },
+            function (res) {
+                console.log(res);
+                if (res.status == 1) {
+                    layer.msg(res.info);
+                    window.location.href = "http://" + window.location.host + res.url
+                } else if (res.status == 0) {
+                    layer.msg(res.info);
+                } else {
+                    layer.msg('操作错误!');
+                }
+            }
+        )
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems','onMenuShareQQ','onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+
+</html>

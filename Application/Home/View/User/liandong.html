@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>加入合纳联董招募</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/animate.css"/>
+</head>
+<style type="text/css">
+    .mui-content {
+        margin-bottom: 0;
+    }
+</style>
+<body>
+<div class="mui-content jion_cont">
+    <div class="jion">
+        <div class="mui-row">
+            <div class="mui-col-xs-2"><img src="http://img.hena360.cn/_ico07.png" class="mui-slider"/></div>
+            <div class="mui-col-xs-10"><img src="http://img.hena360.cn/_ico6.png" class="mui-slider"/></div>
+            <div class="mui-col-xs-12 join_Recruit"><img src="http://img.hena360.cn/_ico19.png"/></div>
+            <div class="mui-col-xs-12 jion_Offering"><img src="http://img.hena360.cn/_ico18 (3).png"/></div>
+
+            <div class="mui-col-xs-12"><img src="http://img.hena360.cn/_ico14.png"/></div>
+            <div class="mui-col-xs-12 jion_title">
+                <img src="http://img.hena360.cn/_ico1.png"/>
+                <img src="http://img.hena360.cn/_ico4.png"/>
+                <img src="http://img.hena360.cn/_ico18.png"/>
+                <img src="http://img.hena360.cn/_ico8.png"/>
+                <img src="http://img.hena360.cn/_ico2.png"/>
+                <img src="http://img.hena360.cn/_ico22.png"/>
+                <img src="http://img.hena360.cn/_ico9.png"/>
+                <img src="http://img.hena360.cn/_ico3.png"/>
+            </div>
+            <div class="mui-col-xs-12"><img src="http://img.hena360.cn/_ico11.png"/></div>
+            <div class="mui-col-xs-12"><img src="http://img.hena360.cn/_ico15.png" class="mui-slider"/></div>
+            <div class="mui-col-xs-12"><img src="http://img.hena360.cn/_ico10.png" class="mui-slider"/></div>
+        </div>
+    </div>
+    <img src="http://img.hena360.cn/join1_01.jpg" class="mui-slider"/>
+    <img src="http://img.hena360.cn/join1_02.jpg" class="mui-slider"/>
+    <img src="http://img.hena360.cn/join1_03.jpg" class="mui-slider"/>
+    <img src="http://img.hena360.cn/join1_04.jpg" class="mui-slider"/>
+    <if condition="$flag eq 0">
+        <a href="{:U('information')}">立即成为联董</a>
+        <else/>
+        <a href="{:U('Home/User/index')}">返回个人中心</a>
+    </if>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/script.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems', 'onMenuShareQQ', 'onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</html>

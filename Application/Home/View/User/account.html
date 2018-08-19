@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人资料</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+</head>
+<style type="text/css">
+	.mui-content > .mui-table-view:first-child {
+		margin-top: 0;
+	}
+	.mui-toast-container {
+		bottom: 40% !important;/*离布局底部的距离*/
+	}
+</style>
+<body>
+
+<div class="mui-content account">
+	<ul class="mui-table-view">
+		<li class="mui-table-view-cell">
+			<a class="">
+				个人资料
+			</a>
+		</li>
+		<li class="mui-table-view-cell">
+			<a class="mui-navigate-right">
+				头像
+				<if condition="$info.avatar != ''">
+				<img src="{$info.avatar}" class="mui-slider">
+			<else />
+				<img src="http://img.hena360.cn/head_img.png" class="mui-slider">
+			</if>
+			</a>
+		</li>
+		<li class="mui-table-view-cell">
+			<a class="mui-navigate-right">
+				用户名  <span class="mui-pull-right">{$info.nickname}</span>
+			</a>
+		</li>
+		<!-- <li class="mui-table-view-cell">
+           <a class="mui-navigate-right">
+               生日  <span class="mui-pull-right">1993-05-46</span>
+           </a>
+       </li> -->
+		<!-- <li class="mui-table-view-cell">
+           <a class="">
+               账号安全
+           </a>
+       </li> -->
+		<li class="mui-table-view-cell">
+            <?php 
+                if($info['tel'] == ''){
+            ?>
+            <a class="mui-navigate-right" href="<?=C('JUMP_DOMAIN').'/html/view/user/setbinding.html'?>">
+                手机号  <span class="mui-pull-right">{$info.tel}</span>
+            </a>
+            <?php
+                } else {
+            ?>
+            <a class="mui-navigate-right">
+                手机号  <span class="mui-pull-right">{$info.tel}</span>
+            </a>
+            <?php
+            }
+            ?>
+
+		</li>
+
+            <?php
+                if($info['inv_id'] == 0){
+            ?>
+        <li class="mui-table-view-cell" id="setBinding">
+            <a class="mui-navigate-right" href="<?=U('/user/setBinding')?>">
+                推荐人  <span class="mui-pull-right">{$nickname}</span>
+            </a>
+        </li>
+            <?php
+                } else {
+            ?>
+        <li class="mui-table-view-cell">
+                推荐人  <span class="mui-pull-right">{$nickname}</span>
+        </li>
+            <?php
+            }
+            ?>
+
+
+	</ul>
+	 <button type="button" id="logout">退出登陆</button>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+<script src="__PUBLIC_HOME__/js/config.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	//退出登陆
+	$("#logout").click(function () {
+        $.ajax({
+            url:'/api/user/index/logout',
+			type:'get',
+			dataType:'json',
+			success:function (res) {
+                console.log(res)
+				if(res.code==2000){
+				    mui.toast(res.message)
+					setTimeout(function () {
+						window.location.href='http://'+window.location.host
+                    },3000)
+				}
+            }
+        })
+    })
+//绑定推荐人
+		$('#setBinding').click(function () {
+            window.location.href= '/User/setBinding'
+        })
+</script>
+</body>
+</html>

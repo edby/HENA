@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合纳共享联盟平台成交金额</title>
+</head>
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        background: url("http://img.hena360.cn/520_data.jpg") no-repeat center;
+        background-size: 100% 100%;
+        font-family: "微软雅黑";
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .time {
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin: 0;
+        padding-top: 22.1%;
+        margin-left: -5%;
+        font-weight: 500;
+    }
+    .pay {
+        color: #fbfbbb;
+        font-size: 11rem;
+        font-weight: 500;
+        margin: 0;
+        margin-top: 1%;
+    }
+    .pay small {
+        font-size: 3rem;
+    }
+    @media screen and (max-width: 1300px) {
+        .time {
+            color: #ffffff;
+            font-size: 2rem;
+            margin: 0;
+            padding-top: 22.1%;
+            margin-left: -15%;
+        }
+        .pay {
+            margin-top: 1%;
+        }
+    }
+</style>
+<body>
+<h3 class="time">00 ：00 ：00</h3>
+
+<h1 class="pay"><small>￥ </small><span>8<span style="background: url('http://img.hena360.cn/comma.png') no-repeat bottom;background-position: 12px 160px;">&nbsp;</span>888<span style="background: url('http://img.hena360.cn/comma.png') no-repeat bottom;background-position: 12px 160px;">&nbsp;</span>888.88
+</span><small style="font-size: 2.5rem"> 元</small></h1>
+<div class="isExit" data-status="0" style="display:none"></div>
+</body>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script>
+    $(function () {
+        $("body").height($(window).height()).width($(window).width()-40);
+        function _time() {
+            setInterval(function () {
+                var myDate = new Date();//获取系统当前时间
+                var FullYear = myDate.getFullYear(); //获取完整的年份
+                var Month = myDate.getMonth()+1; //获取当前月份
+                var _Date = myDate.getDate(); //获取当前日
+                var Hours = myDate.getHours(); //获取当前小时数(
+                var Minutes = myDate.getMinutes(); //获取当前分钟数
+                Minutes = Minutes < 10 ? "0" + Minutes : Minutes;
+                var Seconds = myDate.getSeconds(); //获取当前秒数
+                Seconds = Seconds < 10 ? "0" + Seconds : Seconds;
+                var Time = parseInt(myDate.getMilliseconds()/10);
+                Time = Time < 10 ? "0" + Time : Time;
+                $(".time").text(Hours+" ："+Minutes+" ："+Seconds+" ："+Time)
+            },10)
+        }
+        _time();
+        $.ajax({
+            url: "{:U('Order/apiordermoney')}",
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                if(data.code==2000){
+                    console.log(data);
+                    money = data.money.toString();
+
+                    len = 10 - money.length;
+                    str = '';
+                    for(i= 0; i < len; i++) {
+                        str += '0';
+                    }
+                    show = str +money;
+                    $(".pay>span").html(getStr(show));
+                    $('.isExit').data('status', 1)
+                }
+            }
+        })
+        function apiordermoney() {
+            setInterval(function () {
+                isExit = $('.isExit').data('status')
+                if(isExit == 1){
+                    $.ajax({
+                        url: "{:U('/Order/apiordermoney')}",
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (data) {
+                            if(data.code==2000){
+                                money = data.money.toString();
+                                console.log(money[0]);
+
+                                len = 10 - money.length;
+                                str = '';
+                                for(i= 0; i < len; i++) {
+                                    str += '0';
+                                }
+                                show = str + money;
+                                $(".pay>span").html(getStr(show));
+                                $('.isExit').data('status', 1);
+                            }
+                        }
+                    })
+                }
+            },500)
+        }
+        apiordermoney()
+    })
+    function getStr(str)
+    {
+        _str = '';
+
+
+        i = str.length - 1;
+        for(i,j=1; i >= 0; i--,j++) {
+            _str = str[i] +_str;
+            if(j % 3 == 0 && j != 3 ){
+                _str =  '<span style="background: url('+img+') no-repeat bottom;' +
+                    'background-position:10px 160px;">&nbsp;</span>' + _str;
+            }
+
+        }
+        return _str;
+    }
+</script>
+</html>

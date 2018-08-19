@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+</head>
+<style type="text/css">
+    .mui-radio.mui-left input[type='radio'],
+    .mui-checkbox.mui-left input[type='checkbox'] {
+        left: 5%;
+    }
+
+    select,
+    textarea,
+    input[type='text'],
+    input[type='search'],
+    input[type='password'],
+    input[type='datetime'],
+    input[type='datetime-local'],
+    input[type='date'],
+    input[type='month'],
+    input[type='time'],
+    input[type='week'],
+    input[type='number'],
+    input[type='email'],
+    input[type='url'],
+    input[type='tel'],
+    input[type='color'] {
+        margin-bottom: 0;
+        border-radius: 0px;
+    }
+
+    .mui-radio label,
+    .mui-checkbox label {
+        padding-right: 0;
+    }
+</style>
+
+<body>
+
+<div class="mui-content shopping">
+    <volist name="data" id="vo">
+        <div class="shopping_list">
+            <div class="mui-row">
+                <div class="mui-col-xs-2">
+                    <div class="mui-input-row mui-checkbox mui-left">
+                        <label>checkbox</label>
+                        <input name="checkbox1" type="checkbox">
+                    </div>
+                </div>
+
+                <div class="mui-col-xs-3"><a href="{:U('Goods/details')}?id={$vo.goodsid}"><img src="{$vo.goods_pic}" /
+                    class="mui-slider"><input type="hidden" name="" class="img" value="{$vo.goods_pic}"></a></div>
+                <div class="mui-col-xs-6">
+                    <a href="{:U('Goods/details')}?id={$vo.goodsid}">
+                        <h4>{$vo.goods_name}</h4>
+                        <p>规格:<span class="spec">{$vo.spec}</span></p>
+                        ￥：<span class="price">{$vo.goods_price}</span>
+                    </a>
+                    <div class="shoping_number"><span class="reduce">-</span>
+                        <input type="text" name="" id="" value="{$vo.goods_num}" class="num" price='200'/>
+                        <input type="hidden" name="" id="" value="{$vo.id}" class="num2" price='200'/>
+                        <span class="add">+</span>
+                    </div>
+                </div>
+
+                <div class="mui-col-xs-1">
+                    <i class="fa fa-trash" aria-hidden="true" onclick="delshopping({$vo.id})"></i>
+                </div>
+            </div>
+        </div>
+    </volist>
+
+
+    <!-- 			<div class="shopping_new_Recommend">
+                    <img src="http://img.hena360.cn/title1.png" class="mui-slider" />
+                    <div class="mui-row">
+                        <div class="mui-col-xs-6">
+                            <a href="">
+                                <img src="http://img.hena360.cn/commodity .png" alt="" class="mui-slider" />
+                                <h4>荣美CHAO仙！ 重工刺绣 桑蚕丝V领衬衣</h4>
+                                <p>￥：435.00 <span class="pull-right">月销5401</span></p>
+                            </a>
+                        </div>
+                        <div class="mui-col-xs-6">
+                            <a href="">
+                                <img src="http://img.hena360.cn/commodity .png" alt="" class="mui-slider" />
+                                <h4>荣美CHAO仙！ 重工刺绣 桑蚕丝V领衬衣</h4>
+                                <p>￥：435.00 <span class="pull-right">月销5401</span></p>
+                            </a>
+                        </div>
+                        <div class="mui-col-xs-6">
+                            <a href="">
+                                <img src="http://img.hena360.cn/commodity .png" alt="" class="mui-slider" />
+                                <h4>荣美CHAO仙！ 重工刺绣 桑蚕丝V领衬衣</h4>
+                                <p>￥：435.00 <span class="pull-right">月销5401</span></p>
+                            </a>
+                        </div>
+                        <div class="mui-col-xs-6">
+                            <a href="">
+                                <img src="http://img.hena360.cn/commodity .png" alt="" class="mui-slider" />
+                                <h4>荣美CHAO仙！ 重工刺绣 桑蚕丝V领衬衣</h4>
+                                <p>￥：435.00 <span class="pull-right">月销5401</span></p>
+                            </a>
+                        </div>
+                        <div class="mui-col-xs-6">
+                            <a href="">
+                                <img src="http://img.hena360.cn/commodity .png" alt="" class="mui-slider" />
+                                <h4>荣美CHAO仙！ 重工刺绣 桑蚕丝V领衬衣</h4>
+                                <p>￥：435.00 <span class="pull-right">月销5401</span></p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div> -->
+</div>
+<div class="mui-row shoping_footer">
+    <div class="mui-col-xs-3 mui-input-row mui-checkbox">
+        <label>全选</label>
+        <input name="checkbox1" type="checkbox" class="allselect">
+
+    </div>
+    <div class="mui-col-xs-6">
+        ￥：<span class="mui-tab-label Total">4000.00</span>元
+    </div>
+    <div class="mui-col-xs-3">
+        <span class="mui-tab-label">提交订单</span>
+    </div>
+</div>
+
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    $(function () {
+        getTotal();
+        $(".num").change(function () {
+            getTotal()
+        })
+
+        /*全选*/
+        $(".allselect").click(function () {
+            if ($(this).is(":checked")) {
+                $('.mui-input-row :checkbox').prop("checked", true);
+            } else {
+                $('.mui-input-row :checkbox').prop("checked", false);
+            }
+            getTotal()
+        })
+        //判断是否全部选中，全部选中全选选中，否则取消全部选中
+        $(".mui-input-row :checkbox").change(function () {
+            var count = $(".shopping >.shopping_list").length * 1;
+            var num = $('.shopping >.shopping_list :checked').length * 1;
+            if (num == count) {
+                $(".allselect").prop("checked", true);
+            } else {
+                $(".allselect").prop("checked", false);
+            }
+            getTotal()
+        })
+        $('.shopping >.shopping_list :checked').change(function () {
+            getTotal()
+        })
+        /*加*/
+        $(".add").click(function () {
+            var num = $(this).parent().find('input.num').val();
+            num = num ? num : 0;
+            num++;
+            $(this).parent().find('.num').val(num);
+            $(this).parent().find('.reduce').attr("disabled", false);
+            getTotal()
+        })
+        /*减*/
+        $(".reduce").click(function () {
+            var num = $(this).parent().find('input.num').val();
+            if (num == 1) {
+                num = 1;
+                $(this).attr("disabled", true)
+            } else {
+                num--;
+                $(this).attr("disabled", false)
+            }
+            $(this).parent().find('.num').val(num);
+            getTotal()
+        })
+
+        /*计算总价*/
+        function getTotal() {
+            var totalPrice = 0;
+            var allNode = $(".shopping>.shopping_list").has("input[type='checkbox']:checked");
+            allNode.each(function (i, v) {
+                //console.log(v.getElementsByTagName('span')[0].innerHTML);
+                var _pic = v.getElementsByClassName('price')[0].innerHTML
+                totalPrice += $(this).find('.num').val() * _pic;
+            });
+            $(".Total").text(totalPrice.toFixed(2));
+        }
+
+        $(".shoping_footer .mui-col-xs-3 span").click(function () {
+
+            var order_name = '';
+            var goodsid = '';
+            var user_name = '';
+            var phone = '';
+            var spec = '';
+            var num = '';
+            var img = '';
+            var price = '';
+            var _puls = $('.shopping >.shopping_list :checked').parents(".shopping_list");
+            _puls.each(function (i, v) {
+                order_name += _puls[i].getElementsByTagName('h4')[0].innerHTML + 'X' + _puls[i].getElementsByClassName('num')[0].value + ';'; //name
+                spec += _puls[i].getElementsByClassName('spec')[0].innerHTML + ';';  //spec
+                price += _puls[i].getElementsByClassName('price')[0].innerHTML + ';'; //price
+                img += _puls[i].getElementsByClassName('img')[0].value + ';';
+                goodsid += _puls[i].getElementsByClassName('num2')[0].value + ';';
+
+
+            })
+            // console.log(order_name);
+            // console.log(specs );
+            // console.log(price);
+            // console.log(img );
+            // console.log(goodsid);
+            var money = $(".Total").text();
+            if (order_name == '' || goodsid == '' || img == '') {  //|| user_name =='' || phone==''
+                alert('订单信息不完整！');
+                return false;
+            } else {
+                $.post(
+                    "{:U('Cart/add_order')}",
+                    {
+                        goods_name: order_name,
+                        spec: spec,
+                        price: price,
+                        img: img,
+                        goodsid: goodsid,
+                        money: money
+                    },
+                    function (res) {
+                        console.log(res);
+                        if (res != 0) {
+                            window.location.href = "{:U('Cart/order')}?ddh=" + res;
+                        } else if (res == 2) {
+                            alert("你已经添加过该商品！");
+                        } else {
+                            alert('添加失败！');
+                        }
+                    }
+                )
+
+            }
+
+        })
+
+
+    })
+</script>
+<script type="text/javascript">
+    function delshopping(id) {
+        $.post(
+            "{:U('Cart/delsh')}",
+            {
+                shoppingid: id
+            },
+            function (res) {
+                if (res == "1") {
+                    alert('删除成功！');
+                    history.go(0);
+                } else {
+                    alert('删除失败！');
+                }
+            }
+        )
+    }
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems','onMenuShareQQ','onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+</body>
+
+</html>

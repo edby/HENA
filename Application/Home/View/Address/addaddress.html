@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加地址</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/address.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+</head>
+<style type="text/css">
+    input[type=color],
+    input[type=date],
+    input[type=datetime-local],
+    input[type=datetime],
+    input[type=email],
+    input[type=month],
+    input[type=number],
+    input[type=password],
+    input[type=search],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    input[type=week],
+    select,
+    textarea {
+        margin: 0;
+        padding: 0;
+        height: 20px;
+        border: none;
+    }
+
+    .radio {
+        margin-top: 5%;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .mui-checkbox input[type=checkbox],
+    .mui-radio input[type=checkbox] {
+        margin-left: 28%;
+        margin-top: 0;
+    }
+
+    input[id='send'] {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 44px;
+        text-align: center;
+        background: #000000;
+        color: #ffffff;
+        border: none;
+        border-radius: 0px;
+    }
+
+    input[type='text'] {
+        font-size: .7rem;
+    }
+
+    .mui-bar-nav {
+        background: #f2f2f2;
+    }
+
+    .mui-bar > a, .mui-bar > h1 {
+        color: #000000;
+    }
+</style>
+<body>
+
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">添加地址</h1>
+</header>
+
+<div class="mui-content">
+
+
+    <div class="iphone">
+        <div class="browser">
+            <!--选择地区-->
+            <section class="express-area">
+                <a id="expressArea" href="javascript:void(0)">
+                    <dl>
+                        <dt>选择地区：</dt>
+                        <dd>省 > 市 > 区/县</dd>
+                    </dl>
+                </a>
+            </section>
+            <section class="express-area">
+                <a id="" href="javascript:void(0)">
+                    <dl>
+                        <dt>详细信息</dt>
+                        <dd><input type="text" name="detail" id="detailaddress" value="" placeholder="如街道，楼牌号等"/></dd>
+                    </dl>
+                </a>
+            </section>
+            <section class="express-area">
+                <a id="" href="javascript:void(0)">
+                    <dl>
+                        <dt>姓名</dt>
+                        <dd><input type="text" name="realname" id="realname" value=""/></dd>
+                    </dl>
+                </a>
+            </section>
+            <section class="express-area">
+                <a id="" href="javascript:void(0)">
+                    <dl>
+                        <dt>手机号</dt>
+                        <dd><input type="text" name="tel" id="tel" value=""/></dd>
+                    </dl>
+                </a>
+            </section>
+            <!--选择地区弹层-->
+            <section id="areaLayer" class="express-area-box">
+                <header>
+                    <h3>选择地区</h3>
+                    <a id="backUp" class="back" href="javascript:void(0)" title="返回"></a>
+                    <a id="closeArea" class="close" href="javascript:void(0)" title="关闭"></a>
+                </header>
+                <article id="areaBox">
+                    <ul id="areaList" class="area-list"></ul>
+                </article>
+            </section>
+            <!--遮罩层-->
+            <div class="mui-row radio mui-input-row mui-checkbox mui-left">
+                <input type="button" name="" id="send" value="保存"/>
+            </div>
+
+            <div id="areaMask" class="mask"></div>
+            <script src="__PUBLIC_HOME__/js/jquery.area.js"></script>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<!--<script src="http://www.jq22.com/jquery/jquery-1.10.2.min.js"></script>-->
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery.area.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+<script>
+    function selectD(p, c, d) {
+        clockArea();
+        expressArea += district[p][c][d];
+        $("#expressArea dl dd").html(expressArea);
+
+    }
+
+    $("#send").click(function () {
+        var pca = expressArea;
+        if (pca == undefined) {
+            alert('请选择地址!');
+            return false;
+        }
+        var detailaddress = $("#detailaddress").val();
+        if (detailaddress == '' || (detailaddress == undefined)) {
+            alert("请输入详细信息!");
+            $("#detailaddress").focus();
+            return false;
+        }
+        var realname = $("#realname").val();
+        if (realname == '' || (realname == undefined)) {
+            alert("请输入收货人姓名!");
+            $("#realname").focus();
+            return false;
+        }
+        var tel = $("#tel").val();
+        if (tel == '' || (tel == undefined)) {
+            alert("请输入手机号!");
+            $("#tel").focus();
+            return false;
+        }
+        var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(tel)) {
+            alert("请输入正确的手机号!");
+            $("#tel").focus();
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Address/addaddress1')}",
+            data: {
+                "pca": pca, "detailaddress": detailaddress, "realname": realname, "tel": tel
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    window.location.href = "http://" + window.location.host + "{:U('Address/index')}?gobackurl=" 
+                } else {
+                    mui.alert(data.info, '提示', '我知道了', function () {
+
+                    });
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+
+
+    })
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var domain = 'http://' + window.location.host;
+    var myurl = window.location.href;
+    var data = {
+        'url': myurl
+    };
+    if (myurl.indexOf('Goods') != -1 || myurl.indexOf('Goods') != -1 || myurl.indexOf('details') != -1 || window.location.href.indexOf('tb') != -1) {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    } else {
+        menu_list = ['menuItem:share:qq',
+            'menuItem:share:weiboApp',
+            'menuItem:favorite',
+            'menuItem:share:facebook',
+            'menuItem:copyUrl', // 复制链接:
+            'menuItem:originPage', // 原网页
+            'menuItem:share:appMessage',
+            'menuItem:openWithQQBrowser',
+            'menuItem:share:timeline',
+            'menuItem:openWithSafari',
+            'menuItem:share:email',
+            'menuItem:share:QZone'];
+    }
+
+    $.ajax({
+        url: domain + "/Home/User/getShareInfo.html",
+        type: 'post',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            wx.config({
+                debug: false,
+                appId: data.signPackage.appId,
+                timestamp: data.signPackage.timestamp,
+                nonceStr: data.signPackage.nonceStr,
+                signature: data.signPackage.signature,
+                jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'hideMenuItems','onMenuShareQQ','onMenuShareQZone']
+            });
+            wx.ready(function () {
+
+                if (window.location.href.indexOf('tb') != -1) {
+                    var nowurl = "tao.hena360.com"
+                } else {
+                    var nowurl = window.location.href;
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&amp;mid=\d+/, '');
+                if (nowurl.indexOf('mid') == -1) {
+                    if (nowurl.indexOf('?') == -1) {
+                        nowurl += '?mid=' + data.mid;
+                    } else {
+                        nowurl += '&mid=' + data.mid;
+                    }
+                } else {
+                    nowurl = nowurl.replace(/&mid=\d+/, '&mid=' + data.mid);
+                }
+                //去除url中不必要参数
+                nowurl = nowurl.replace(/&from=groupmessage/, '');
+                nowurl = nowurl.replace(/&amp;from=groupmessage/, '');
+                //分享功能
+                wx.onMenuShareTimeline({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到朋友圈');
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.onMenuShareQQ({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        alert('你没有分享到QQ');
+                    }
+                });
+                wx.onMenuShareQZone({
+                    title: '自用省钱，躺着赚钱！福利0元抢，爆品限时抢，海量折扣单品……',
+                    link: nowurl,
+                    desc: '生态化布局，亮点多多，收益多多，总能留住你的心！加入合纳，人生不将就！', // 分享描述
+                    imgUrl: 'http://img.hena360.cn/wxshare.jpg',
+                    success: function () {
+                        alert("分享成功");
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        alert('你没有分享给朋友');
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            })
+        }
+    });
+</script>
+<!--分享-->
+
+</body>
+
+</html>

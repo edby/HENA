@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/static/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="__PUBLIC_ADMIN__/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>编辑规格</title>
+    <link rel="stylesheet" href="__PUBLIC_ADMIN__/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body class="pos-r">
+<form action="{:U('/admin/goods/Category/edit')}" method="post" >
+    <div style="width:1200px;position: relative;left: 100px;top: 100px;">
+        <div class="row cl" style="margin-top: 20px;">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规格名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" readonly="readonly" class="input-text" value="{$spec_info.spec_title}" placeholder="" id="spec" name="spec" style="width:30%" required>
+            </div>
+        </div>
+
+        <div class="row cl" style="margin-top: 20px;">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>规格标准：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <volist name="addr_list" id="info">
+                    <p>
+                        <input style="font-size:16px;height:30px;border: solid 1px #3bb4f2;-webkit-appearance: none;outline: 0;vertical-align: middle;" type="text" data-addr_id="{$info.addr_id}" class="addr_title" value="{$info.addr_title}">
+                        <span class="btn btn-success btn-update-addr">修改</span>
+                        <span class="btn btn-danger btn-delete-addr" data-addr_id="{$info.addr_id}">删除</span>
+                    </p>
+                </volist>
+
+            </div>
+        </div>
+        <div class="row cl" style="margin-top: 20px;">
+            <span class="btn btn-success btn-add-addr" data-spec_id="{$spec_info.spec_id}" onClick="addAddr()">添加规格标准</span>
+        </div>
+    </div>
+</form>
+<div id="modal-add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title">添加{$spec_info.spec_title}规格标准值</h3>
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+            </div>
+            <div class="modal-body bs-example bs-example-form" style="height: 50px;">
+                <p><span class="col-xs-4" style="height: 30px;font-size: 16px;">规格标准值</span>
+                    <input type="text" class="form-control col-xs-4" style="height: 30px;border: solid 1px;-webkit-appearance: none;outline: 0;" name="addr_title" value="">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-confirm" data-spec_id="{$spec_info.spec_id}">确定</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_ADMIN__/lib/laypage/1.2/laypage.js"></script>
+<script>
+    //修改
+    $('.btn-update-addr').click(function (e) {
+        e.preventDefault();
+        var addr_id = $(this).prev().data('addr_id');
+        var addr_title = $(this).prev().val();
+        var data = {
+            addr_id :　addr_id,
+            addr_title : addr_title
+        };
+        $.ajax({
+            url:"{:U('Admin/Goods/Category/editAddr')}",
+            type:'post',
+            dataType:'json',
+            data:data,
+            success:function (data) {
+                layer.msg(data.msg);
+                if(data.status == 1){
+                    location.reload();
+                }
+            }
+        });
+    })
+    //删除
+    $('.btn-delete-addr').click(function (e) {
+        e.preventDefault();
+        if(! confirm('确定删除该规格？')){
+            return;
+        }
+        var addr_id = $(this).data('addr_id')
+        var data = {
+            addr_id :　addr_id
+        };
+        $.ajax({
+            url:"{:U('Admin/Goods/Category/deleteAddr')}",
+            type:'post',
+            dataType:'json',
+            data:data,
+            success:function (data) {
+                layer.msg(data.msg);
+                if(data.status == 1){
+                    location.reload();
+                }
+            }
+        });
+    })
+    //添加规格标准
+    function addAddr() {
+        $("#modal-add").modal("show")
+    }
+    $(".btn-confirm").click(function (e) {
+        e.preventDefault();
+        var spec_id = $(this).data('spec_id');
+        var addr_title = $("input[name='addr_title']").val();
+        var data = {
+            spec_id : spec_id,
+            addr_title : addr_title
+        };
+        $.ajax({
+            url : "{:U('Admin/Goods/Category/addAddr')}",
+            type:'post',
+            data:data,
+            dataType:'json',
+            success:function (data) {
+                layer.msg(data.msg);
+                if(data.status == 1){
+                    location.reload();
+                }
+            }
+        });
+    })
+</script>
+</body>
+</html>

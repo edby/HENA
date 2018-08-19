@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>支付提示</title>
+    <script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+<body>
+<div class="mui-content">
+    <img src="http://img.hena360.cn/pay_1.png" alt="" class="mui-slider">
+</div>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(function () {
+        var u = navigator.userAgent, app = navigator.appVersion;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid==1){
+            $(".mui-content>img").attr('src','http://img.hena360.cn/pay_1.jpg')
+        }
+        else(
+            $(".mui-content>img").attr('src','http://img.hena360.cn/pay_2.jpg')
+        )
+    })
+</script>
+</body>
+</html>

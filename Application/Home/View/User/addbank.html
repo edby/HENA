@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加银行卡</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link href="__PUBLIC_HOME__/css/style.css" rel="stylesheet"/>
+    <style>
+        .mui-content {
+            background: #EFEFF4;
+        }
+        .box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:rgba(0,0,0,.5);
+            z-index: 2;
+            
+        }
+    </style>
+</head>
+
+<body>
+<div class="mui-content addBankCard">
+    <form class="mui-input-group">
+        <div class="mui-input-row">
+            <label>银行卡</label>
+            <input type="text" class="mui-input-clear" id="bank_num" placeholder="请输入银行卡卡号">
+        </div>
+        <div class="mui-input-row">
+            <label>持卡人</label>
+            <input type="text" class="mui-input-clear" id="bank_username" placeholder="请输入持卡人姓名">
+        </div>
+        <div class="mui-input-row">
+            <label>银行名称</label>
+            <input type="text"  id="bank_id"  placeholder="选择银行" readonly="readonly" value="">
+        </div>
+
+    </form>
+    <p>注意：请绑定持卡人本人储蓄卡！（不支持信用卡）</p>
+    <input type="button" class="" id="addbank" placeholder="确认添加" value="确认" type="button">
+    <ul class="mui-table-view">
+        <h4>请选择银行</h4>
+        <div>
+        </div>
+    </ul>
+    <div class="box"></div>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/configure.js"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    mui.init();
+    $(function () {
+        $(".addBankCard>ul").hide()
+        $(".box").hide();
+        $(".box").click(function () {
+            $(".addBankCard>ul").hide()
+            $(".box").hide();
+        })
+        $(".addBankCard>form>div:last-child").click(function () {
+            $(".addBankCard>ul").show(500);
+            $(".box").show();
+            $(".addBankCard>ul>div>li").click(function () {
+                $(this).each(function (i, v) {
+                    N_bank_name =$(this).text();
+                    N_bank_id = $(this).attr('id');
+                    $(this).addClass("addBankCardUlAddColro").siblings().removeClass("addBankCardUlAddColro");
+                    $(".addBankCard>form>div:last-child input").val($(this).text())
+                    $(".addBankCard>ul").hide()
+                    $(".box").hide();
+                })
+            })
+
+        })
+
+         /*修改银行卡*/
+        $.ajax({
+            url:"{:U('User/getAccount')}",
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                console.log(data);
+                if(data.code==2000){
+                    $("#bank_num").val(data.user_bank.bank_real_num);
+                    $("#bank_username").val(data.user_bank.bank_username);
+                    //$("#bank_id").val(data.user_bank.bank_name)
+                }
+            },
+            error:function () {
+                mui.alert('请求失败，请稍后重试！')
+            }
+        })
+        /*选择银行卡*/
+        $.ajax({
+            url:'{:U("user/getAccountList")}',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                console.log(data)
+                var _html = '';
+                $(data).each(function (i,v) {
+                    console.log(v)
+                    $(v).each(function (j,k) {
+                        console.log(k)
+                    })
+                    _html+=' <li class="mui-table-view-cell" id="'+v.id+'">'+v.bank_name+'</li>';
+                })
+                $(".mui-table-view>div").html(_html)
+            }
+        })
+        /*添加银行卡*/
+        $("#addbank").click(function () {
+            var bank_num = $("#bank_num").val();
+            var bank_username = $("#bank_username").val();
+            var bank_id = N_bank_id;
+            var bank_name = N_bank_name;
+            if(bank_num ==''){
+                mui.alert("请输入银行卡卡号");
+                return
+            }else if (!/^\w+$/.test(bank_num)||bank_num.length<=15||bank_num.length>=20){
+                mui.alert("银行卡格式不正确，请重新输入");
+                return
+            }
+            if(bank_username ==''){
+                mui.alert("请输入持卡人姓名");
+                return
+            }else if (!/^[\u4E00-\u9FA5]{1,6}$/.test(bank_username)){
+                mui.alert("请输入2-6位中文姓名");
+                return
+            }
+            if(bank_id ==''){
+                mui.alert("请选择开户行");
+                return
+            }
+            $.ajax({
+                url:'{:U("user/addBank")}',
+                type:'post',
+                dataType:'json',
+                data:{
+                    bank_num:bank_num,//银行卡
+                    bank_username:bank_username,//开户人姓名
+                    bank_name:bank_name,//开户行ID
+                    bank_id :bank_id
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data.code==2000){
+                        mui.toast("填写成功");
+                        setTimeout(function () {
+                            window.location.href="{:U('/User/withdraw')}"
+                        },2000)
+                    }else if (data.code==3000){
+                        mui.alert("服务器繁忙，请稍后重试！")
+                    }
+                },
+                error:function () {
+                    mui.alert('请求失败，请稍后重试！')
+                }
+            })
+        })
+    })
+</script>
+</body>
+
+</html>

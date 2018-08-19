@@ -1,0 +1,593 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>合纳共享</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="__PUBLIC_HOME__/css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_HOME__/css/style.css"/>
+    <style>
+        html, body {
+            cursor: pointer;
+        }
+
+        .mui-table-view-cell:after,
+        .mui-table-view:after,
+        .mui-table-view:before {
+            background-color: #FFFFFF;
+        }
+
+        .mui-table-view {
+            border-top: 7px solid #F6F6F6;
+            border-bottom: 7px solid #F6F6F6;
+            background-color: none;
+        }
+
+
+        .Specifications_span_addcolor {
+            border: 1px solid #ccc;
+            background: #ccc;
+            color: #fff;
+        }
+
+        .details_Recommend {
+            border-top: 10px solid #F6F6F6;
+        }
+
+        .details_pic, .details_pic img, .details_pic p img {
+            width: 100%;
+        }
+
+        .details_tab > a {
+            width: 30% !important;
+        }
+
+        .details_tab > span {
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            z-index: 2;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .details_tab > span {
+            background: #F2F2F2;
+        }
+
+        .details_tab > span:last-child {
+            background: #000000;
+            color: #ffffff;
+        }
+        .mui-bar-nav {
+            background: #f2f2f2;
+        }
+
+        .nav_title > a, .nav_title > h1 {
+            color: #000000 !important;
+        }
+        #spec span {
+            width: 20%;
+            display: inline-block;
+            text-align: center;
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            line-height: 24px;
+            margin-right: 2.5%;
+        }
+        .specAddcolor {
+            background: #000 !important;
+            color: #fff !important;
+            border: 1px solid #000000 !important;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav nav_title">
+    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="{:U('/index')}"></a>
+    <h1 class="mui-title" >商品详情</h1>
+    <span style="line-height: 44px;float: right">首页</span>
+</header>
+<div class="mui-content">
+    <div class="Carousel">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <?php if(is_array($detailimgs)){?>
+                <volist name="detailimgs" id="vo">
+                    <div class="swiper-slide"><img src="{$vo}" alt="" class="mui-slider"></div>
+                    <input type="hidden" name="" value="{$vo}" class='goodspic'>
+                </volist>
+                <?php }else{?>
+                <div class="swiper-slide"><img src="{$detailimgs}" alt="" class="mui-slider"></div>
+                <input type="hidden" name="" value="{$detailimgs}" class='goodspic'>
+                <?php }?>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <!--轮播-->
+    <div class="mui-row details_title">
+        <div class="mui-col-xs-12">
+            <h4 class="name">{$data.goods_name}</h4>
+            <p class="desc" >{$data.f_title}</p>
+            <!--原价-->
+            <p><span class="price"></span></p>
+            <!--普通价-->
+            <p style="margin: 0"><span class="price">￥{$data.goods_price}</span><del style="color: #8f8f94;margin-left: 5%;font-size: 12px">￥{$data.original_price}</del></p>
+
+            <p style="margin: 0;">
+                <if condition="$goods_price">
+                    <!--会员价-->
+                    <span class="price" style="color: #b39863;font-size: 16px">￥{$goods_price} <img width="10%" src="http://img.hena360.cn/vip_price.png"
+                                                                                                    alt=""></span>
+                </if>
+                <!--爆品库价格展示end-->
+            </p>
+            <eq name="data.acttype" value="2">
+                <div class="timespan"></div>
+            </eq>
+            <input type="hidden" value="{$data.return_cash.end_time}" name="endtime" id="endtime">
+            <p style="font-size: 12px">库存：{$data.goods_num}{$data.goods_unit} <span class="mui-pull-right"
+                                                                                    style="font-size: 12px">快递：<if condition="$data.express_fee gt 0 ">{$data.express_fee}
+            <else />包邮
+            </if></span>
+            </p>
+        </div>
+    </div>
+    <!--<ul class="mui-table-view details_address">-->
+    <!--<li class="mui-table-view-cell Specifications_show">-->
+    <!--地址：<span></span>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <eq name="data.acttype" value="2">
+        <ul class="mui-table-view datails_time">
+            <li class="mui-table-view-cell">
+                预售&nbsp;&nbsp;结束时间：{$data.return_cash.end_time|date="m月d日 H:i:s",###}
+                <p>发货时间：预售结束72小时</p>
+            </li>
+        </ul>
+    </eq>
+    <if condition="($data['acttype'] eq '2')">
+        <ul class="mui-table-view details_activity">
+            <li class="mui-table-view-cell">
+                活动 <span>福利</span>获得 <span>{$data.goods_price}</span>纳豆
+            </li>
+        </ul>
+    </if>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell Specifications_show">
+            选择商品规格数量
+        </li>
+    </ul>
+    <div class="mui-row details_Recommend">
+        <h4>推荐商品</h4>
+        <div class="new_carousel">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <volist name='goods_attribute' id='v'>
+                        <div class="swiper-slide">
+                            <a href="{:U('Goods/details')}?id={$v.id}">
+                                <img src="{$v.goods_logo}" alt="" class="mui-slider">
+                                <h4>{$v.goods_name}</h4>
+                                <span>￥ {$v.goods_price}</span>
+                            </a>
+                        </div>
+                    </volist>
+                </div>
+                <div class="swiper-pagination">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="details_pic">
+        <img src="http://img.hena360.cn/title.png" class="mui-slider"/>
+        <!--<volist name="bmimgs" id="vo">-->
+        <!--<img src="{$vo}" class="mui-slider" />-->
+        <!--</volist>-->
+        {$data['detailimgs']}
+    </div>
+    <div class="Specifications" data-id="{$data.id}">
+        <div class="mui-row">
+            <div class="mui-col-xs-4">
+                <img src="{$imgs}" class="mui-slider"/>
+            </div>
+            <div class="mui-col-xs-8">
+                <h4>{$data.goods_name}</h4>
+                <span id="goods_price">￥
+                    <b>
+                        <if condition="$goods_price">
+                            {$goods_price}
+                        <else/>
+                            {$data.goods_price}
+                        </if>
+                    </b>
+                </span>
+                <!--<p>已选择:标准配置</p>-->
+            </div>
+        </div>
+        <div class="mui-row">
+            <div id="spec">
+            <div class="mui-col-xs-12">
+                <h4>请选择规格</h4>
+                <span></span>
+            </div>
+            </div>
+            <input type="hidden" name="goods_spec_id" value="0"/>
+            <div class="mui-col-xs-12">
+                <h4 id="goods_num">{$data.goods_num}{$data.goods_unit}</h4>
+            </div>
+            <div class="mui-col-xs-12 Specifications_number">
+                <span class="reduce">-</span><input type="text" name="" id="" value="1" class="num"/><span
+                    class="add" style="margin-left: 50px">+</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="details_show" style="width: 100%">
+        <if condition="($data['acttype'] eq 2)">
+            <div class="mui-row">
+                <h4>福利</h4>
+                <div class="mui-col-xs-12">
+                    <div class="mui-row">
+                        <div class="mui-col-xs-12">
+                            纳豆：{$data.goods_price}个
+                        </div>
+                        <!--<div class="mui-col-xs-12">-->
+                        <!--<span>￥</span> 返单时间：{$data.returntime}天-->
+                        <!--</div>-->
+                        <div class="mui-col-xs-12">
+                            <p>完成任务{$data.return_cash.day}天后一次性获得，如申请退款，则不享受福利</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <else/>
+            <div class="mui-row">
+                <h4>该商品暂无活动!</h4>
+            </div>
+        </if>
+    </div>
+    <div class="Mask"></div>
+    <!-- <if condition="($data['acttype'] neq 1)">
+        <p class='mui-text-center _not'>暂未开放，敬请期待！</p>
+    </if> -->
+    <!-- <nav class="mui-bar mui-bar-tab details_tab">
+        <if condition="($data['acttype'] neq '520')">
+            <a class="mui-tab-item">
+                <img src="http://img.hena360.cn/_pic36.png" />
+            </a>
+            <span class="mui-tab-item">
+                <span class="mui-tab-label" >加入购物车</span>
+            </span>
+            <span class="mui-tab-item" >
+                <span class="mui-tab-label">立即购买</span>
+            </span>
+            <else />
+            <span class="mui-tab-item  mui-active" >
+            <span class="mui-tab-label" id="buy-now" data-goods_id="{$data.id}">立即购买</span>
+            </span>
+        </if>
+    </nav> -->
+    <nav class="mui-bar mui-bar-tab details_tab">
+        <!--<a class="mui-tab-item">-->
+        <!--<img src="http://img.hena360.cn/_pic36.png" />-->
+        <!--</a>-->
+        <!--<span class="" onclick="add_cart({$data.id})">-->
+        <!--<span class="mui-tab-label"  style="cursor:pointer">加入购物车</span>-->
+        <!--</span>-->
+        <span class="" id="pay_shopping" data-goods_id="{$data.id}" style="cursor:pointer">
+              <span class="mui-tab-label">立即购买</span>
+            <!--<span class="mui-tab-label"  id='pay_shopping' onclick="pay_shopping({$data.id})">立即购买</span>-->
+          </span>
+    </nav>
+</div>
+<script src="__PUBLIC_HOME__/js/mui.min.js"></script>
+<script src="__PUBLIC_HOME__/js/swiper.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC_HOME__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type='text/javascript' src='/Public/layer/layer.js'></script>
+<script type="text/javascript">
+    mui.init()
+    console.log($("#endtime").val())
+    function add_cart(id) {  //加入购物车
+        //alert(id);
+        var goods_name = $(".name").text();
+        var goods_pic = $(".goodspic").val();
+        var goods_desc = $(".desc").text();
+        var goods_num = $(".num").val();
+        var goods_youfei = '0';
+        var goods_price = $(".price").text();
+        var spec = $(".Specifications_span_addcolor").text();
+        $.post(
+            "{:U('Cart/add_cart')}",
+            {
+                goods_name: goods_name,
+                goods_pic: goods_pic,
+                goods_desc: goods_desc,
+                goods_num: goods_num,
+                goods_youfei: goods_youfei,
+                goods_price: goods_price,
+                spec: spec,
+                goodsid: id
+            },
+            function (res) {
+                console.log(res);
+                if (res == 1) {
+                    alert('添加成功！');
+                    history.go(0);
+                } else {
+                    alert('操作失败！');
+                    history.go(0);
+                }
+            }
+        )
+    }
+    // 跳转订单确认页面
+
+    $("body").on("click", "#pay_shopping", function () {
+        var radio = $('input[type=radio]');
+        var data = new Array;
+        node = $('.specAddcolor');
+        $.each(node,function (i,v) {
+            data[i] = v.getAttribute('data-id');
+        })
+        var goods_id = $(this).data('goods_id');
+        var goods_num = $(".num").val();
+        var address_id = $('.idtails_address_addcolor').data('id');
+        if($("#spec span").hasClass("specAddcolor")==false){
+            $(".Mask").show()
+            $(".Specifications").show(200);
+            $(".details_show").hide();
+        }else if($("#spec span").hasClass("specAddcolor")==true){
+            window.location.href = 'http://'+window.location.host+"{:U('/order/confirmOrder')}" +"?goods_id="+goods_id+"&num="+goods_num+"&spec="+data;
+        }
+    })
+    var starttime = $('#endtime').val()*1000;
+    console.log(starttime);
+    setInterval(function () {
+        var nowtime = new Date();
+        var time = starttime - nowtime;
+        if(time<=0){
+            $('.timespan').html("<img src='http://img.hena360.cn/time.png'>" + "抢购已结束！");
+            $("#pay_shopping").attr('disabled','disabled');
+            $("body").on("click", "#pay_shopping", function () {
+                return;
+            });
+            return;
+        }
+        var day = parseInt(time / 1000 / 60 / 60 / 24);
+        var hour = parseInt(time / 1000 / 60 / 60 % 24);
+        var minute = parseInt(time / 1000 / 60 % 60);
+        var seconds = parseInt(time / 1000 % 60);
+        $('.timespan').html("<img src='http://img.hena360.cn/time.png'>" + "距离预售结束&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + day + "天" + hour + "小时" + minute + "分钟" + seconds + "秒");
+    }, 1000);
+</script>
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', 'a', function () {
+        window.top.location.href = this.href;
+    });
+    var mySwiper = new Swiper('.Carousel .swiper-container', {
+        pagination: '.pagination',
+        loop: false,
+        grabCursor: true,
+        paginationClickable: true,
+        autoplay: 3000,
+        autoplayDisableOnInteraction: false,
+    });
+    /*轮播*/
+    var mySwiper = new Swiper('.new_carousel .swiper-container', {
+        pagination: '.pagination',
+        slidesPerView: 3.2,
+        grabCursor: true,
+        paginationClickable: true,
+        autoplayDisableOnInteraction: false,
+    });
+
+
+    // 获取商品id
+    var val = $(".Specifications").data();
+    // 点击获取该规格下的商品价格
+    $("body").on("click","#spec span",function () {
+        var inputName = $(this).attr('name');
+        $(this).addClass('specAddcolor').siblings('span[name="'+inputName+'"]').removeClass('specAddcolor');
+        if($(this).hasClass("specAddcolor")==true){
+            val = $(".Specifications").data();
+            num = $('.num').val();
+            var data = {"id":val.id,"num":num};
+            node = $('.specAddcolor');
+            $.each(node,function (i,v) {
+                data[i] = v.getAttribute('data-id');
+            })
+            $.ajax({
+                url:"{:U('Goods/getGoodsPrice')}",
+                type:"POST",
+                data:data,
+                success:function(res){
+                    console.log(res)
+                    if(res.code == 2000) {
+                        $('#goods_price>b').text(res.real_price); // 替换价格
+                    }else{
+                        $("#spec span").removeClass('specAddcolor');
+                        mui.toast(res.msg,{ duration:'long', type:'div' });
+                    }
+
+                }
+            })
+        }
+    })
+    // 获取规格列表
+    $.ajax({
+        url:"{:U('Goods/getGoodsSpec')}?id="+val.id,
+        type:"get",
+        success:function(res){
+            var key;
+            var data;
+            var html = '<div class="mui-col-xs-12">';
+            $.each(res,function(i) {
+                html += '<h4>' + i + '：</h4>';
+                data = res[i];
+                $.each(data,function(k){
+                    if(k !== 'spec_id' && k !== 'goods_num') {
+                        if(data.goods_num[k] > 0) {
+                            html+= '<span name="'+data.spec_id+'"  data-spec_id="'+data.spec_id+'" data-id="'+k+'" value="'+k+'">'+data[k]+'</span>'
+                        }else{
+                            html+= '<span disabled="disabled" name="'+data.spec_id+'"  data-spec_id="'+data.spec_id+'" data-id="'+k+'" value="'+k+'">'+data[k]+'</span>'
+                        }
+                    }
+                });
+            });
+            // 可加一个清除规格按钮 发送ajax获取商品价格和库存 需携带商品id 路由："{:U('Goods/getGoodsInfo')}?id="+id,
+            html += '</div>';
+            $('#spec').append(html);
+        }
+    })
+
+    $(function () {
+
+        $(".Specifications").hide();
+        $(".Mask").hide();
+        $(".datails_address_show").hide();
+        $(".Mask").width($(window).width()).height($(window).height() - 50);
+
+        // 商品规格
+        $(".Specifications_show").click(function () {
+            $(".Mask").show(); // 模态框
+            $(".Specifications").show(); // 规格信息
+        });
+
+        $(".Mask").click(function () {
+            $(".Specifications").hide();
+            $(".Mask").hide();
+            $(".details_show").hide()
+            $(".datails_address_show").hide();
+        })
+        $(".details_show").hide()
+        $(".details_activity").click(function () {
+            $(".Mask").show()
+            $(".details_show").show()
+        })
+        /**/
+
+        // 增加购买数量 获取 价格
+        var _val = $(".Specifications_number input[type='text']").val();
+        $(".add").on('click', function () {
+            _val++;
+            $(".Specifications_number input[type='text']").val(_val);
+            var goods = $(".Specifications").data();
+            var data = {"num":_val,"id":goods.id};
+            node = $('.specAddcolor');
+            $.each(node,function (i,v) {
+                data[i] = v.getAttribute('data-id');
+            })
+            $.ajax({
+                url:"{:U('Goods/getGoodsPrice')}",
+                type:"POST",
+                data:data,
+                success:function(res){
+                    console.log(res)
+                    if(res.code == 2000) {
+                        $('#goods_price>b').text(res.real_price); // 替换价格
+                    }else{
+                        mui.toast(res.msg,{ duration:'long', type:'div' });
+                        $(".Specifications_number input[type='text']").val(1);
+                    }
+                }
+            })
+            console.log(_val)
+        });
+        // 减少购买数量 获取 价格
+        $(".reduce").click(function () {
+
+            console.log(_val);
+            if (_val <= 1) {
+                _val = 1;
+                return;
+                //$(".Specifications_number input[type='text']").val(_val);
+            }
+
+            _val--;
+            $(".Specifications_number input[type='text']").val(_val)
+            var goods = $(".Specifications").data();
+            var data = {"num":_val,"id":goods.id};
+            node = $('.specAddcolor');
+            $.each(node,function (i,v) {
+                data[i] = v.getAttribute('data-id');
+            })
+            $.ajax({
+                url:"{:U('Goods/getGoodsPrice')}",
+                type:"POST",
+                data:data,
+                success:function(res){
+                    if(res.code == 2000) {
+                        $('#goods_price>b').text(res.real_price); // 替换价格
+                    }else{
+                        mui.toast(res.msg,{ duration:'long', type:'div' });
+                        $(".Specifications_number input[type='text']").val(1);
+                    }
+                }
+            })
+        })
+        $(".Specifications_span span").click(function () {
+            $(this).addClass("Specifications_span_addcolor").siblings().removeClass("Specifications_span_addcolor");
+        })
+        $(".details_address li").click(function () {
+            $(".Specifications").hide();
+            $(".datails_address_show").show();
+        })
+        $(".datails_address_show .mui-row").click(function () {
+            var datails_span = $(".details_address li span");
+            $(this).addClass("idtails_address_addcolor").siblings().removeClass("idtails_address_addcolor");
+            datails_span.text($(this).find('p').text())
+        })
+    })
+</script>
+<script>
+    $(function () {
+        $("#buy-now").click(function (e) {
+            e.preventDefault();
+            var goods_id = $(this).data('goods_id');
+            $.ajax({
+                url: "{:U('Home/User/produce')}",
+                data: {goods_id: goods_id},
+                type: 'post',
+                success: function (msg) {
+                    if (!msg.msg) {
+                        layer.msg('请前往个人中心登录后再购买!');
+                        return;
+                    }
+                    if (msg.status == 0) {
+                        layer.msg(msg.msg);
+                    } else {
+                        // location.href = "http://m.hena360.com/index.php/home/api/wxpay/order_no/"+msg.msg;
+                        location.href = "http://m.hena360.com/index.php/home/api/wxpay/order_no/" + msg.msg;
+                    }
+                }
+            })
+        })
+        // 提交订单
+    })
+</script>
+<script type="text/javascript">
+    function getUrlParam (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    $(".nav_title>span").click(function () {
+        window.location.href="{:U('/index')}";
+    })
+</script>
+<!--分享-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC_HOME__/js/wxShare.js"></script>
+<!--分享-->
+</body>
+
+</html>
